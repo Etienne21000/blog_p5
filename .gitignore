@@ -1,4 +1,3 @@
-/Public/Libraries/
+/Public/Libraries/faw/
 /Upload/
 composer.json
-.gitignore
