@@ -1,0 +1,26 @@
+{
+  "name": "etienne/p_5",
+  "description": "Premier blog php",
+  "type": "project",
+
+  "authors": [
+    {
+      "name": "etienne",
+      "email": "etiennejuffard@gmail.com"
+    }
+  ],
+
+  "minimum-stability": "stable",
+
+  "require": {
+    "twbs/bootstrap": "4.4.1",
+    "twig/twig": "v3.0.4",
+    "php": ">=7.2"
+  },
+
+  "autoload":{
+    "psr-4": {
+      "App\\": "src/"
+    }
+  }
+}
