@@ -1,3 +1,7 @@
-/Public/Libraries/faw/
-/Upload/
+Public/Libraries/
+Public/Upload/
 composer.json
+composer.phar
+composer.lock
+vendor/
+.gitignore
