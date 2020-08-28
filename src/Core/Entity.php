@@ -1,5 +1,5 @@
 <?php
-namespace App\Cor;
+namespace App\Core;
 
 abstract class Entity
 {

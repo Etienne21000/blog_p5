@@ -1,0 +1,22 @@
+{% extends 'baseBO.html.twig' %}
+
+
+{% block content %}
+
+    <section class="home">
+        <h1 class="title-h1">{{ post.title }}</h1>
+
+        <h5>{{ sub }}</h5>
+
+
+        <p>
+            {{ post.content }}
+        </p>
+
+        <p>
+            {{ post.pseudo }}
+        </p>
+
+    </section>
+
+{% endblock %}

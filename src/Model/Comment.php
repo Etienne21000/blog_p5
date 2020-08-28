@@ -1,5 +1,6 @@
 <?php
 namespace App\Model;
+use App\Core\Entity;
 
 class Comment extends Entity
 {
@@ -11,6 +12,7 @@ class Comment extends Entity
     private $creation_date;
     private $update_date;
     private $status;
+    private $parent_id;
 
     public function __construct(array $data)
     {
@@ -61,6 +63,11 @@ class Comment extends Entity
         $this->status = (int)$status;
     }
 
+    public function setParentid($parent_id)
+    {
+        $this->parent_id = (int)$parent_id;
+    }
+
     /**************************************
      *************** Getters **************
      **************************************/
@@ -103,5 +110,10 @@ class Comment extends Entity
     public function status()
     {
         return $this->status;
+    }
+
+    public function parent_id()
+    {
+        return $this->parent_id;
     }
 }

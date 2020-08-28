@@ -9,3 +9,4 @@ vendor/
 false/
 .htaccess
 .idea
+src/Core/Manager.php

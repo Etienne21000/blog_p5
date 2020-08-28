@@ -1,22 +1,45 @@
-{% extends 'base.html.twig' %}
+{% extends 'baseBO.html.twig' %}
 
-{% block title %} {{ title.name }} {% endblock %}
-
-{#{% block head %}
-
-    {{ parent() }}
-
-{% endblock %}#}
+{% block title %} {{ title }} {% endblock %}
 
 {% block content %}
 
     <section class="home">
-        <h1 class="title-h1">Bienvenu sur mon blog</h1>
+        <h1 class="title-h1">{{ title }}</h1>
+
+        <h5>{{ sub }}</h5>
+
         <p>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque sit amet tortor sed lacus lacinia dictum nec eu arcu. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eget eleifend libero. Cras cursus ultricies pellentesque. Vestibulum suscipit nisl augue, vel tempor orci accumsan nec. Curabitur vitae aliquam turpis. Quisque rutrum nisi sed neque convallis, id maximus enim ullamcorper. Aliquam eu orci finibus, volutpat nunc ut, volutpat dolor. Nam viverra viverra vestibulum.
-        <br>
+            <br>
             Nunc nunc dui, vulputate non tempus et, pretium nec lectus. Vestibulum semper, augue vel pulvinar accumsan, ipsum neque faucibus leo, in aliquam sapien mauris at neque. Mauris eget nulla cursus, ultricies ipsum quis, sodales neque. Vivamus faucibus iaculis quam, ut lacinia mi porttitor sed. Aenean libero lacus, efficitur nec ullamcorper et, sagittis in orci. Etiam vel blandit nulla. Fusce pretium ex ac metus suscipit facilisis.
         </p>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">Titre</th>
+                <th scope="col">Contenu</th>
+                <th scope="col">Status</th>
+                <th scope="col">Auteur</th>
+                <th scope="col">Action</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for post in posts %}
+                <tr>
+                    <td>{{ post.title }}</td>
+                    <td>{{ post.content | slice(0,200) }}</td>
+                    <td>{{ post.status_text }}</td>
+                    <td>{{ post.pseudo }}</td>
+                    <th>
+                        <a href="/singlePost/{{ post.post_id }}" type="button" class="btn btn-primary">Afficher</a>
+                    </th>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
     </section>
 
 {% endblock %}

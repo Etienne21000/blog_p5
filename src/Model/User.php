@@ -1,5 +1,6 @@
 <?php
 namespace App\Model;
+use App\Core\Entity;
 
 class User extends Entity
 {
@@ -7,6 +8,7 @@ class User extends Entity
     private $pseudo;
     private $mail;
     private $pass;
+    private $type;
     private $creation_date;
 
     public function __construct(array $data)
@@ -38,6 +40,11 @@ class User extends Entity
         $this->pass = (string)$pass;
     }
 
+    public function setType($type)
+    {
+        $this->type = (int)$type;
+    }
+
     public function setCreationdate($creation_date)
     {
         $this->creation_date = (string)$creation_date;
@@ -65,6 +72,11 @@ class User extends Entity
     public function pass()
     {
         return $this->pass;
+    }
+
+    public function type()
+    {
+        return $this->type;
     }
 
     public function creationDate()

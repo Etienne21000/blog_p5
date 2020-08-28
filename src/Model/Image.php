@@ -1,5 +1,6 @@
 <?php
 namespace App\Model;
+use App\Core\Entity;
 
 class Image extends Entity
 {
