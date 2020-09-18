@@ -1,11 +1,15 @@
 <?php
 namespace App\Core;
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+
 class Router
 {
     private $url;
     private $routes = [];
     private $routesNames = [];
+//    private $uri = $_SERVER['REQUEST_URI'];
 
     public function __construct($url)
     {
@@ -20,7 +24,6 @@ class Router
     public function post($path, $callable, $name = null)
     {
         return $this->add($path, $callable, $name, 'POST');
-
     }
 
     private function add($path, $callable, $name, $method)
@@ -62,6 +65,13 @@ class Router
         {
             if($route->match($this->url))
             {
+                $uri = $_SERVER['REQUEST_URI'];
+
+                if(!empty($uri) && $uri[-1] === '/')
+                {
+                    header('Location: ' . substr($uri, 0, -1));
+                }
+
                 return $route->call();
             }
         }

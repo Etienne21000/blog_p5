@@ -42,9 +42,4 @@ abstract class AbstractController
 
     }
 
-    public function count($query)
-    {
-
-    }
-
 }

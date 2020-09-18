@@ -7,40 +7,118 @@ class PostManager extends AbstractManager
 {
     private $db;
 
+    /**
+     * PostManager constructor.
+     */
     public function __construct()
     {
-//        parent::__construct();
-        $this->db = $this->dbConnect();
+        parent::__construct($this->db);
     }
 
+    /**
+     * @return array
+     */
     public function get_all_posts()
     {
-        $query = 'SELECT p.*, u.pseudo FROM Post as p 
-    LEFT JOIN User as u ON p.user_id = u.id
-    ORDER BY p.creation_date';
-        $posts =  $this->get_all($query, Post::class);
+        $this->select('SELECT p.*, u.pseudo');
+        $this->from('FROM Post as p');
+        $this->join('LEFT JOIN User as u ON p.user_id = u.id');
+        $this->orderBy('ORDER BY p.creation_date asc');
+
+        $posts =  $this->get(Post::class);
 
         return $posts;
     }
+    /*public function get_all_posts()
+    {
+       $posts = $this->select('p.*')->from('Post');
+//        $this->join('LEFT JOIN User as u ON p.user_id = u.id');
+//        $this->orderBy('ORDER BY p.creation_date asc');
 
+//        $posts =  $this->execute();
+
+        return $posts;
+    }*/
+
+    /**
+     * @param $id
+     * @return array
+     */
     public function get_single_post($id)
     {
-        $query = 'SELECT p.*, u.*
-        FROM Post as p 
-        LEFT JOIN User as u
-        ON p.user_id = u.id
-        WHERE p.post_id = :id';
+        $this->select('SELECT p.*, u.*');
+        $this->from('FROM Post as p');
+        $this->join('LEFT JOIN User as u
+        ON p.user_id = u.id');
+        $this->where('WHERE p.post_id = :id');
 
-        $post = $this->get_single($id, $query, Post::class);
+        $post = $this->get(Post::class, $id);
 
         return $post;
     }
 
-   /* public function all_posts()
+    /*public function create_post()
     {
-        $query = 'SELECT * FROM Post ORDER BY creation_date';
+        $method = array(
+            'title' => $this->method('title()'),
+            'content' => $this->method('content()')
+        );
 
-        $this->db->select($query);
+        $this->insert('INSERT INTO Post(title, content)');
+        $this->values('VALUES(:title, :content)');
+        $this->create();
+
+//        var_dump($result);
+//        exit();
+
+//        $result->bindValue(':title', $post->title());
+//        $result->bindValue(':content', $post->content());
+
+//        $this->db->execute($result);
+
+    }*/
+
+    /**
+     * @param Post $post
+     */
+    public function create_post(Post $post)
+    {
+        $query = $this->db->prepare('INSERT INTO Post(title, content)
+        VALUES(:title, :content)');
+
+        $query->bindValue(':title', $post->title());
+        $query->bindValue(':content', $post->content());
+
+        $query->execute();
+
+        $values = '$this->query->bindValue(:title, $post->title());
+            $this->query->bindValue(\':content\', $post->content())
+            $this->query->bindValue(\':title\', $post->title());';
+
+    }
+
+    /**
+     * @return mixed
+     */
+    public function countPosts()
+    {
+
+        $this->count('SELECT COUNT(*)');
+        $this->from('FROM Post');
+
+        $countPosts = AbstractManager::countAll();
+
+        return $countPosts;
+    }
+    /*public function countPosts()
+    {
+
+//        $this->count('SELECT COU/st');
+
+        $countPosts = $this->from('Post')->count();
+//        AbstractManager::count();
+
+        return $countPosts;
     }*/
 
 }

@@ -31,13 +31,14 @@ class MasterController extends AbstractController
 
         $title = "Site web d'Etienne Juffard";
         $subTitle = 'Bienvenu sur mon blog';
+        $countPosts = $this->PostManager->countPosts();
 
         /*$data = array(
             'name' => $title,
             'sub' => $subTitle
         );*/
 
-        $this->render('back/index.html.twig', ['msg' => $msg, 'title' => $title, 'sub' => $subTitle]);
+        $this->render('back/index.html.twig', ['msg' => $msg, 'title' => $title, 'sub' => $subTitle, 'count' => $countPosts]);
 
     }
 
@@ -46,6 +47,7 @@ class MasterController extends AbstractController
         $msg = 'Hello';
         $title = "Site web d'Etienne Juffard";
         $subTitle = 'Bienvenu sur mon blog';
+        $countPosts = $this->PostManager->countPosts();
 
         $data = array(
             'msg' => $msg,
@@ -53,8 +55,15 @@ class MasterController extends AbstractController
                  'sub' => $subTitle
         );
 
-        $this->render('back/msg.html.twig', ['msg' => $msg, 'title' => $title, 'sub' => $subTitle]);
+        $this->render('back/msg.html.twig', ['msg' => $msg, 'title' => $title, 'sub' => $subTitle, 'count' => $countPosts]);
 
     }
+
+    /*public function count_all_posts()
+    {
+        $countPosts = $this->PostManager->count();
+
+        return $countPosts;
+    }*/
 
 }

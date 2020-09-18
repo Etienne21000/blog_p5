@@ -40,7 +40,7 @@
             <nav id="sidebar" class="sidebar-wrapper">
                 <div class="sidebar-content">
                     <div class="sidebar-brand">
-                        <a href="#">pro sidebar</a>
+                        <a href="#">Blog admin</a>
                         <div id="close-sidebar">
                             <i class="fas fa-times"></i>
                         </div>
@@ -51,10 +51,10 @@
                                  alt="User picture">
                         </div>
                         <div class="user-info">
-          <span class="user-name">Jhon
-            <strong>Smith</strong>
+          <span class="user-name">
+            <strong>{{ session.user }}</strong>
           </span>
-                            <span class="user-role">Administrator</span>
+                            <span class="user-role">{{ session.role }}</span>
                             <span class="user-status">
             <i class="fa fa-circle"></i>
             <span>Online</span>
@@ -80,109 +80,110 @@
                             <li class="header-menu">
                                 <span>General</span>
                             </li>
-                            <li class="sidebar-dropdown">
+                            <li class="sidebar-dropdown main-menu">
                                 <a href="#">
-                                    <i class="fa fa-tachometer-alt"></i>
-                                    <span>Dashboard</span>
+{#                                    <i class="fa fa-tachometer-alt"></i>#}
+                                    <i class="far fa-sticky-note"></i>
+                                    <span>Billets</span>
                                     <span class="badge badge-pill badge-warning">New</span>
                                 </a>
                                 <div class="sidebar-submenu">
                                     <ul>
                                         <li>
-                                            <a href="#">Dashboard 1
+                                            <a href="/addPostForm">Ajouter un billet
                                                 <span class="badge badge-pill badge-success">Pro</span>
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="#">Dashboard 2</a>
+                                            <a href="/posts">Liste des billets <strong>({{ count }})</strong></a>
                                         </li>
                                         <li>
-                                            <a href="#">Dashboard 3</a>
+                                            <a href="#">Liste des brouillons</a>
                                         </li>
                                     </ul>
                                 </div>
                             </li>
                             <li class="sidebar-dropdown">
                                 <a href="#">
-                                    <i class="fa fa-shopping-cart"></i>
-                                    <span>E-commerce</span>
+                                    <i class="far fa-comments"></i>
+                                    <span>Commentaires</span>
                                     <span class="badge badge-pill badge-danger">3</span>
                                 </a>
                                 <div class="sidebar-submenu">
                                     <ul>
                                         <li>
-                                            <a href="#">Products
+                                            <a href="#">Liste des commentaires
 
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="#">Orders</a>
+                                            <a href="#">Signalés</a>
                                         </li>
                                         <li>
-                                            <a href="#">Credit cart</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </li>
-                            <li class="sidebar-dropdown">
-                                <a href="#">
-                                    <i class="far fa-gem"></i>
-                                    <span>Components</span>
-                                </a>
-                                <div class="sidebar-submenu">
-                                    <ul>
-                                        <li>
-                                            <a href="#">General</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Panels</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Tables</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Icons</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">Forms</a>
+                                            <a href="#">A valider</a>
                                         </li>
                                     </ul>
                                 </div>
                             </li>
                             <li class="sidebar-dropdown">
                                 <a href="#">
-                                    <i class="fa fa-chart-line"></i>
-                                    <span>Charts</span>
+                                    <i class="far fa-images"></i>
+                                    <span>Images</span>
                                 </a>
                                 <div class="sidebar-submenu">
                                     <ul>
                                         <li>
-                                            <a href="#">Pie chart</a>
+                                            <a href="#">Toutes les images</a>
+                                        </li>
+
+                                        <li>
+                                            <a href="#">Ajouter une image</a>
+                                        </li>
+
+                                        <li>
+                                            <a href="#">Images par billet</a>
                                         </li>
                                         <li>
-                                            <a href="#">Line chart</a>
+                                            <a href="#">Images utilisateurs</a>
+                                        </li>
+
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="sidebar-dropdown">
+                                <a href="#">
+                                    <i class="far fa-user"></i>
+                                    <span>Utilisateur</span>
+                                </a>
+                                <div class="sidebar-submenu">
+                                    <ul>
+                                        <li>
+                                            <a href="#">Informations générales</a>
                                         </li>
                                         <li>
-                                            <a href="#">Bar chart</a>
+                                            <a href="#">Modifier les informations</a>
                                         </li>
                                         <li>
-                                            <a href="#">Histogram</a>
+                                            <a href="#">Tous les billets</a>
+                                        </li>
+                                        <li>
+                                            <a href="#">Tous les commentaires</a>
                                         </li>
                                     </ul>
                                 </div>
                             </li>
                             <li class="sidebar-dropdown">
                                 <a href="#">
-                                    <i class="fa fa-globe"></i>
-                                    <span>Maps</span>
+                                    <i class="fas fa-filter"></i>
+                                    <span>Catégories</span>
                                 </a>
                                 <div class="sidebar-submenu">
                                     <ul>
                                         <li>
-                                            <a href="#">Google maps</a>
+                                            <a href="#">Toutes les catégories</a>
                                         </li>
                                         <li>
-                                            <a href="#">Open street map</a>
+                                            <a href="#">Recherche</a>
                                         </li>
                                     </ul>
                                 </div>
