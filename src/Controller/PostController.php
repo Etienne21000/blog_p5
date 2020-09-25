@@ -29,6 +29,7 @@ class PostController extends AbstractController
         $posts = $this->manager->get_all_posts();
 
         $count = $this->manager->countPosts();
+//        $countUri = $this->manager->total_uri();
 
         $title = "Tous les posts";
         $subTitle = 'Retrouvez tous les posts du blog';
@@ -42,12 +43,13 @@ class PostController extends AbstractController
 
         $post = $this->manager->get_single_post($id);
 
+        $count = $this->manager->countPosts();
+
 //        $title = 'Titre du post';
         $subTitle = 'Retrouvez tous les posts du blog';
-//        $count = $this->manager->count();
 
 
-        $this->render('back/single_element.html.twig', ['post' => $post, 'sub' => $subTitle, 'count' => $this->count]);
+        $this->render('back/single_element.html.twig', ['post' => $post, 'sub' => $subTitle, 'count' => $count]);
     }
 
     public function get_form_view()

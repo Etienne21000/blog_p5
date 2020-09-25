@@ -18,8 +18,6 @@ abstract class AbstractManager
     private $count;
     private $values;
     private $insert;
-    private $class;
-    private $method;
 
     /**
      * AbstractManager constructor.
@@ -56,84 +54,73 @@ abstract class AbstractManager
         return $segments;
     }
 
-    /*
-     *
-     * Method to get all && single entities
-     * -> get the uri segment & check if $id param is defined
-     * -> get the queries() method
-     * -> check if params are defined with switch
-     * -> check if param $where is defined to create the proper query
-     *
+    public function total_uri()
+    {
+        $segments = explode("/", parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
+
+        return count($segments);
+    }
+
+    /**
+     * @return array|bool|\PDOStatement
      */
+    public function get()
+    {
+        $resp = [];
+
+        if (isset($this->where))
+        {
+
+            $query = $this->select . ' ' . $this->from . ' ' . $this->join . ' ' . $this->where . ' ' . $this->order;
+
+            $resp = $this->query = $this->db->prepare($query);
+
+        }
+        elseif (!isset($this->where))
+        {
+
+            $query = $this->select . ' ' . $this->from . ' ' . $this->join . ' ' . $this->order;
+
+            $resp = $this->query = $this->db->prepare($query);
+
+        }
+
+        return $resp;
+    }
+
     /**
      * @param $class_name
      * @param int $id
      * @return array
      */
-    public function get($class_name, $id = -1)
+    public function resp($class_name, $id =-1)
     {
+        $params = [];
 
+        $query = $this->get();
         $segments = $this->segmentUri();
 
-        if (isset($id) && $id != -1) {
+        if (isset($this->where))
+        {
             $id = $segments[2];
-        } else {
-            $id = NULL;
-        }
 
-        $select = $this->select;
-        $from = $this->from;
-        $join = $this->join;
-        $order = $this->order;
-        $where = $this->where;
-        $count = $this->count;
+            $query->bindValue(':id', $id, \PDO::PARAM_INT);
 
-        /*switch ($this->query) {
-            case isset($select);
-                echo $select;
-                break;
+            $query->execute();
 
-            case isset($from);
-                echo $from;
-                break;
-
-            case isset($join);
-                echo $join;
-                break;
-
-            case isset($order);
-                echo $order;
-                break;
-
-            case isset($where);
-                echo $where;
-                break;
-
-            case isset($count);
-                echo $count;
-                break;
-        }*/
-
-        $query = $select . ' ' . $from . ' ' . $join . ' ' . $where . ' ' . $order;
-
-        $this->query = $this->db->prepare($query);
-
-        if (isset($where)) {
-
-            $this->query->bindValue(':id', $id, \PDO::PARAM_INT);
-
-            $this->query->execute();
-
-            $data = $this->query->fetch(\PDO::FETCH_ASSOC);
+            $data = $query->fetch(\PDO::FETCH_ASSOC);
 
             $class = $class_name;
             $params = new $class($data);
-        } elseif (!isset($where)) {
-            $params = [];
 
-            $this->query->execute();
+        }
+        elseif(!isset($this->where))
+        {
+            $id = NULL;
 
-            while ($data = $this->query->fetch(\PDO::FETCH_ASSOC)) {
+            $query->execute();
+
+            while ($data = $query->fetch(\PDO::FETCH_ASSOC)) {
                 $class = $class_name;
                 $class = new $class($data);
 
@@ -144,26 +131,25 @@ abstract class AbstractManager
         return $params;
     }
 
-    /*
-     *
-     * Method to count all elements
+    /**
+     * @return mixed
      * -> get params $from & $count to define which elements we need to count
      * -> get the queries() method
      * -> concatenate the params in $query var
      * -> get the result
-     *
-     */
-    /**
-     * @return mixed
      */
     public function countAll()
     {
-        $from = $this->from;
-        $count = $this->count;
-
-        $query = $count . ' ' . $from;
-
-        $result = $this->db->query($query)->fetchColumn();
+        if(isset($this->count) && !empty($this->where))
+        {
+            $query = $this->count . ' ' . $this->from;
+            $result = $this->db->query($query)->fetchColumn();
+        }
+        else
+        {
+            $query = $this->count . ' ' . $this->from . ' ' . $this->where;
+            $result = $this->db->query($query)->fetchColumn();
+        }
 
         return $result;
     }
@@ -196,25 +182,19 @@ abstract class AbstractManager
         $this->query->execute();*/
     }
 
-    /**
-     * @param $class
-     * @return mixed
-     */
-    public function class_name($class)
+
+    /*public function class_name($class)
     {
         $this->class = (string)$class;
         return $class;
-    }
+    }*/
 
-    /**
-     * @param $method
-     * @return mixed
-     */
-    public function method($method)
+
+    /*public function method($method)
     {
         $this->method = (string)$method;
         return $method;
-    }
+    }*/
 
     /**
      * @param $insert
@@ -222,8 +202,7 @@ abstract class AbstractManager
      */
     public function insert($insert)
     {
-        $this->insert = $insert;
-//        $insert = 'INSERT '.$insert;
+        $this->insert = 'INSERT INTO'.(string)$insert;
         return $insert;
     }
 
@@ -231,30 +210,30 @@ abstract class AbstractManager
      * @param $values
      * @return mixed
      */
-    public function values($values)
+    public function values(string ...$values): self
     {
-        $this->values = $values;
-        return $values;
+        $this->values = 'VALUES('.(string)$values.')';
+        return $this;
     }
 
     /**
      * @param $count
-     * @return mixed
+     * @return $this
      */
-    public function count($count)
+    public function count($count): self
     {
-        $this->count = (string)$count;
-        return $count;
+        $this->count = 'SELECT COUNT('.(string)$count.')';
+        return $this;
     }
 
     /**
      * @param $select
      * @return mixed
      */
-    public function select($select)
+    public function select($select): self
     {
-        $this->select = (string)$select;
-        return $select;
+        $this->select = 'SELECT '.(string)$select;
+        return $this;
     }
 
     /**
@@ -263,7 +242,7 @@ abstract class AbstractManager
      */
     public function from($from)
     {
-        $this->from = (string)$from;
+        $this->from = 'FROM '.(string)$from;
         return $from;
     }
 
@@ -283,7 +262,7 @@ abstract class AbstractManager
      */
     public function orderBy($order)
     {
-        $this->order = (string)$order;
+        $this->order = 'ORDER BY '.(string)$order;
         return (string)$order;
     }
 
@@ -291,10 +270,10 @@ abstract class AbstractManager
      * @param $where
      * @return mixed
      */
-    public function where($where)
+    public function where($where): self
     {
-        $this->where = (string)$where;
-        return $where;
+        $this->where = 'WHERE '.(string)$where;
+        return $this;
     }
 }
 

@@ -20,25 +20,17 @@ class PostManager extends AbstractManager
      */
     public function get_all_posts()
     {
-        $this->select('SELECT p.*, u.pseudo');
-        $this->from('FROM Post as p');
+        $this->select('p.*, u.pseudo');
+        $this->from('Post as p');
         $this->join('LEFT JOIN User as u ON p.user_id = u.id');
-        $this->orderBy('ORDER BY p.creation_date asc');
+        $this->orderBy('p.creation_date asc');
 
-        $posts =  $this->get(Post::class);
+        $this->get();
+
+        $posts = $this->resp(Post::class);
 
         return $posts;
     }
-    /*public function get_all_posts()
-    {
-       $posts = $this->select('p.*')->from('Post');
-//        $this->join('LEFT JOIN User as u ON p.user_id = u.id');
-//        $this->orderBy('ORDER BY p.creation_date asc');
-
-//        $posts =  $this->execute();
-
-        return $posts;
-    }*/
 
     /**
      * @param $id
@@ -46,26 +38,28 @@ class PostManager extends AbstractManager
      */
     public function get_single_post($id)
     {
-        $this->select('SELECT p.*, u.*');
-        $this->from('FROM Post as p');
+        $this->select('p.*, u.*');
+        $this->from('Post as p');
         $this->join('LEFT JOIN User as u
         ON p.user_id = u.id');
-        $this->where('WHERE p.post_id = :id');
+        $this->where('p.post_id = :id');
 
-        $post = $this->get(Post::class, $id);
+        $this->get();
+
+        $post = $this->resp(Post::class, $id);
 
         return $post;
     }
 
-    /*public function create_post()
+    public function create_post()
     {
         $method = array(
             'title' => $this->method('title()'),
             'content' => $this->method('content()')
         );
 
-        $this->insert('INSERT INTO Post(title, content)');
-        $this->values('VALUES(:title, :content)');
+        $this->insert('Post(title, content)');
+        $this->values(':title, :content');
         $this->create();
 
 //        var_dump($result);
@@ -76,12 +70,10 @@ class PostManager extends AbstractManager
 
 //        $this->db->execute($result);
 
-    }*/
+    }
 
-    /**
-     * @param Post $post
-     */
-    public function create_post(Post $post)
+
+    /*public function create_post(Post $post)
     {
         $query = $this->db->prepare('INSERT INTO Post(title, content)
         VALUES(:title, :content)');
@@ -95,7 +87,7 @@ class PostManager extends AbstractManager
             $this->query->bindValue(\':content\', $post->content())
             $this->query->bindValue(\':title\', $post->title());';
 
-    }
+    }*/
 
     /**
      * @return mixed
@@ -103,22 +95,12 @@ class PostManager extends AbstractManager
     public function countPosts()
     {
 
-        $this->count('SELECT COUNT(*)');
-        $this->from('FROM Post');
+        $this->count('*');
+        $this->from('Post');
+//        $this->where('post_id = 1');
 
-        $countPosts = AbstractManager::countAll();
+        $countPosts = $this->countAll();
 
         return $countPosts;
     }
-    /*public function countPosts()
-    {
-
-//        $this->count('SELECT COU/st');
-
-        $countPosts = $this->from('Post')->count();
-//        AbstractManager::count();
-
-        return $countPosts;
-    }*/
-
 }
