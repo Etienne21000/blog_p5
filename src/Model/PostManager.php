@@ -2,6 +2,8 @@
 namespace App\Model;
 
 use App\Core\AbstractManager;
+//use MongoDB\Driver\Query;
+use \PDO;
 
 class PostManager extends AbstractManager
 {
@@ -13,6 +15,7 @@ class PostManager extends AbstractManager
     public function __construct()
     {
         parent::__construct($this->db);
+        $this->db = $this->DbConnect();
     }
 
     /**
@@ -20,16 +23,20 @@ class PostManager extends AbstractManager
      */
     public function get_all_posts()
     {
-        $this->select('p.*, u.pseudo');
-        $this->from('Post as p');
-        $this->join('LEFT JOIN User as u ON p.user_id = u.id');
-        $this->orderBy('p.creation_date asc');
-
-        $this->get();
+        $this->select('p.*', 'u.*')
+            ->from('Post', 'p')
+            ->join('User as u', 'u.id = p.user_id')
+            ->order('p.creation_date DESC')
+            ->limit('0', '3');
 
         $posts = $this->resp(Post::class);
 
         return $posts;
+    }
+
+    public function testCount()
+    {
+        return $this->from('Post', 'p')->count();
     }
 
     /**
@@ -38,13 +45,13 @@ class PostManager extends AbstractManager
      */
     public function get_single_post($id)
     {
-        $this->select('p.*, u.*');
-        $this->from('Post as p');
-        $this->join('LEFT JOIN User as u
-        ON p.user_id = u.id');
-        $this->where('p.post_id = :id');
-
-        $this->get();
+        $segment = $this->segmentUri();
+        $id = $segment[2];
+        $this->select()
+            ->from('Post', 'p')
+            ->join('User as u', 'u.id = p.user_id')
+            ->params([':id' => $id])
+            ->where('p.post_id = :id');
 
         $post = $this->resp(Post::class, $id);
 
@@ -53,54 +60,79 @@ class PostManager extends AbstractManager
 
     public function create_post()
     {
-        $method = array(
-            'title' => $this->method('title()'),
-            'content' => $this->method('content()')
-        );
 
-        $this->insert('Post(title, content)');
-        $this->values(':title, :content');
-        $this->create();
-
-//        var_dump($result);
-//        exit();
-
-//        $result->bindValue(':title', $post->title());
-//        $result->bindValue(':content', $post->content());
-
-//        $this->db->execute($result);
 
     }
 
-
-    /*public function create_post(Post $post)
+    /**
+     * @inheritDoc
+     */
+    public function current()
     {
-        $query = $this->db->prepare('INSERT INTO Post(title, content)
-        VALUES(:title, :content)');
-
-        $query->bindValue(':title', $post->title());
-        $query->bindValue(':content', $post->content());
-
-        $query->execute();
-
-        $values = '$this->query->bindValue(:title, $post->title());
-            $this->query->bindValue(\':content\', $post->content())
-            $this->query->bindValue(\':title\', $post->title());';
-
-    }*/
+        // TODO: Implement current() method.
+    }
 
     /**
-     * @return mixed
+     * @inheritDoc
      */
-    public function countPosts()
+    public function next()
     {
+        // TODO: Implement next() method.
+    }
 
-        $this->count('*');
-        $this->from('Post');
-//        $this->where('post_id = 1');
+    /**
+     * @inheritDoc
+     */
+    public function key()
+    {
+        // TODO: Implement key() method.
+    }
 
-        $countPosts = $this->countAll();
+    /**
+     * @inheritDoc
+     */
+    public function valid()
+    {
+        // TODO: Implement valid() method.
+    }
 
-        return $countPosts;
+    /**
+     * @inheritDoc
+     */
+    public function rewind()
+    {
+        // TODO: Implement rewind() method.
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function offsetExists($offset)
+    {
+        // TODO: Implement offsetExists() method.
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function offsetGet($offset)
+    {
+        // TODO: Implement offsetGet() method.
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function offsetSet($offset, $value)
+    {
+        // TODO: Implement offsetSet() method.
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function offsetUnset($offset)
+    {
+        // TODO: Implement offsetUnset() method.
     }
 }

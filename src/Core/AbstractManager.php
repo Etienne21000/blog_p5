@@ -5,19 +5,21 @@ namespace App\Core;
 
 use \PDO;
 use App\Model\Post;
+use PDOStatement;
 
-abstract class AbstractManager
+abstract class AbstractManager implements \ArrayAccess, \Iterator
 {
     private $db;
     private $query;
     private $select;
-    private $order;
+    private $order = [];
     private $join;
-    private $where;
+    private $where = [];
     private $from;
-    private $count;
-    private $values;
+    private $update;
     private $insert;
+    private $params;
+    private $limit;
 
     /**
      * AbstractManager constructor.
@@ -47,7 +49,7 @@ abstract class AbstractManager
     /**
      * @return array
      */
-    private function segmentUri()
+    public function segmentUri()
     {
         $segments = explode("/", parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
 
@@ -62,13 +64,13 @@ abstract class AbstractManager
     }
 
     /**
-     * @return array|bool|\PDOStatement
+     * @return array|bool|PDOStatement
      */
     public function get()
     {
         $resp = [];
 
-        if (isset($this->where))
+        /*if (isset($this->where))
         {
 
             $query = $this->select . ' ' . $this->from . ' ' . $this->join . ' ' . $this->where . ' ' . $this->order;
@@ -77,48 +79,51 @@ abstract class AbstractManager
 
         }
         elseif (!isset($this->where))
-        {
+        {*/
 
             $query = $this->select . ' ' . $this->from . ' ' . $this->join . ' ' . $this->order;
 
             $resp = $this->query = $this->db->prepare($query);
 
-        }
+//        }
 
         return $resp;
     }
 
     /**
      * @param $class_name
-     * @param int $id
+     * @param $parameter
      * @return array
      */
-    public function resp($class_name, $id =-1)
+    public function resp($class_name, $parameter=-1)
     {
         $params = [];
 
-        $query = $this->get();
-        $segments = $this->segmentUri();
+        $query = $this->__toString();
 
-        if (isset($this->where))
+//        $segments = $this->segmentUri();
+
+        if ($this->where)
         {
-            $id = $segments[2];
+//            $id = $segments[2];
 
-            $query->bindValue(':id', $id, \PDO::PARAM_INT);
+            $stm = $this->db->prepare($query);
 
-            $query->execute();
+            $stm->bindValue(':id', $parameter, \PDO::PARAM_INT);
 
-            $data = $query->fetch(\PDO::FETCH_ASSOC);
+            $stm->execute();
+
+            $data = $stm->fetch(\PDO::FETCH_ASSOC);
 
             $class = $class_name;
             $params = new $class($data);
 
         }
-        elseif(!isset($this->where))
+        elseif(!$this->where)
         {
             $id = NULL;
 
-            $query->execute();
+            $query = $this->execute_query();
 
             while ($data = $query->fetch(\PDO::FETCH_ASSOC)) {
                 $class = $class_name;
@@ -127,152 +132,200 @@ abstract class AbstractManager
                 $params[] = $class;
             }
         }
-
         return $params;
     }
 
     /**
-     * @return mixed
-     * -> get params $from & $count to define which elements we need to count
-     * -> get the queries() method
-     * -> concatenate the params in $query var
-     * -> get the result
+     * @return string
      */
-    public function countAll()
+    public function __toString()
     {
-        if(isset($this->count) && !empty($this->where))
+        $parts = ['SELECT'];
+        if($this->select)
         {
-            $query = $this->count . ' ' . $this->from;
-            $result = $this->db->query($query)->fetchColumn();
+            $parts[] = join(', ', $this->select);
         }
         else
         {
-            $query = $this->count . ' ' . $this->from . ' ' . $this->where;
-            $result = $this->db->query($query)->fetchColumn();
+            $parts[] = '*';
         }
 
-        return $result;
-    }
+        $parts[] = 'FROM';
+        $parts[] = $this->fromArray();
 
-    /**
-     *
-     */
-    public function create()
-    {
-        $insert = $this->insert;
-        $values = $this->values;
-
-        $query = $insert . ' ' . $values;
-        $this->query = $this->db->prepare($query);
-//            $this->query->bindValue();
-        $this->query->execute();
-
-
-//        $query = $insert. ' ' . $values;
-
-
-        /*foreach ($values as $data)
+        if(!empty($this->join))
         {
-            foreach ($method as $datamethod)
+            foreach ($this->join as $key => $value)
             {
-                $this->query->bindValue($data, $datamethod);
+                foreach ($value as [$table, $cond])
+                {
+                    $parts[] = strtoupper($key) . " JOIN $table ON $cond";
+                }
             }
         }
 
-        $this->query->execute();*/
+        if(!empty($this->order))
+        {
+            $parts[] = 'ORDER BY';
+
+                $parts[] = join(', ', $this->order);
+        }
+
+        if($this->limit)
+        {
+            $parts[] = 'LIMIT ' . $this->limit;
+        }
+
+        if(!empty($this->where))
+        {
+            $parts[] = 'WHERE';
+            $parts[] = '(' .join(') AND (', $this->where).')';
+        }
+
+        return join(' ', $parts);
     }
 
-
-    /*public function class_name($class)
+    /**
+     * @return string
+     */
+    private function fromArray(): string
     {
-        $this->class = (string)$class;
-        return $class;
-    }*/
+        $from = [];
 
+        foreach ($this->from as $key => $value)
+        {
+            if(is_string($key))
+            {
+                $from[] = "$value AS $key";
+            }
+            else
+            {
+                $from[] = $value;
+            }
+        }
+        return join(', ', $from);
+    }
 
-    /*public function method($method)
+    /**
+     * @return bool|false|PDOStatement
+     */
+    private function execute_query()
     {
-        $this->method = (string)$method;
-        return $method;
-    }*/
+        $query = $this->__toString();
+
+        if($this->params)
+        {
+            $state = $this->db->prepare($query);
+            $state->execute($this->params);
+            return $state;
+        }
+
+        else
+        {
+            return $this->db->query($query);
+        }
+    }
+
+    public function params(array $params): self
+    {
+        $this->params = $params;
+        return $this;
+    }
 
     /**
      * @param $insert
      * @return mixed
      */
-    public function insert($insert)
+    public function insert($insert): self
     {
-        $this->insert = 'INSERT INTO'.(string)$insert;
-        return $insert;
+        $this->insert = $insert;
+        return $this;
     }
 
-    /**
-     * @param $values
-     * @return mixed
-     */
-    public function values(string ...$values): self
+    public function update($update): self
     {
-        $this->values = 'VALUES('.(string)$values.')';
+        $this->update = $update;
         return $this;
     }
 
     /**
-     * @param $count
+     * @return int
+     */
+    public function count(): int
+    {
+        $this->select("COUNT(*)");
+        return $this->execute_query()->fetchColumn();
+    }
+
+    /**
+     * @param string ...$fields
      * @return $this
      */
-    public function count($count): self
+    public function select(string ...$fields): self
     {
-        $this->count = 'SELECT COUNT('.(string)$count.')';
+        $this->select = $fields;
         return $this;
     }
 
     /**
-     * @param $select
-     * @return mixed
+     * @param int $lenght
+     * @param int $offset
+     * @return $this
      */
-    public function select($select): self
+    public function limit(int $lenght, int $offset = 0): self
     {
-        $this->select = 'SELECT '.(string)$select;
+        $this->limit = "$lenght, $offset";
         return $this;
     }
 
     /**
-     * @param $from
-     * @return mixed
+     * @param string $order
+     * @return AbstractManager
      */
-    public function from($from)
+    public function order(string $order): self
     {
-        $this->from = 'FROM '.(string)$from;
-        return $from;
+        $this->order[] = $order;
+        return $this;
     }
 
     /**
-     * @param $join
+     * @param string $table
+     * @param string|null $alias
      * @return mixed
      */
-    public function join($join)
+    public function from(string $table, ?string $alias = null)
     {
-        $this->join = (string)$join;
-        return $join;
+        if($alias)
+        {
+            $this->from[$alias] = $table;
+        }
+        else
+        {
+            $this->from[] = $table;
+        }
+        return $this;
     }
 
     /**
-     * @param $order
-     * @return string
-     */
-    public function orderBy($order)
-    {
-        $this->order = 'ORDER BY '.(string)$order;
-        return (string)$order;
-    }
-
-    /**
-     * @param $where
+     * @param $cond
      * @return mixed
      */
-    public function where($where): self
+    public function where(string ...$cond): self
     {
-        $this->where = 'WHERE '.(string)$where;
+        $this->where = $cond;
+        return $this;
+    }
+
+
+    /**
+     * @param string $table
+     * @param string $cond
+     * @param string $type
+     * @return mixed
+     */
+    public function join(string $table, string $cond, string $type = "left"): self
+    {
+        $this->join[$type][] = [$table, $cond];
         return $this;
     }
 }

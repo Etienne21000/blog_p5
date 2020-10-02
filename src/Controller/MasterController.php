@@ -31,14 +31,16 @@ class MasterController extends AbstractController
 
         $title = "Site web d'Etienne Juffard";
         $subTitle = 'Bienvenu sur mon blog';
-        $countPosts = $this->PostManager->countPosts();
+        $count = $this->PostManager->testCount();
 
-        /*$data = array(
+//        var_dump($count);
+
+        $data = array(
             'name' => $title,
             'sub' => $subTitle
-        );*/
+        );
 
-        $this->render('back/index.html.twig', ['msg' => $msg, 'title' => $title, 'sub' => $subTitle, 'count' => $countPosts]);
+        $this->render('back/index.html.twig', ['msg' => $msg, 'title' => $title, 'sub' => $subTitle, 'count' => $count]);
 
     }
 
@@ -47,15 +49,17 @@ class MasterController extends AbstractController
         $msg = 'Hello';
         $title = "Site web d'Etienne Juffard";
         $subTitle = 'Bienvenu sur mon blog';
-        $countPosts = $this->PostManager->countPosts();
+        $count = $this->PostManager->testCount();
 
-        $data = array(
-            'msg' => $msg,
-            'name' => $title,
-                 'sub' => $subTitle
-        );
+        var_dump($count);
 
-        $this->render('back/msg.html.twig', ['msg' => $msg, 'title' => $title, 'sub' => $subTitle, 'count' => $countPosts]);
+//        $data = array(
+//            'msg' => $msg,
+//            'name' => $title,
+//                 'sub' => $subTitle
+//        );
+//
+//        $this->render('back/msg.html.twig', ['msg' => $msg, 'title' => $title, 'sub' => $subTitle, 'count' => $count]);
 
     }
 

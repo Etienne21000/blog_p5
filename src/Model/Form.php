@@ -12,13 +12,10 @@ class Form
     private $data;
     private $p = 'p';
     private $fields;
-    private $router;
-//    private $title = 'Mon titre';
 
     public function __construct($data = array())
     {
         $this->data = $data;
-//        $this->router = new Router($_GET['url']);
     }
 
     private function surround($html)

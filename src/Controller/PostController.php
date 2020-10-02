@@ -28,7 +28,7 @@ class PostController extends AbstractController
     {
         $posts = $this->manager->get_all_posts();
 
-        $count = $this->manager->countPosts();
+        $count = $this->manager->testCount();
 //        $countUri = $this->manager->total_uri();
 
         $title = "Tous les posts";
@@ -43,7 +43,7 @@ class PostController extends AbstractController
 
         $post = $this->manager->get_single_post($id);
 
-        $count = $this->manager->countPosts();
+        $count = $this->manager->testCount();
 
 //        $title = 'Titre du post';
         $subTitle = 'Retrouvez tous les posts du blog';
