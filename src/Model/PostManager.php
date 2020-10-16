@@ -2,7 +2,6 @@
 namespace App\Model;
 
 use App\Core\AbstractManager;
-//use MongoDB\Driver\Query;
 use \PDO;
 
 class PostManager extends AbstractManager

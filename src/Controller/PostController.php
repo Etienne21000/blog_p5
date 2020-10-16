@@ -4,12 +4,14 @@ namespace App\Controller;
 use App\Core\AbstractController;
 use App\Model\PostManager;
 use App\Model\Form;
+use App\Model\Form_validation;
 use App\Model\Post;
 
 class PostController extends AbstractController
 {
     private $manager;
     private $form;
+    private $form_valid;
     private $post;
     private $count;
 
@@ -20,8 +22,10 @@ class PostController extends AbstractController
     {
         $this->manager = new PostManager();
         $this->form = new Form(array(
-            'title' => 'Mon nouveau billet'
+//            'title' => 'Mon nouveau billet',
+//            'name' => 'title'
         ));
+        $this->form_valid = new Form_validation();
     }
 
     public function read_all_posts()
@@ -34,6 +38,21 @@ class PostController extends AbstractController
         $title = "Tous les posts";
         $subTitle = 'Retrouvez tous les posts du blog';
 //        $count = $this->manager->count();
+
+//        $form_params = array(
+//            'label' => 'Bonjour',
+//            'for' => 'bonjour',
+//            'name' => 'bonjour',
+//            'placeholder' => 'dite bonjour',
+//            'class' => 'classbjr',
+//            'id' => 'bjr'
+//        );
+//        $param = $form_params[0]['bonjour'];
+
+//        $form1 = $this->form->set_params($param);
+//
+//        var_dump($form1);
+//        exit();
 
         $this->render('back/all_posts_view.html.twig', ['posts' => $posts, 'title' => $title, 'sub' => $subTitle, 'count' => $count]);
     }
@@ -56,8 +75,18 @@ class PostController extends AbstractController
     {
         $title = 'Ajouter un billet';
         $subTitle = 'Ce formulaire vous permet d\'ajouter un nouveau billet';
-        $input = $this->form->inputs('title');
-        $textarea = $this->form->textArea();
+        $input = $this->form->inputs([
+            'label' => 'Mon titre',
+            'name' => 'title',
+            'placeholder' => 'Mon titre de billet',
+            'type' => 'text',
+            'class' => 'input-title',
+        ]);
+        $textarea = $this->form->textArea([
+            'name' => 'content',
+            'label' => 'Contenu du post',
+            'placeholder' => 'Commencez à rédiger votre billet...',
+        ]);
         $submit = $this->form->submit();
 
 //        $count = $this->manager->count();

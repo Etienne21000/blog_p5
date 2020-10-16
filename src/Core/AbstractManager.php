@@ -48,6 +48,7 @@ abstract class AbstractManager implements \ArrayAccess, \Iterator
 
     /**
      * @return array
+     * passer dans l'abstract controller
      */
     public function segmentUri()
     {
@@ -61,33 +62,6 @@ abstract class AbstractManager implements \ArrayAccess, \Iterator
         $segments = explode("/", parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH));
 
         return count($segments);
-    }
-
-    /**
-     * @return array|bool|PDOStatement
-     */
-    public function get()
-    {
-        $resp = [];
-
-        /*if (isset($this->where))
-        {
-
-            $query = $this->select . ' ' . $this->from . ' ' . $this->join . ' ' . $this->where . ' ' . $this->order;
-
-            $resp = $this->query = $this->db->prepare($query);
-
-        }
-        elseif (!isset($this->where))
-        {*/
-
-            $query = $this->select . ' ' . $this->from . ' ' . $this->join . ' ' . $this->order;
-
-            $resp = $this->query = $this->db->prepare($query);
-
-//        }
-
-        return $resp;
     }
 
     /**
