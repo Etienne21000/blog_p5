@@ -21,13 +21,13 @@ class PostController extends AbstractController
     public function __construct()
     {
         $this->manager = new PostManager();
-        $this->form = new Form(array(
-//            'title' => 'Mon nouveau billet',
-//            'name' => 'title'
-        ));
+        $this->form = new Form(array());
         $this->form_valid = new Form_validation();
     }
 
+    /**
+     *
+     */
     public function read_all_posts()
     {
         $posts = $this->manager->get_all_posts();
@@ -37,62 +37,60 @@ class PostController extends AbstractController
 
         $title = "Tous les posts";
         $subTitle = 'Retrouvez tous les posts du blog';
-//        $count = $this->manager->count();
-
-//        $form_params = array(
-//            'label' => 'Bonjour',
-//            'for' => 'bonjour',
-//            'name' => 'bonjour',
-//            'placeholder' => 'dite bonjour',
-//            'class' => 'classbjr',
-//            'id' => 'bjr'
-//        );
-//        $param = $form_params[0]['bonjour'];
-
-//        $form1 = $this->form->set_params($param);
-//
-//        var_dump($form1);
-//        exit();
 
         $this->render('back/all_posts_view.html.twig', ['posts' => $posts, 'title' => $title, 'sub' => $subTitle, 'count' => $count]);
     }
 
+    /**
+     * @param $id
+     */
     public function get_single($id)
     {
-
         $post = $this->manager->get_single_post($id);
-
         $count = $this->manager->testCount();
-
-//        $title = 'Titre du post';
         $subTitle = 'Retrouvez tous les posts du blog';
-
 
         $this->render('back/single_element.html.twig', ['post' => $post, 'sub' => $subTitle, 'count' => $count]);
     }
 
-    public function get_form_view()
+    /**
+     *
+     */
+    public function create_post()
     {
         $title = 'Ajouter un billet';
         $subTitle = 'Ce formulaire vous permet d\'ajouter un nouveau billet';
         $input = $this->form->inputs([
+//            'field' => 'input',
             'label' => 'Mon titre',
             'name' => 'title',
             'placeholder' => 'Mon titre de billet',
             'type' => 'text',
             'class' => 'input-title',
         ]);
-        $textarea = $this->form->textArea([
+        $author = $this->form->inputs([
+            'label' => 'votre nom',
+            'name' => 'user_id',
+            'placeholder' => 'auteur du post',
+            'type' => 'text'
+        ]);
+        $textarea = $this->form->inputs([
+            'field' => 'textarea',
             'name' => 'content',
             'label' => 'Contenu du post',
             'placeholder' => 'Commencez à rédiger votre billet...',
+            'rows' => 15
         ]);
-        $submit = $this->form->submit();
+        $submit = $this->form->inputs([
+            'field' => 'button',
+            'type' => 'submit',
+            'placeholder' => 'Créer',
+        ]);
 
 //        $count = $this->manager->count();
 
 
-        $this->render('back/add_form.html.twig', ['title' => $title, 'sub' => $subTitle, 'count' => $this->count, 'input' => $input, 'textarea' => $textarea, 'submit' => $submit]);
+        $this->render('back/add_form.html.twig', ['title' => $title, 'sub' => $subTitle, 'count' => $this->count, 'input' => $input, 'textarea' => $textarea, 'author' => $author, 'submit' => $submit]);
     }
 
     /*public function create_signle_post($title, $content)

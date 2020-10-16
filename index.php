@@ -158,7 +158,7 @@ $router->get('/addPostForm', function(){
 
     $postController = new PostController();
 
-    $postController->get_form_view();
+    $postController->create_post();
 
 });
 

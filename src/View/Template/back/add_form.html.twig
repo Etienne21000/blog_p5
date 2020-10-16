@@ -15,13 +15,16 @@
                 <small class="form-text text-muted">Choisissez bien le titre de votre post !</small>
             </div>
             <div class="form-group">
+                {{ author|raw}}
+            </div>
+            <div class="form-group">
                 {{ textarea|raw}}
             </div>
 
             <div class="form-group">
                 <input type="hidden" name="user_id" value="1">
-            </div>
                 {{ submit|raw }}
+            </div>
         </form>
 
 

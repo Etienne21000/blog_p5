@@ -22,72 +22,70 @@ class Form
     private $title;
     private $type;
     private $value;
+    private $field;
+    private $rows;
 
     public function __construct($data = array())
     {
         $this->data = $data;
     }
 
+//    public function form($val = array())
+//    {
+//
+//    }
+
     /**
-     * create the HTML form
-     * get params :
-     * -> method
-     * -> action
-     * -> onclick
-     * -> id
-     * -> class
-     * @param array $val
+     * @param $html
+     * @return string
      */
-    public function form($val = array())
-    {
-
-    }
-
     private function surround($html)
     {
-
         return "<{$this->p}>{$html}</{$this->p}>";
-
     }
 
+    /**
+     * @param $index
+     * @return mixed|null
+     */
     private function values($index)
     {
         return isset($this->data[$index]) ? $this->data[$index] : null;
     }
 
+    /**
+     * Add all needed fields such as select / checkBox / radio etc.
+     * @param array $params
+     * @return string
+     */
     public function inputs($params = [])
     {
         $params[] = $this->set_params();
 
-        return $this->surround('
-        <label for="'
-            .(isset($params['name']) ? $params['name'] : 'name').
-            '">'
-            .(isset($params['label']) ? $params['label'] : 'label').
-            '</label><br>
-        <input name="'
-            .(isset($params['name']) ? $params['name'] : 'default').
-            '" type="'
-            .(isset($params['type']) ? $params['type'] : 'default').
-            '" class="form-control '
-            .(isset($params['class']) ? $params['class'] : '').
-            '" value="" placeholder="'
-            .(isset($params['placeholder']) ? $params['placeholder'] : 'Titre').
-            '">');
-    }
+        $this->placeholder = $params['placeholder'] ?? 'placeholder';
+        $this->name = $params['name'] ?? 'default';
+        $this->label = $params['label'] ?? 'label required';
+        $this->type = $params['type'] ?? '';
+        $this->class = $params['class'] ?? '';
+        $this->field = $params['field'] ?? 'input';
+        $this->rows = $params['rows'] ?? '';
 
-    public function textArea($params = [])
-    {
-        $params[] = $this->set_params();
-
-        return $this->surround('
-        <label for="'.$params['name'].'">'.$params['label'].'</label><br>
-        <textarea name="'.$params['name'].'" class="form-control" rows="15" placeholder="'.$params['placeholder'].'"></textarea>');
-    }
-
-    public function submit()
-    {
-        return $this->surround('<button type="submit" class="btn btn-primary">Créer</button>');
+        switch ($this->field)
+        {
+            case 'input':
+                return $this->surround('
+                <label for="' .$this->name.'">' . $this->label.'</label><br>
+                <'.$this->field . ' name="' . $this->name.'" type="'.$this->type.'" class="form-control ' . $this->class.'" value="" placeholder="' . $this->placeholder . '">');
+                break;
+            case 'textarea':
+                return $this->surround('
+                <label for="' .$this->name. '">'.$this->label.'</label><br>
+                <'.$this->field.' name="' .$this->name. '" type="'.$this->type.'" class="form-control ' . $this->class . '" rows="'.$this->rows.'" value="">'.$this->placeholder.'</'.$this->field.'>');
+                break;
+            case 'button':
+                return $this->surround('<'.$this->field.' type="'.$this->type.'" class="btn btn-primary '.$this->class.'">'.$this->placeholder.'</'.$this->field.'>');
+                break;
+        }
     }
 
     /**
@@ -95,7 +93,7 @@ class Form
      */
     public function set_params()
     {
-        $form_params = [
+        return $form_params = [
             'label' => $this->values($this->label),
             'for' => $this->values($this->for),
             'name' => $this->values($this->name),
@@ -104,11 +102,9 @@ class Form
             'id' => $this->values($this->id),
             'title' => $this->values($this->title),
             'type' => $this->values($this->type),
-            'value' => $this->values($this->value)
-//            'method' => $this->method,
+            'value' => $this->values($this->value),
+            'field' => $this->values($this->field),
+            'rows' => $this->values($this->rows),
         ];
-
-        return $form_params;
     }
-
 }
