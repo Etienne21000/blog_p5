@@ -57,6 +57,13 @@ class PostManager extends AbstractManager
         return $post;
     }
 
+    public function get_all()
+    {
+        $this->query_string('SELECT * FROM Posts ');
+        $posts = $this->resp(Post::class);
+        return $posts;
+    }
+
     public function create_post()
     {
 

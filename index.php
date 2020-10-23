@@ -5,11 +5,11 @@ require_once (__DIR__ .'/vendor/autoload.php');
 
 use App\Core\Router;
 use App\Core\App;
-use GuzzleHttp\Psr7\ServerRequest;
-use function Http\Response\send;
+//use GuzzleHttp\Psr7\ServerRequest;
+//use function Http\Response\send;
 use App\Controller\MasterController;
 use \App\Controller\PostController;
-use FastRoute\Route;
+//use FastRoute\Route;
 
 //function segmentUri()
 //{
@@ -166,7 +166,7 @@ $router->post('/addPost', function(){
 
     $postController = new PostController();
 
-    $postController->create_signle_post($_POST['title'], $_POST['content']);
+    $postController->create_signle_post();
 
 });
 

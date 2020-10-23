@@ -75,12 +75,8 @@ abstract class AbstractManager implements \ArrayAccess, \Iterator
 
         $query = $this->__toString();
 
-//        $segments = $this->segmentUri();
-
         if ($this->where)
         {
-//            $id = $segments[2];
-
             $stm = $this->db->prepare($query);
 
             $stm->bindValue(':id', $parameter, \PDO::PARAM_INT);
@@ -157,6 +153,7 @@ abstract class AbstractManager implements \ArrayAccess, \Iterator
         }
 
         return join(' ', $parts);
+
     }
 
     /**
@@ -200,6 +197,12 @@ abstract class AbstractManager implements \ArrayAccess, \Iterator
         }
     }
 
+    public function query_string(string $query): self
+    {
+        $this->query = $query;
+        return $this;
+    }
+
     public function params(array $params): self
     {
         $this->params = $params;
@@ -230,6 +233,11 @@ abstract class AbstractManager implements \ArrayAccess, \Iterator
         $this->select("COUNT(*)");
         return $this->execute_query()->fetchColumn();
     }
+
+//    public function query_string(): self
+//    {
+//        $this->query()
+//    }
 
     /**
      * @param string ...$fields
@@ -289,7 +297,6 @@ abstract class AbstractManager implements \ArrayAccess, \Iterator
         $this->where = $cond;
         return $this;
     }
-
 
     /**
      * @param string $table
