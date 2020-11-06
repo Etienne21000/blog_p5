@@ -30,15 +30,7 @@ class Form
     public function __construct($data = array())
     {
         $this->data = $data;
-//        $this->validation = $this->validation = new Form_validation();
-
-//        $this->validation = new Form_validation(array(), $errors = "");
     }
-
-//    public function form($val = array())
-//    {
-//
-//    }
 
     /**
      * @param $html
@@ -58,14 +50,6 @@ class Form
         return isset($this->data[$index]) ? $this->data[$index] : null;
     }
 
-//    private function check_valid()
-//    {
-//        $this->validation = new Form_validation();
-//
-//
-//
-//    }
-
     /**
      * Add all needed fields such as select / checkBox / radio etc.
      * @param array $params
@@ -74,8 +58,6 @@ class Form
     public function inputs($params = [])
     {
         $params[] = $this->set_params();
-//        $valid[] = $this->validation->set_validation();
-
 
         $this->placeholder = $params['placeholder'] ?? '';
         $this->name = $params['name'] ?? 'default';
@@ -84,7 +66,6 @@ class Form
         $this->class = $params['class'] ?? '';
         $this->field = $params['field'] ?? 'input';
         $this->rows = $params['rows'] ?? '';
-//        $this->length = $valid['length'] ?? '';
 
         switch ($this->field)
         {
@@ -110,22 +91,17 @@ class Form
     public function set_params()
     {
         return $form_params = [
-//            array(
-                'label' => $this->values($this->label),
-                'for' => $this->values($this->for),
-                'name' => $this->values($this->name),
-                'placeholder' => $this->values($this->placeholder),
-                'class' => $this->values($this->class),
-                'id' => $this->values($this->id),
-                'title' => $this->values($this->title),
-                'type' => $this->values($this->type),
-                'value' => $this->values($this->value),
-                'field' => $this->values($this->field),
-                'rows' => $this->values($this->rows),
-//            ),
-//            array(
-//                'length' => $this->is_valid($this->length),
-//            )
+            'label' => $this->values($this->label),
+            'for' => $this->values($this->for),
+            'name' => $this->values($this->name),
+            'placeholder' => $this->values($this->placeholder),
+            'class' => $this->values($this->class),
+            'id' => $this->values($this->id),
+            'title' => $this->values($this->title),
+            'type' => $this->values($this->type),
+            'value' => $this->values($this->value),
+            'field' => $this->values($this->field),
+            'rows' => $this->values($this->rows),
         ];
     }
 }

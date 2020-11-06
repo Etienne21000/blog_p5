@@ -5,158 +5,101 @@ use App\Model\Form;
 
 class Form_validation
 {
-    private $data;
-    private $form;
-    private $params;
     private $errors = [];
-    private $length;
-    private $value;
+    private $valid;
+    private $string;
+    private $post_values = [];
+    private $int;
+    private $title;
+    private $pseudo;
 
-    private $error_message;
-
-    private $param;
-    private $format;
-
-//    public function __construct($data = array())
-//    {
-//        $this->data = $data;
-//    }
-
-//    private function is_valid($values)
-//    {
-//        return isset($this->data[$values]) ? $this->data[$values] : null;
-//    }
-
-    public function is_valid($params = [])
+    public function get_error($field)
     {
-        $params[] = $this->set_validation();
-
-//        $this->length = $params['length'] ?? '';
-        $this->length = 4;
+        return isset($this->errors[$field]) ? $this->errors['field'] : '';
     }
 
-    public function set_validation()
+    public function set_errors(array $errors)
     {
-        $this->form = new Form(array());
-
-        $value[] = $this->form->set_params();
-        return $form_validation = [
-            'length' => $this->max_length($value['name'], $this->length),
-//            'format' => $this->is_valid($this->format),
-        ];
-
-    }
-
-    public function max_length($value, $length)
-    {
-        $this->length = (int)$length;
-        $this->value = $value;
-
-        if(is_string($this->value))
-        {
-            if(strlen($this->value) < $this->length)
-            {
-                /*Prévoir des messages flash*/
-                echo "Le champs $this->value doit contenir au minimum $this->length caractères";
-            }
-            else
-            {
-                echo "Le champ $this->value contient le bon nombre de caractères";
-//                return $this->length = true;
-            }
+        $this->errors = $errors;
+        foreach ($_POST as $name => $value) {
+            $this->errors = [
+                'length' => "Le champ est invalide, $name <br> Vous devez saisir au moins deux caractères <br>",
+                'empty' => "Le champ $name ne peut pas être vide <br>",
+            ];
         }
-        else
+
+        return $this->errors;
+    }
+
+    public function set_valid($valid)
+    {
+        $this->valid = $valid;
+        foreach ($_POST as $name => $value) {
+            return "Le champ $name est valide : $value <br>";
+        }
+
+        return $this->valid;
+    }
+
+    public function validate()
+    {
+        if(isset($_POST))
         {
-            echo "Le champ $this->value ne peut pas être un nombre";
+            $this->check_string($this->string);
+//            $this->check_int($this->param);
         }
     }
 
-//    public function __construct(array $params)
+//    private function post_values(array $post_values)
 //    {
-//        $this->params = $params;
-////        $this->error_message = $error_message;
-//    }
+//        $this->post_values = $post_values;
+//        $this->post_values = [
+//            'string' => array(
+//                'title' => $_POST['title'],
+//                'pseudo' => $_POST['pseudo'],
+//                'content' => $_POST['content'],
+//            ),
 //
-//    public function is_valid($value)
-//    {
-//        return strlen($value) <= $this->length;
-//    }
-//
-//    public function set_error_message($error_message)
-//    {
-//        if(is_string($error_message))
-//        {
-//            $this->error_message = $error_message;
-//        }
-//    }
-//
-//    public function get_error_message()
-//    {
-//        return $this->error_message;
-//    }
-//
-//    public function max_length($length)
-//    {
-//        $length = (int) $length;
-//
-//        if($length > 0)
-//        {
-//            $this->length = $length;
-//        }
-//        else
-//        {
-//            echo "La valeur ne peut pas être égale à 0";
-//        }
+//            'int' => array(
+//                'integer' => $_POST['integer'],
+//            )
+//        ];
+//        return $post_values;
 //    }
 
-    /**
-     * @param string $fields
-     * @return $this
-     */
-//    public function form_val(string ...$fields): self
-//    {
-//        $this->params = $_POST;
-//        foreach ($fields as $field)
-//        {
-//            if(!array_key_exists($field, $this->params))
-//            {
-//                $this->errors[$field] = "Attention le champ $field n'est pas valide";
-////                var_dump($this->params);
-//            }
-//        }
-//        return $this;
-//    }
-//
-//    public function form_errors(): array
-//    {
-//        return $this->errors;
-//    }
-//
-//    public function field_lenhtg(int $length, string ...$fields): self
-//    {
-//        $this->length = $length;
-//        $this->params = $_POST;
-//        foreach ($fields as $field)
-//        {
-//            if($field && $this->params <= (int)$this->length)
-//            {
-//                $this->errors[$field] = "Attention le champ $field doit contenir au minimum $this->length caractères.";
-//            }
-//        }
-//
-//        return $this;
-//    }
-//
-//    public function get_length($length, $param): self
-//    {
-//        $this->length = (int)$length;
-//        $this->param = (string)$param;
-//
-//        if($this->length < $this->param)
-//        {
-//            echo "error, field must be $length long";
-//        }
-//
-//        return $this;
-//    }
+    private function check_string($string)
+    {
+        $this->string = (string)$string;
+        $errors = $this->set_errors($this->errors);
+        $valid = $this->set_valid($this->valid);
+
+        foreach ($_POST as $name => $value)
+        {
+            if (strlen($value) <= 2 && !empty($value)) {
+                echo $errors['length'];
+            } elseif (empty($value)) {
+                echo $errors['empty'];
+            } else {
+                echo $valid;
+            }
+        }
+    }
+
+    private function check_int($param)
+    {
+        $this->param = is_numeric($param);
+
+        foreach ($_POST as $name => $value)
+        {
+            if(ctype_digit($value))
+            {
+                echo "Le champ $name est invalide, <br> Il doit s'agir d'un nombre <br>";
+            }
+
+            if(empty($value))
+            {
+                echo "Le champ $name ne peut pas être vide <br>";
+            }
+        }
+    }
 }

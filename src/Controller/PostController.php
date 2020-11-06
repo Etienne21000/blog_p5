@@ -78,8 +78,13 @@ class PostController extends AbstractController
             'field' => 'textarea',
             'name' => 'content',
             'label' => 'Contenu du post',
-//            'placeholder' => 'Commencez à rédiger votre billet...',
             'rows' => 15
+        ]);
+        $integer = $this->form->inputs([
+            'name' => 'integer',
+            'label' => 'integer',
+            'placeholder' => 'integer',
+            'type' => 'int'
         ]);
         $submit = $this->form->inputs([
             'field' => 'button',
@@ -89,35 +94,44 @@ class PostController extends AbstractController
 
 //        $count = $this->manager->count();
 
-        $this->render('back/add_form.html.twig', ['title' => $title, 'sub' => $subTitle, 'count' => $this->count, 'input' => $input, 'textarea' => $textarea, 'author' => $author, 'submit' => $submit]);
+        $this->render('back/add_form.html.twig', ['title' => $title, 'sub' => $subTitle, 'count' => $this->count, 'input' => $input, 'textarea' => $textarea, 'author' => $author, 'integer' => $integer, 'submit' => $submit]);
     }
 
     public function create_signle_post()
     {
+        $this->form_valid->validate();
 //        $post = new Post([$data]);
-        $this->form_valid->is_valid([
-            'length' => ($_POST['title']),
-        ]);
+//        $this->form_valid->is_valid([
+//            'length' => ($_POST['title']),
+//        ]);
+//        $this->post = [
+//            $_POST['title'],
+//            $_POST['pseudo'],
+//            $_POST['content']
+//        ];
+//
+//        foreach ($this->post as $resp)
+//        {
+////            for($i=0; $i<size($this->post); $i++) {
+//
+//                if (empty($resp)) {
+//                    echo " vous devez remplir tous les champs ";
+//
+//                } else {
+//                    echo ' les champs ont été créés';
+//                }
+//            }
+////        }
 
-        if(!empty($_POST['title']) && !empty($_POST['pseudo']))
-        {
-            if($this->form_valid->is_valid())
-            {
-                header('Location: /posts');
-            }
-            else
-            {
-                echo "wrong";
-            }
-//            $post->create_post();
-
-//            $this->manager->create_post();
-
-        }
-        else
-        {
-            echo 'Impossible de créer le post';
-        }
+//        if(empty($_POST['title']) || empty($_POST['pseudo']) || empty($_POST['content']))
+//        {
+//            echo "vous devez remplir tous les champs";
+//
+//        }
+//        else
+//        {
+//            echo ' les champs ont été créés';
+//        }
 
         /*echo '<pre>';
         echo print_r($post);
