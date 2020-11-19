@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+
+<html lang="fr">
+<head>
+
+        {% block head %}
+
+                <meta charset="utf-8"/>
+                <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+                <title> {% block title %}
+
+                        {% endblock %}
+                </title>
+
+                <meta name="description" content="<?php /*echo $description*/?>">
+                <meta name="author" content="Etienne Juffard">
+                <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,400&display=swap" rel="stylesheet"><link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"/>
+                <link rel="stylesheet" href="/Public/Libraries/faw/css/all.min.css"/>
+                <link rel="stylesheet" type="text/css" href="/Public/css/bootstrapTheme.css"/>
+                <link rel="stylesheet" type="text/css" href="/Public/css/bootstrap-theme/css/styles.css">
+                <link rel="stylesheet" type="text/css" href="/Public/css/style.css"/>
+
+        {% endblock %}
+
+</head>
+
+<body id="page-top">
+{% block body %}
+
+    <!-- Navigation-->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" id="mainNav">
+        <div class="container">
+            <a class="navbar-brand js-scroll-trigger" href="#page-top">Home</a>
+            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto my-2 my-lg-0">
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#Realisations">Réalisations</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#about">A propos</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#services">CV</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#portfolio">Portfolio</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#contact">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <header>
+        {% block header %}
+
+        {% endblock %}
+    </header>
+
+    <section>
+        {% block content %}
+        {% endblock %}
+    </section>
+
+{% endblock %}
+
+<footer class="bg-light py-5">
+    {% block footer %}
+    <div class="container">
+        <div class="small text-center text-muted">
+            <p> HELLO WORLD<br>
+            Copyright 2020 - Etienne Juffard
+            </p>
+        </div>
+    </div>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"> </script>
+        <script src="/Public/css/bootstrap-theme/js/scripts.js" ></script>
+    {% endblock %}
+</footer>
+
+</body>
+</html>

@@ -109,14 +109,14 @@ $_SESSION['user'] = 'Etienne';
 $_SESSION['role'] = 'administrateur';
 
 
-$router->get('/home', function(){
+$router->get('/dashbord', function(){
 
     $controller = new MasterController();
 //    $post = new PostController();
 //
 //    $post->count_all_posts();
 
-    $controller->index();
+    $controller->dashbord();
 
 });
 
@@ -125,7 +125,6 @@ $router->get('/', function(){
     $controller = new MasterController();
 
     $controller->index();
-
 });
 
 $router->get('/msg', function(){

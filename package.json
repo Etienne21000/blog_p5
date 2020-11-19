@@ -1,0 +1,29 @@
+{
+  "name": "blog_p5",
+  "version": "1.0.0",
+  "description": "blog_p5",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Etienne21000/blog_p5.git"
+  },
+  "author": "Etienne",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Etienne21000/blog_p5/issues"
+  },
+  "homepage": "https://github.com/Etienne21000/blog_p5#readme",
+  "dependencies": {
+    "gulp": "^4.0.2",
+    "gulp-cli": "^2.3.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-install": "^1.1.0",
+    "gulp-sass": "^4.1.0",
+    "gulp-terser": "^2.0.0",
+    "node-modules": "^1.0.1"
+  },
+  "devDependencies": {}
+}

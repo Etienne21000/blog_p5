@@ -25,7 +25,22 @@ class MasterController extends AbstractController
         $this->CommentManager = new CommentManager();
     }
 
-    Public function index()
+    public function index()
+    {
+        $msg = 'Hello';
+
+        $title = "Site web d'Etienne Juffard";
+        $subTitle = 'Bienvenu sur mon blog';
+
+        $data = array(
+            'name' => $title,
+            'sub' => $subTitle
+        );
+
+        $this->render('front/home.html.twig', ['msg' => $msg, 'title' => $title, 'sub' => $subTitle]);
+    }
+
+    Public function dashbord()
     {
         $msg = 'Hello';
 
