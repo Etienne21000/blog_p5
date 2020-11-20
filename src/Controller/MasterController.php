@@ -27,17 +27,19 @@ class MasterController extends AbstractController
 
     public function index()
     {
-        $msg = 'Hello';
+        $posts = $this->PostManager->get_all_posts();
 
-        $title = "Site web d'Etienne Juffard";
-        $subTitle = 'Bienvenu sur mon blog';
+        $msg = 'Hello world';
 
+        $title = "Etienne Juffard";
+        $subTitle = 'Développeur web php / symfony sans oublier le front !';
+        $post_title = "Retrouvez les derniers articles";
         $data = array(
             'name' => $title,
             'sub' => $subTitle
         );
 
-        $this->render('front/home.html.twig', ['msg' => $msg, 'title' => $title, 'sub' => $subTitle]);
+        $this->render('front/home.html.twig', ['posts' => $posts, 'post_title' => $post_title, 'msg' => $msg, 'title' => $title, 'sub' => $subTitle]);
     }
 
     Public function dashbord()

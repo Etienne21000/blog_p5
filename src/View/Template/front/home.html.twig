@@ -3,7 +3,7 @@
 {% block title %} {{ name }} {% endblock %}
 
 {% block header %}
- {% include('header-home.html.twig') %}
+    {% include('header-home.html.twig') %}
 {% endblock %}
 
 {% block content %}
@@ -13,10 +13,29 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-8 text-center">
-                    <h2 class="text-white mt-0">{{ title }}</h2>
+                    <h2 class="text-white mt-0">{{ post_title }}</h2>
                     <hr class="divider light my-4" />
                     <p class="text-white-50 mb-4">{{ msg }}</p>
-                    <a class="btn btn-light btn-xl js-scroll-trigger" href="#services">Démarrer</a>
+
+                    <div class="row last-post-container">
+                        {% for post in posts %}
+{#                            <a href="/singlePost/{{ post.post_id }}" class="post-a">#}
+                                <div class="col-lg-3 col-md-6 text-center post-wrapper">
+                                    <div class="mt-5">
+                                        <h3 class="h4 mb-2 post-title"> {{ post.title }}</h3>
+                                        <p class="text-muted mb-0">
+                                            {{ post.content | slice(0,100) }}
+                                        </p>
+                                        <p>
+                                            {{ post.pseudo }}
+                                        </p>
+                                        <a href="/singlePost/{{ post.post_id }}">Lire l'article</a>
+                                    </div>
+                                </div>
+{#                            </a>#}
+                        {% endfor %}
+                    </div>
+                    <a class="btn btn-light btn-xl js-scroll-trigger" href="#services">Tout voir</a>
                 </div>
             </div>
         </div>
@@ -24,38 +43,44 @@
     <!-- Services-->
     <section class="page-section" id="services">
         <div class="container">
-            <h2 class="text-center mt-0">At Your Service</h2>
+            <h2 class="text-center mt-0">Curriculum</h2>
             <hr class="divider my-4" />
             <div class="row">
                 <div class="col-lg-3 col-md-6 text-center">
                     <div class="mt-5">
-                        <i class="fas fa-4x fa-gem text-primary mb-4"></i>
-                        <h3 class="h4 mb-2">Sturdy Themes</h3>
-                        <p class="text-muted mb-0">Our themes are updated regularly to keep them bug free!</p>
+                        <i class="fas fa-4x fa-graduation-cap text-primary mb-4"></i>
+                        <h3 class="h4 mb-2">Formation</h3>
+                        <p class="text-muted mb-0">
+                            Formation Développeur d'applications php / Synfony avec OpenClassRooms
+                        </p>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 text-center">
                     <div class="mt-5">
                         <i class="fas fa-4x fa-laptop-code text-primary mb-4"></i>
-                        <h3 class="h4 mb-2">Up to Date</h3>
-                        <p class="text-muted mb-0">All dependencies are kept current to keep things fresh.</p>
+                        <h3 class="h4 mb-2">Compétences</h3>
+                        <p class="text-muted mb-0">Compétences en développement web front-end et back-end</p>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 text-center">
                     <div class="mt-5">
-                        <i class="fas fa-4x fa-globe text-primary mb-4"></i>
-                        <h3 class="h4 mb-2">Ready to Publish</h3>
-                        <p class="text-muted mb-0">You can use this design as is, or you can make changes!</p>
+                        <i class="fas fa-4x fa-globe text-primary text-primary mb-4"></i>
+                        <h3 class="h4 mb-2">Expériences</h3>
+                        <p class="text-muted mb-0">Développeur web pour la société Vérisure et bénvole dans des associations</p>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 text-center">
                     <div class="mt-5">
-                        <i class="fas fa-4x fa-heart text-primary mb-4"></i>
-                        <h3 class="h4 mb-2">Made with Love</h3>
-                        <p class="text-muted mb-0">Is it really open source if it's not made with love?</p>
+                        <i class="fas fa-4x fa-swimmer text-primary mb-4"></i>
+                        <h3 class="h4 mb-2">Loisirs</h3>
+                        <p class="text-muted mb-0">Natation, Longboard, cinéma, art, architecture, philosophie</p>
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="btn-about">
+            <a class="btn btn-primary btn-xl js-scroll-trigger" href="#about">En savoir plus</a>
+            <a class="btn btn-primary btn-xl js-scroll-trigger" href="#about">Télécharger mon cv</a>
         </div>
     </section>
     <!-- Portfolio-->

@@ -1,0 +1,24 @@
+#page-top {
+  .navbar {
+    .container {
+      .navbar-collapse {
+        ul {
+          align-items: center;
+          width: 60%;
+          justify-content: space-between;
+          li {
+            .nav-link {
+              transition: all .3s ease-in-out;
+              .fa-user-circle {
+                font-size: 30px;
+              }
+            }
+            .nav-link:hover {
+              transform: scale(1.1);
+            }
+          }
+        }
+      }
+    }
+  }
+}
