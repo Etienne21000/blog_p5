@@ -57,8 +57,7 @@
     .container {
       .text-center {
         .last-post-container {
-          //.post-a {
-          //    transition: all 0.3s ease-in-out;
+          justify-content: space-around;
           .post-wrapper {
             flex: 0 0 40%;
             max-width: 40%;
@@ -70,7 +69,6 @@
             .post-title {
               //color: #ffffff;
             }
-
             p {
               //color: #ffffff;
             }
@@ -92,6 +90,14 @@
         margin-top: 50px;
       }
       //}
+    }
+  }
+  .contact-section {
+    .contact-row {
+      justify-content: center;
+      .contact-form {
+        width: 70%;
+      }
     }
   }
 }
