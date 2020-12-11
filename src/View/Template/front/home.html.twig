@@ -19,20 +19,20 @@
 
                     <div class="row last-post-container">
                         {% for post in posts %}
-{#                            <a href="/singlePost/{{ post.post_id }}" class="post-a">#}
-                                <div class="col-lg-3 col-md-6 text-center post-wrapper">
-                                    <div class="mt-5">
-                                        <h3 class="h4 mb-2 post-title"> {{ post.title }}</h3>
-                                        <p class="text-muted mb-0">
-                                            {{ post.content | slice(0,100) }}
-                                        </p>
-                                        <p>
-                                            {{ post.pseudo }}
-                                        </p>
-                                        <a href="/singlePost/{{ post.post_id }}">Lire l'article</a>
-                                    </div>
+                            {#                            <a href="/singlePost/{{ post.post_id }}" class="post-a">#}
+                            <div class="col-lg-3 col-md-6 text-center post-wrapper">
+                                <div class="mt-5">
+                                    <h3 class="h4 mb-2 post-title"> {{ post.title }}</h3>
+                                    <p class="text-muted mb-0">
+                                        {{ post.content | slice(0,100) }}
+                                    </p>
+                                    <p>
+                                        {{ post.pseudo }}
+                                    </p>
+                                    <a href="/singlePost/{{ post.post_id }}">Lire l'article</a>
                                 </div>
-{#                            </a>#}
+                            </div>
+                            {#                            </a>#}
                         {% endfor %}
                     </div>
                     <a class="btn btn-light btn-xl js-scroll-trigger" href="#services">Tout voir</a>
@@ -80,83 +80,47 @@
         </div>
         <div class="btn-about">
             <a class="btn btn-primary btn-xl js-scroll-trigger" href="#about">En savoir plus</a>
-            <a class="btn btn-primary btn-xl js-scroll-trigger" href="#about">Télécharger mon cv</a>
+            <a class="btn btn-primary btn-xl js-scroll-trigger" href="/downloadCV" target="_blank">Télécharger mon cv</a>
         </div>
     </section>
-    <!-- Portfolio-->
-    {#<div id="portfolio">
-        <div class="container-fluid p-0">
-            <div class="row no-gutters">
-                <div class="col-lg-4 col-sm-6">
-                    <a class="portfolio-box" href="assets/img/portfolio/fullsize/1.jpg">
-                        <img class="img-fluid" src="assets/img/portfolio/thumbnails/1.jpg" alt="" />
-                        <div class="portfolio-box-caption">
-                            <div class="project-category text-white-50">Category</div>
-                            <div class="project-name">Project Name</div>
-                        </div>
-                    </a>
+
+    <!-- Call to action-->
+    <section class="page-section bg-dark text-white" id="social-networks">
+        <div class="row row-socialmedia">
+
+            <div class="col-lg-3 col-md-6 text-center">
+                <div class="mt-5">
+                    <i class="fab fa-4x fa-linkedin text-primary text-primary mb-4"></i>
+                    <h3 class="h4 mb-2">Mon profile Linkedin</h3>
+                    <a href="https://www.linkedin.com/in/etienne-juffard-b231b4130/" target="_blank" class="text-muted mb-0">Linkedin</a>
                 </div>
-                <div class="col-lg-4 col-sm-6">
-                    <a class="portfolio-box" href="assets/img/portfolio/fullsize/2.jpg">
-                        <img class="img-fluid" src="assets/img/portfolio/thumbnails/2.jpg" alt="" />
-                        <div class="portfolio-box-caption">
-                            <div class="project-category text-white-50">Category</div>
-                            <div class="project-name">Project Name</div>
-                        </div>
-                    </a>
+            </div>
+
+            <div class="col-lg-3 col-md-6 text-center">
+                <div class="mt-5">
+                    <i class="fab fa-4x fa-gitlab text-primary text-primary mb-4"></i>
+                    <h3 class="h4 mb-2">Mon profile GitLab</h3>
+                    <a href="https://gitlab.com/" target="_blank" class="text-muted mb-0">GitLab</a>
                 </div>
-                <div class="col-lg-4 col-sm-6">
-                    <a class="portfolio-box" href="assets/img/portfolio/fullsize/3.jpg">
-                        <img class="img-fluid" src="assets/img/portfolio/thumbnails/3.jpg" alt="" />
-                        <div class="portfolio-box-caption">
-                            <div class="project-category text-white-50">Category</div>
-                            <div class="project-name">Project Name</div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-lg-4 col-sm-6">
-                    <a class="portfolio-box" href="assets/img/portfolio/fullsize/4.jpg">
-                        <img class="img-fluid" src="assets/img/portfolio/thumbnails/4.jpg" alt="" />
-                        <div class="portfolio-box-caption">
-                            <div class="project-category text-white-50">Category</div>
-                            <div class="project-name">Project Name</div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-lg-4 col-sm-6">
-                    <a class="portfolio-box" href="assets/img/portfolio/fullsize/5.jpg">
-                        <img class="img-fluid" src="assets/img/portfolio/thumbnails/5.jpg" alt="" />
-                        <div class="portfolio-box-caption">
-                            <div class="project-category text-white-50">Category</div>
-                            <div class="project-name">Project Name</div>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-lg-4 col-sm-6">
-                    <a class="portfolio-box" href="assets/img/portfolio/fullsize/6.jpg">
-                        <img class="img-fluid" src="assets/img/portfolio/thumbnails/6.jpg" alt="" />
-                        <div class="portfolio-box-caption p-3">
-                            <div class="project-category text-white-50">Category</div>
-                            <div class="project-name">Project Name</div>
-                        </div>
-                    </a>
+            </div>
+
+            <div class="col-lg-3 col-md-6 text-center">
+                <div class="mt-5">
+                    <i class="fab fa-4x fa-github text-primary text-primary mb-4"></i>
+{#                    <i class="fab fa-github"></i>#}
+                    <h3 class="h4 mb-2">Mon profile GitHub</h3>
+                    <a href="https://github.com/Etienne21000" target="_blank" class="text-muted mb-0">Linkedin</a>
                 </div>
             </div>
         </div>
-    </div>#}
-    <!-- Call to action-->
-    <section class="page-section bg-dark text-white" id="social-networks">
-        <div class="container text-center">
-            <h2 class="mb-4">Free Download at Start Bootstrap!</h2>
-            <a class="btn btn-light btn-xl" href="https://startbootstrap.com/theme/creative/">Download Now!</a>
-        </div>
     </section>
+
     <!-- Contact-->
     <section class="page-section contact-section" id="contact">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-8 text-center">
-                    <h2 class="mt-0">Contactez moi</h2>
+                    <h2 class="mt-0">Me contactez</h2>
                     <hr class="divider my-4" />
                     <p class="text-muted mb-5">Vous avez un projet, un besoin particulier ? N'hésitez pas à me contacter, pour établir un devis personnalisé !</p>
                 </div>
@@ -164,18 +128,22 @@
             <div class="row contact-row">
                 <form class="contact-form">
                     <div class="form-group">
-                        <label for="name">Votre nom<sup>*</sup></label>
-                        <input type="text" class="form-control" placeholder="Votre nom">
+                        {#<label for="name">Votre nom<sup>*</sup></label>
+                        <input type="text" class="form-control" placeholder="Votre nom">#}
+                        {{ nom|raw }}
                     </div>
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Email<sup>*</sup></label>
-                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Votre email">
+                        {#<label for="exampleInputEmail1">Email<sup>*</sup></label>
+                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Votre email">#}
+                        {{ mail|raw }}
                     </div>
                     <div class="form-group">
-                        <label for="message">Votre demande</label>
-                        <textarea class="form-control" id="message" rows="6" placeholder="Commencez votre demande..."></textarea>
+                        {#<label for="message">Votre demande</label>
+                        <textarea class="form-control" id="message" rows="6" placeholder="Commencez votre demande..."></textarea>#}
+                        {{ content|raw }}
                     </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    {{ submit|raw }}
+{#                    <button type="submit" class="btn btn-primary">Submit</button>#}
                 </form>
             </div>
         </div>

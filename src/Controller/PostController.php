@@ -28,7 +28,7 @@ class PostController extends AbstractController
     /**
      *
      */
-    public function read_all_posts()
+    public function read_all_posts($file)
     {
         $posts = $this->manager->get_all_posts();
 
@@ -38,7 +38,7 @@ class PostController extends AbstractController
         $title = "Tous les posts";
         $subTitle = 'Retrouvez tous les posts du blog';
 
-        $this->render('back/all_posts_view.html.twig', ['posts' => $posts, 'title' => $title, 'sub' => $subTitle, 'count' => $count]);
+        $this->render($file, ['posts' => $posts, 'title' => $title, 'sub' => $subTitle, 'count' => $count]);
     }
 
     /**
