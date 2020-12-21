@@ -132,10 +132,8 @@ class MasterController extends AbstractController
             header('Content-Disposition: attachment; filename="'.basename($file_path).'"');
             header('Content-Type: application/pdf');
             header('Content-Length: ' . filesize($file_path));
-            //header('Pragma: public');
             readfile($file_path);
             echo $file_path;
-            //exit;
         }
         else {
             echo "Le fichier d'origine n'existe pas";

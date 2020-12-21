@@ -26,6 +26,7 @@ class UserController extends AbstractController
     {
         $title = 'Créer un compte';
         $subTitle = 'Ce formulaire vous permet de créer votre compte utilisateur';
+        $param = 'create';
 
         $pseudo = $this->form->inputs([
             'label' => 'Pseudo',
@@ -68,7 +69,39 @@ class UserController extends AbstractController
             'placeholder' => 'Créer',
         ]);
 
-        $this->render('front/user_form.html.twig', ['title' => $title, 'sub' => $subTitle, 'pseudo' => $pseudo, 'mail' => $mail, 'confirm_mail' => $confirm_mail, 'pass' => $pass, 'confirm_pass' => $confirm_pass, 'submit' => $submit]);
+        $this->render('front/user_form.html.twig', ['param' => $param, 'title' => $title, 'sub' => $subTitle, 'pseudo' => $pseudo, 'mail' => $mail, 'confirm_mail' => $confirm_mail, 'pass' => $pass, 'confirm_pass' => $confirm_pass, 'submit' => $submit]);
+    }
+
+    /**
+     *
+     */
+    public function connect_user(){
+        $title = 'Se connecter';
+        $subTitle = 'Connectez-vous à votre compte utilisateur';
+        $param = 'connect';
+
+        $pseudo = $this->form->inputs([
+            'label' => 'Pseudo',
+            'name' => 'pseudo',
+            'placeholder' => 'Votre pseudo',
+            'type' => 'text',
+            'class' => 'input-pseudo',
+        ]);
+
+        $pass = $this->form->inputs([
+            'label' => 'Saissisez un mot de passe',
+            'name' => 'password',
+            'placeholder' => 'Votre mot de passe',
+            'type' => 'password'
+        ]);
+
+        $submit = $this->form->inputs([
+            'field' => 'button',
+            'type' => 'submit',
+            'placeholder' => 'Créer',
+        ]);
+
+        $this->render('front/user_form.html.twig', ['param' => $param, 'title' => $title, 'sub' => $subTitle, 'pseudo' => $pseudo, 'pass' => $pass, 'submit' => $submit]);
     }
 
 }

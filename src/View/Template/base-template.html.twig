@@ -34,16 +34,13 @@
         {% include ('nav-front.html.twig') %}
 
     {% endblock %}
-{#{% if (app.request.uri === "/") %}#}
-{#    {% if '/' in url|render|render %}#}
-    <header class="masthead header-pages">
-{#        {% else %}#}
-{#        <header class="pagehead">#}
-{#            {% endif %}#}
+
+{#    <header class="masthead header-pages">#}
+
         {% block header %}
 
         {% endblock %}
-    </header>
+{#    </header>#}
 
     <section>
         {% block content %}

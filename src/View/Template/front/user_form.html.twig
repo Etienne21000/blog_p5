@@ -2,20 +2,21 @@
 
 {% block title %} {{ name }} {% endblock %}
 
-{#{% block header %}
-    {% include('header-home.html.twig') %}
-{% endblock %}#}
+{% block header %}
+    {% include('header-pages.html.twig') %}
+{% endblock %}
 
 {% block content %}
     <section class="page-section contact-section" id="contact">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-8 text-center">
-                    <h2 class="mt-0">Créer un compte utilisateur</h2>
+                    <h2 class="mt-0">{{ title }}</h2>
                     <hr class="divider my-4" />
-                    <p class="text-muted mb-5">Renseignez les informations ci-dessous pour créer votre compte et avoir accès à plus de contenu</p>
+                    <p class="text-muted mb-5">{{ sub }}</p>
                 </div>
             </div>
+            {% if param == 'create' %}
             <form class="contact-form">
                 <div class="form-group">
                     {{ pseudo | raw}}
@@ -36,6 +37,29 @@
                     {{ submit | raw }}
                 </div>
             </form>
+                <div class="switch-form">
+                    <a href="/connect_user">Déjà inscrit ?</a>
+                </div>
+
+            {% elseif param == 'connect' %}
+            <form class="contact-form">
+                <div class="form-group">
+                    {{ pseudo | raw}}
+                </div>
+
+                <div class="form-check">
+                    {{ pass | raw }}
+                </div>
+
+                <div class="form-check">
+                    {{ submit | raw }}
+                </div>
+            </form>
+                <div class="switch-form">
+                    <a href="/create_user">Pas encore inscrit ?</a>
+                </div>
+            {% endif %}
+
         </div>
     </section>
 {% endblock %}

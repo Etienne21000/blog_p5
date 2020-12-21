@@ -16,7 +16,7 @@ const files = {
 
 gulp.task('sass', function() {
     return gulp.src('Public/scss/main.scss')
-        .pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError))
+        .pipe(sass({outputStyle: 'compressed'}))
         .pipe(rename('main.min.css'))
         .pipe(gulp.dest('Public/main-css'));
 });

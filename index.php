@@ -23,11 +23,16 @@ $router->get('/dashbord', function(){
 
 });
 
-$router->get('/connect_user', function() {
+$router->get('/create_user', function() {
 
     $controller = new UserController();
 
     $controller->create_user();
+});
+
+$router->get('/connect_user', function(){
+    $controller = new UserController();
+    $controller->connect_user();
 });
 
 $router->get('/', function(){
