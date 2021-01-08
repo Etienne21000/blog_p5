@@ -8,90 +8,101 @@ use App\Core\App;
 use App\Controller\MasterController;
 use \App\Controller\PostController;
 use App\Controller\UserController;
+use App\Core\User_role;
+
+$role = new User_role();
 
 $router = new Router($_GET['url']);
 
-$_SESSION['user'] = 'Etienne';
-$_SESSION['role'] = 'administrateur';
+$_SESSION['id'] = 3;
+$_SESSION['role'] = 0;
 
 
-$router->get('/dashbord', function(){
+//if(isset($_SESSION) && $_SESSION['role'] === 1){
+    $role->dispatche();
 
-    $controller = new MasterController();
+    $router->get('/dashboard', function(){
 
-    $controller->dashbord();
+        $controller = new MasterController();
 
-});
+        $controller->dashbord();
 
-$router->get('/create_user', function() {
+    });
+//}
+//elseif(!isset($_SESSION) || $_SESSION['role'] === 0) {
+//    $role->dispatche();
 
-    $controller = new UserController();
+//if(!isset($role) || $role = 0) {
+    $router->get('/create_user', function () {
 
-    $controller->create_user();
-});
+        $controller = new UserController();
 
-$router->get('/connect_user', function(){
-    $controller = new UserController();
-    $controller->connect_user();
-});
+        $controller->create_user();
+    });
 
-$router->get('/', function(){
+    $router->get('/connect_user', function () {
+        $controller = new UserController();
+        $controller->connect_user();
+    });
 
-    $controller = new MasterController();
+    $router->get('/', function () {
 
-    $controller->index();
-});
+        $controller = new MasterController();
 
-$router->get('/msg', function(){
+        $controller->index();
+    });
 
-    $controller = new MasterController();
+    $router->get('/msg', function () {
 
-    $controller->get_msg();
+        $controller = new MasterController();
 
-});
+        $controller->get_msg();
 
-$router->get('/posts', function(){
+    });
 
-    $file = 'front/posts.html.twig';
+    $router->get('/posts', function () {
 
-    $postController = new PostController();
+//    $file = 'front/posts.html.twig';
+//
+        $postController = new PostController();
 
-    $postController->read_all_posts($file);
+        $postController->read_all_posts();
 
-});
+    });
 
-$router->get('/singlePost/{id}' , function($param){
+    $router->get('/singlePost/{id}', function ($param) {
 
-    $postController = new PostController();
+        $postController = new PostController();
 
-    (int)$id = $param[0];
+        (int)$id = $param[0];
 
-    $postController->get_single($id);
+        $postController->get_single($id);
 
-});
+    });
 
-$router->get('/addPostForm', function(){
+    $router->get('/addPostForm', function () {
 
-    $postController = new PostController();
+        $postController = new PostController();
 
-    $postController->create_post();
+        $postController->create_post();
 
-});
+    });
 
-$router->post('/addPost', function(){
+    $router->post('/addPost', function () {
 
-    $postController = new PostController();
+        $postController = new PostController();
 
-    $postController->create_signle_post();
+        $postController->create_signle_post();
 
-});
+    });
 
-$router->get('/downloadCV', function(){
-    $controller = new MasterController();
-    $controller->download_cv();
-});
+    $router->get('/downloadCV', function () {
+        $controller = new MasterController();
+        $controller->download_cv();
+    });
 
-$router->run();
+    $router->run();
+//}
 
 //$request = new ServerRequest('GET', '/posts');
 //

@@ -26,6 +26,10 @@ class UserManager extends AbstractManager
         $req->execute();
     }
 
+    public function get_user(){
+
+    }
+
     /**
      * @inheritDoc
      */

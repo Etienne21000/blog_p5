@@ -1,0 +1,33 @@
+{% extends 'base-template.html.twig' %}
+
+{% block title %} {{ name }} {% endblock %}
+
+{% block header %}
+    {% include('header-pages.html.twig') %}
+{% endblock %}
+
+{% block content %}
+<section class="page-section contact-section" id="contact">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 text-center">
+                <h2 class="mt-0">{{ title }}</h2>
+                <hr class="divider my-4" />
+                <p class="text-muted mb-5">{{ sub }}</p>
+            </div>
+        </div>
+
+        <article class="error-page">
+            <div class="row">
+                <h4 class="error-title"> {{ title }}</h4>
+                <div class="error-type">
+
+                </div>
+            </div>
+        </article>
+
+    </div>
+</section>
+
+
+{% endblock %}

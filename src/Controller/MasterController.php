@@ -7,8 +7,7 @@ use App\Model\ImageManager;
 use App\Model\CommentManager;
 use App\Model\UserManager;
 use App\Model\Form;
-
-
+//use App\Core\User_role;
 
 class MasterController extends AbstractController
 {
@@ -18,6 +17,8 @@ class MasterController extends AbstractController
     private $CommentManager;
     private $form;
 
+    private $user_role;
+
     public function __construct()
     {
 
@@ -26,6 +27,7 @@ class MasterController extends AbstractController
         $this->UserManager = new UserManager();
         $this->CommentManager = new CommentManager();
         $this->form = new Form();
+        //$this->user_role = new User_role();
 
     }
 
@@ -80,6 +82,7 @@ class MasterController extends AbstractController
 
     Public function dashbord()
     {
+        //$this->user_role->dispatche();
         $msg = 'Hello';
 
         $title = "Site web d'Etienne Juffard";
@@ -137,6 +140,22 @@ class MasterController extends AbstractController
         }
         else {
             echo "Le fichier d'origine n'existe pas";
+        }
+
+    }
+    
+    public function error_view($error){
+//        $this->user_role->dispatche();
+        $title = "";
+        $error = "";
+        $msg = "";
+        if (http_response_code() != '200'){
+            $error = http_response_code();
+            $title = "Oups ! erreur $error";
+            $msg = "Une erreur $error s'est produite, vous ne pouvez pas accéder à cette page";
+        }
+        else {
+
         }
 
     }

@@ -5,9 +5,26 @@ use App\Core\AbstractController;
 use App\Model\Form;
 use App\Model\Form_validation;
 use App\Model\UserManager;
+use App\Core\User_role;
 
 class UserController extends AbstractController
 {
+    /**
+     * @var UserManager
+     */
+    private $manager;
+    /**
+     * @var Form
+     */
+    private $form;
+    /**
+     * @var Form_validation
+     */
+    private $form_valid;
+    /**
+     * @var User_role
+     */
+    private $user_role;
 
     /**
      * UserController constructor.
@@ -17,6 +34,7 @@ class UserController extends AbstractController
         $this->manager = new UserManager();
         $this->form = new Form(array());
         $this->form_valid = new Form_validation();
+        $this->user_role = new User_role();
     }
 
     /**
