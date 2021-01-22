@@ -47,10 +47,20 @@ $_SESSION['role'] = 0;
         $controller->create_user();
     });
 
-//    $router->get('/connect_user', function () {
-//        $controller = new UserController();
-//        $controller->connect_user();
-//    });
+    $router->get('/connect_user_view', function () {
+
+        $controller = new UserController();
+
+        $controller->connect_user_view();
+    });
+
+    $router->post('/connect_user', function() {
+
+        $controller = new UserController();
+
+        $controller->connect_user();
+
+    });
 
     $router->get('/', function () {
 
@@ -59,13 +69,13 @@ $_SESSION['role'] = 0;
         $controller->index();
     });
 
-    $router->get('/msg', function () {
-
-        $controller = new MasterController();
-
-        $controller->get_msg();
-
-    });
+//    $router->get('/msg', function () {
+//
+//        $controller = new MasterController();
+//
+//        $controller->get_msg();
+//
+//    });
 
     $router->get('/posts', function () {
 

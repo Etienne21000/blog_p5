@@ -19,8 +19,8 @@ class UserManager extends AbstractManager
      */
     public function create_user(User $user)
     {
-        $sql = 'INSERT INTO User(pseudo, mail, pass)
-        VALUES(:pseudo, :mail, :pass)';
+        $sql = 'INSERT INTO User(pseudo, mail, pass, creation_date, role)
+        VALUES(:pseudo, :mail, :pass, NOW(), 0)';
         $req = $this->db->prepare($sql);
 
         $req->bindValue(':pseudo', $user->pseudo());
@@ -32,7 +32,7 @@ class UserManager extends AbstractManager
 
     public function check_pseudo($pseudo)
     {
-        $sql = 'SELECT pseudo FROM User
+        $sql = 'SELECT pseudo, pass, user_role FROM User
         WHERE LOWER(pseudo) = :pseudo';
         $req = $this->db->prepare($sql);
 
@@ -54,6 +54,8 @@ class UserManager extends AbstractManager
 
         return $req->fetch(\PDO::FETCH_ASSOC);
     }
+
+//    public function get_user_id()
 
     public function delete_user(){
 

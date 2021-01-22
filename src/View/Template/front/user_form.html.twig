@@ -38,11 +38,11 @@
                 </div>
             </form>
                 <div class="switch-form">
-                    <a href="/connect_user">Déjà inscrit ?</a>
+                    <a href="/connect_user_view">Déjà inscrit ?</a>
                 </div>
 
             {% elseif param == 'connect' %}
-            <form class="contact-form">
+            <form action="connect_user" method="post" class="contact-form">
                 <div class="form-group">
                     {{ pseudo | raw}}
                 </div>
