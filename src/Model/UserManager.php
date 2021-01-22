@@ -8,97 +8,58 @@ class UserManager extends AbstractManager
 {
     private $db;
 
-    public function __construct(){
-    parent::__construct($this->db);
-    $this->db = $this->dbConnect();
-}
-
-    public function addUser(User $user)
+    public function __construct()
     {
-        $sql = "INSERT INTO User(pseudo, mail, pass, creation_date, role, img_id)
-        VALUES(:pseudo, :mail, :pass, NOW(), 0)";
+        parent::__construct($this->db);
+        $this->db = $this->dbConnect();
+    }
+
+    /**
+     * @param User $user
+     */
+    public function create_user(User $user)
+    {
+        $sql = 'INSERT INTO User(pseudo, mail, pass)
+        VALUES(:pseudo, :mail, :pass)';
         $req = $this->db->prepare($sql);
 
-        $req->bindValue(':identifiant', $user->identifiant());
+        $req->bindValue(':pseudo', $user->pseudo());
         $req->bindValue(':mail', $user->mail());
-        $req->bindValue(':pass', $user->passWord());
+        $req->bindValue(':pass', $user->pass());
 
         $req->execute();
     }
 
+    public function check_pseudo($pseudo)
+    {
+        $sql = 'SELECT pseudo FROM User
+        WHERE LOWER(pseudo) = :pseudo';
+        $req = $this->db->prepare($sql);
+
+        $req->bindValue(':pseudo', strtolower($pseudo));
+
+        $req->execute();
+
+        return $req->fetch(\PDO::FETCH_ASSOC);
+    }
+
+    public function check_mail($mail)
+    {
+        $req = $this->db->prepare('SELECT mail FROM User
+        WHERE mail = :mail');
+
+        $req->bindValue(':mail', $mail);
+
+        $req->execute();
+
+        return $req->fetch(\PDO::FETCH_ASSOC);
+    }
+
+    public function delete_user(){
+
+    }
+
     public function get_user(){
 
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function current()
-    {
-        // TODO: Implement current() method.
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function next()
-    {
-        // TODO: Implement next() method.
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function key()
-    {
-        // TODO: Implement key() method.
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function valid()
-    {
-        // TODO: Implement valid() method.
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function rewind()
-    {
-        // TODO: Implement rewind() method.
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function offsetExists($offset)
-    {
-        // TODO: Implement offsetExists() method.
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function offsetGet($offset)
-    {
-        // TODO: Implement offsetGet() method.
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function offsetSet($offset, $value)
-    {
-        // TODO: Implement offsetSet() method.
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function offsetUnset($offset)
-    {
-        // TODO: Implement offsetUnset() method.
     }
 }

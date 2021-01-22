@@ -19,7 +19,7 @@ $_SESSION['role'] = 0;
 
 
 //if(isset($_SESSION) && $_SESSION['role'] === 1){
-    $role->dispatche();
+    //$role->dispatche();
 
     $router->get('/dashboard', function(){
 
@@ -37,13 +37,20 @@ $_SESSION['role'] = 0;
 
         $controller = new UserController();
 
+        $controller->create_user_view();
+    });
+
+    $router->post('/add_user', function() {
+
+        $controller = new UserController();
+
         $controller->create_user();
     });
 
-    $router->get('/connect_user', function () {
-        $controller = new UserController();
-        $controller->connect_user();
-    });
+//    $router->get('/connect_user', function () {
+//        $controller = new UserController();
+//        $controller->connect_user();
+//    });
 
     $router->get('/', function () {
 
@@ -84,7 +91,7 @@ $_SESSION['role'] = 0;
 
         $postController = new PostController();
 
-        $postController->create_post();
+        $postController->create_post_view();
 
     });
 

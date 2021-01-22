@@ -4,11 +4,11 @@ use App\Core\Entity;
 
 class User extends Entity
 {
-    private $id;
+    private $user_id;
     private $pseudo;
     private $mail;
     private $pass;
-    private $type;
+    private $role;
     private $creation_date;
 
     public function __construct(array $data)
@@ -18,33 +18,50 @@ class User extends Entity
 
     /**************************************
      *************** Setters **************
-     **************************************/
+     *************************************
+     * @param $user_id
+     */
 
-    public function setId($id)
+    public function setId($user_id)
     {
-        $this->id = (int)$id;
+        $this->user_id = (int)$user_id;
     }
 
+    /**
+     * @param $pseudo
+     */
     public function setPseudo($pseudo)
     {
         $this->pseudo = (string)$pseudo;
     }
 
+    /**
+     * @param $mail
+     */
     public function setMail($mail)
     {
         $this->mail = (string)$mail;
     }
 
+    /**
+     * @param $pass
+     */
     public function setPass($pass)
     {
         $this->pass = (string)$pass;
     }
 
-    public function setType($type)
+    /**
+     * @param $role
+     */
+    public function setType($role)
     {
-        $this->type = (int)$type;
+        $this->role = (int)$role;
     }
 
+    /**
+     * @param $creation_date
+     */
     public function setCreationdate($creation_date)
     {
         $this->creation_date = (string)$creation_date;
@@ -54,31 +71,49 @@ class User extends Entity
      *************** Getters **************
      **************************************/
 
-    public function id()
+    /**
+     * @return mixed
+     */
+    public function user_id()
     {
-        return $this->id;
+        return $this->user_id;
     }
 
+    /**
+     * @return mixed
+     */
     public function pseudo()
     {
         return $this->pseudo;
     }
 
+    /**
+     * @return mixed
+     */
     public function mail()
     {
         return $this->mail;
     }
 
+    /**
+     * @return mixed
+     */
     public function pass()
     {
         return $this->pass;
     }
 
-    public function type()
+    /**
+     * @return mixed
+     */
+    public function role()
     {
-        return $this->type;
+        return $this->role;
     }
 
+    /**
+     * @return mixed
+     */
     public function creationDate()
     {
         return $this->creation_date;

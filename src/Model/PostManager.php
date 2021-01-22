@@ -64,81 +64,16 @@ class PostManager extends AbstractManager
         return $posts;
     }
 
-    public function create_post()
+    public function create_post(Post $post)
     {
+        $sql = 'INSERT INTO post(title, content, creation_date)
+        VALUES(:title, :content, NOW())';
+        $req = $this->db->prepare($sql);
 
+        $req->bindValue(':title', $post->title());
+        $req->bindValue(':content', $post->content());
 
-    }
+        $req->execute();
 
-    /**
-     * @inheritDoc
-     */
-    public function current()
-    {
-        // TODO: Implement current() method.
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function next()
-    {
-        // TODO: Implement next() method.
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function key()
-    {
-        // TODO: Implement key() method.
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function valid()
-    {
-        // TODO: Implement valid() method.
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function rewind()
-    {
-        // TODO: Implement rewind() method.
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function offsetExists($offset)
-    {
-        // TODO: Implement offsetExists() method.
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function offsetGet($offset)
-    {
-        // TODO: Implement offsetGet() method.
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function offsetSet($offset, $value)
-    {
-        // TODO: Implement offsetSet() method.
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function offsetUnset($offset)
-    {
-        // TODO: Implement offsetUnset() method.
     }
 }

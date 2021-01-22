@@ -7,7 +7,7 @@ use \PDO;
 use App\Model\Post;
 use PDOStatement;
 
-abstract class AbstractManager implements \ArrayAccess, \Iterator
+abstract class AbstractManager
 {
     private $db;
     private $query;
@@ -89,19 +89,19 @@ abstract class AbstractManager implements \ArrayAccess, \Iterator
             $params = new $class($data);
 
         }
-        elseif(!$this->where)
-        {
-            $id = NULL;
-
-            $query = $this->execute_query();
-
-            while ($data = $query->fetch(\PDO::FETCH_ASSOC)) {
-                $class = $class_name;
-                $class = new $class($data);
-
-                $params[] = $class;
-            }
-        }
+//        elseif(!$this->where)
+//        {
+//            $id = NULL;
+//
+//            $query = $this->execute_query();
+//
+//            while ($data = $query->fetch(\PDO::FETCH_ASSOC)) {
+//                $class = $class_name;
+//                $class = new $class($data);
+//
+//                $params[] = $class;
+//            }
+//        }
         return $params;
     }
 

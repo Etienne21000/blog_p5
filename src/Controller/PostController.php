@@ -56,7 +56,7 @@ class PostController extends AbstractController
     /**
      *
      */
-    public function create_post()
+    public function create_post_view()
     {
         $title = 'Ajouter un billet';
         $subTitle = 'Ce formulaire vous permet d\'ajouter un nouveau billet';
@@ -97,66 +97,15 @@ class PostController extends AbstractController
         $this->render('back/add_form.html.twig', ['title' => $title, 'sub' => $subTitle, 'count' => $this->count, 'input' => $input, 'textarea' => $textarea, 'author' => $author, 'integer' => $integer, 'submit' => $submit]);
     }
 
-    public function create_signle_post()
+    public function create_signle_post($title, $content)
     {
-        $this->form_valid->validate();
-//        $post = new Post([$data]);
-//        $this->form_valid->is_valid([
-//            'length' => ($_POST['title']),
-//        ]);
-//        $this->post = [
-//            $_POST['title'],
-//            $_POST['pseudo'],
-//            $_POST['content']
-//        ];
-//
-//        foreach ($this->post as $resp)
-//        {
-////            for($i=0; $i<size($this->post); $i++) {
-//
-//                if (empty($resp)) {
-//                    echo " vous devez remplir tous les champs ";
-//
-//                } else {
-//                    echo ' les champs ont été créés';
-//                }
-//            }
-////        }
+        //$this->form_valid->validate();
+        $Post = new Post([]);
 
-//        if(empty($_POST['title']) || empty($_POST['pseudo']) || empty($_POST['content']))
-//        {
-//            echo "vous devez remplir tous les champs";
-//
-//        }
-//        else
-//        {
-//            echo ' les champs ont été créés';
-//        }
+        $Post->setTitle($title);
+        $Post->setContent($content);
 
-        /*echo '<pre>';
-        echo print_r($post);
-        echo '</pre>';
-        exit();*/
+        $this->manager->create_post($Post);
     }
-    /*public function create_signle_post($title, $content)
-    {
-        $post = new Post([$data]);
-
-        if(!empty($_POST['title']) && !empty($_POST['content']))
-        {
-            $post->setTitle($title);
-            $post->setContent($content);
-
-
-            $this->manager->create_post($post);
-            header('Location: /posts');
-
-        }
-        else{
-            echo 'Impossible de créer le post';
-        }
-
-    }*/
-
 
 }
