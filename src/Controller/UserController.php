@@ -33,6 +33,11 @@ class UserController extends AbstractController
     private $user;
 
     /**
+     * @var array
+     */
+    private $errors = [];
+
+    /**
      * UserController constructor.
      */
     public function __construct()
@@ -63,6 +68,8 @@ class UserController extends AbstractController
      */
     public function create_user()
     {
+//        $error = null;
+
         if(!empty($_POST)) {
 
             $validate = true;
@@ -77,37 +84,28 @@ class UserController extends AbstractController
 
             if (empty($_POST['pseudo']) || strlen($_POST['pseudo']) > 20 || !preg_match("#^[a-zà-ùA-Z0-9-\s_-]+$#", $_POST['pseudo'])) {
                 $validate = false;
-//                echo "le pseudo est incorrect validate = $validate";
-//                exit();
-                //$error = 1;
+                $error = 1;
             }
 
             if (empty($_POST['mail']) || strlen($_POST['mail']) > 50 || !filter_var($_POST['mail'], FILTER_VALIDATE_EMAIL)) {
                 $validate = false;
-//                echo "le mail est incorrect";
-//                exit();
-                //$error = 2;
+                $error = 2;
             }
 
             if (empty($_POST['confirm_mail']) || ($_POST['mail'] !== $_POST['confirm_mail'])) {
                 $validate = false;
-//                echo "le mail ne correspond pas à l'adresse indiquée";
-//                exit();
-                //$error = 3;
+                $error = 3;
             }
 
-            if (empty($_POST['pass']) || strlen($_POST['pass']) > 100 || !preg_match("#^[a-zA-Z0-9_-]+.{8,}$#", $_POST['pass'])) {
+            if (empty($_POST['pass']) || strlen($_POST['pass']) > 20 || !preg_match("#^[a-zA-Z0-9_-]+.{8,}$#", $_POST['pass'])) {
                 $validate = false;
-                //$error = 4;
+                $error = 4;
             }
 
             if (empty($_POST['confirm_pass']) || ($_POST['pass'] !== $_POST['confirm_pass'])) {
                 $validate = false;
-                //$error = 5;
+                $error = 5;
             }
-
-//            echo password_hash($_POST['pass'], PASSWORD_BCRYPT);
-//            exit();
 
             if ($validate) {
 
@@ -115,23 +113,18 @@ class UserController extends AbstractController
 
                     $_POST['pass'] = password_hash($_POST['pass'], PASSWORD_BCRYPT);
 
-//                    echo $_POST['pass'];
-//                    exit();
                     $this->add_user($_POST['pseudo'],
                         $_POST['mail'], $_POST['pass']);
-
-//                    print_r($this->user);
-//                    exit();
 
                     header('Location: /dashboard');
 
                 } else {
-                    echo "Le pseudo ou le mail utiliser pour l'inscription éxiste déjà";
-//                $error = 5;
+                $error = 6;
                 }
 
             }
         }
+        $this->get_errors($error);
     }
 
     /**
@@ -141,7 +134,6 @@ class UserController extends AbstractController
     public function valid_pseudo($pseudo)
     {
         return $this->manager->check_pseudo($pseudo);
-//        return $user_check;
     }
 
     /**
@@ -151,18 +143,14 @@ class UserController extends AbstractController
     public function valid_mail($mail)
     {
         return $this->manager->check_mail($mail);
-//        return $mail_check;
     }
-
-//    public function get_user($pseudo)
-//    {
-//        return $this->manager->check_pseudo($pseudo);
-//    }
 
     /**
      * UserConnect method
      */
     public function connect_user() {
+
+//        $error = null;
 
         if (!empty($_POST)){
 
@@ -170,26 +158,19 @@ class UserController extends AbstractController
 
             if (empty($_POST['pseudo']) || empty($_POST['pass']))
             {
-//                $erreur = 1;
+                $this->errors['error'] = 7;
                 $validate = false;
             }
 
-//            if (strlen($_POST['pseudo']) > 20 || strlen($_POST['pass']) > 30)
-//            {
-////                $error = 2;
-//                $validate = false;
-//            }
-
-            if($validate){
+            if($validate === true){
 
                 $user = $this->valid_pseudo($_POST['pseudo']);
 
                 if(!$user){
-                    echo "erreur le pseudo n'héxiste pas";
+                    $this->errors['error'] = 8;
                 }
                 else {
                     $check_pass = password_verify($_POST['pass'], $user['pass']);
-
                     if($check_pass){
                         $_SESSION['id'] = $user['user_id'];
                         $_SESSION['pseudo'] = $user['pseudo'];
@@ -202,10 +183,84 @@ class UserController extends AbstractController
                             header('Location: /dashboard');
                         }
                     }
+                    else{
+                        $this->errors['error'] = 9;
+                    }
                 }
             }
-
         }
+        $this->get_errors($this->errors);
+    }
+
+    /**
+     * @param array $errors
+     * @return string
+     */
+    public function get_errors(array $errors){
+
+        $this->errors = $errors;
+        $error = null;
+
+        switch ($error)
+        {
+            case 1:
+                $error = '* Le champ pseudo est vide ou invalide : il doit contenir ...';
+                var_dump($error);
+                exit();
+                break;
+
+            case 2:
+                $error = '* Le format du mail est incorrect';
+                var_dump($error);
+                exit();
+                break;
+
+            case 3:
+                $error = '* Veuillez réessayer de confirmer votre email';
+                var_dump($error);
+                exit();
+                break;
+
+            case 4:
+                $error = '* Attention le mot de passe est incorrect : il doit contenir au moins ...';
+                var_dump($error);
+                exit();
+                break;
+
+            case 5:
+                $error = '* Veuillez réessayer de confirmer votre mot de passe';
+                var_dump($error);
+                exit();
+                break;
+
+            case 6:
+                $error = '* Le pseudo ou le mail utiliser pour l\'inscription éxiste déjà';
+                var_dump($error);
+                exit();
+                break;
+
+            case 7:
+                $error = '* Vous devez remplir tous les champs';
+                var_dump($error);
+                exit();
+                //header('Location: connect_user_view');
+                break;
+
+            case 8:
+                $error = '* erreur le pseudo n\'héxiste pas';
+                var_dump($error);
+                exit();
+                break;
+
+            case 9:
+                $error = '* le mot de passe est incorrect';
+                var_dump($error);
+                exit();
+                break;
+        }
+        $errors[] = $error;
+        return $error;
+        //$this->connect_user_view();
     }
 
     /**
@@ -216,6 +271,7 @@ class UserController extends AbstractController
         $title = 'Créer un compte';
         $subTitle = 'Ce formulaire vous permet de créer votre compte utilisateur';
         $param = 'create';
+        $error = null;
 
         $pseudo = $this->form->inputs([
             'label' => 'Pseudo',
@@ -257,7 +313,7 @@ class UserController extends AbstractController
             'placeholder' => 'Créer',
         ]);
 
-        $this->render('front/user_form.html.twig', ['param' => $param, 'title' => $title, 'sub' => $subTitle, 'pseudo' => $pseudo, 'mail' => $mail, 'confirm_mail' => $confirm_mail, 'pass' => $pass, 'confirm_pass' => $confirm_pass, 'submit' => $submit]);
+        $this->render('front/user_form.html.twig', ['error' => $error, 'param' => $param, 'title' => $title, 'sub' => $subTitle, 'pseudo' => $pseudo, 'mail' => $mail, 'confirm_mail' => $confirm_mail, 'pass' => $pass, 'confirm_pass' => $confirm_pass, 'submit' => $submit]);
     }
 
     /**
@@ -267,6 +323,9 @@ class UserController extends AbstractController
         $title = 'Se connecter';
         $subTitle = 'Connectez-vous à votre compte utilisateur';
         $param = 'connect';
+        $error = null;
+
+        $this->get_errors($this->errors);
 
         $pseudo = $this->form->inputs([
             'label' => 'Pseudo',
@@ -289,7 +348,7 @@ class UserController extends AbstractController
             'placeholder' => 'Créer',
         ]);
 
-        $this->render('front/user_form.html.twig', ['param' => $param, 'title' => $title, 'sub' => $subTitle, 'pseudo' => $pseudo, 'pass' => $pass, 'submit' => $submit]);
+        $this->render('front/user_form.html.twig', ['error' => $error, 'param' => $param, 'title' => $title, 'sub' => $subTitle, 'pseudo' => $pseudo, 'pass' => $pass, 'submit' => $submit]);
     }
 
 }
