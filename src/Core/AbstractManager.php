@@ -39,6 +39,8 @@ abstract class AbstractManager
         try {
             $this->db = new \PDO('mysql:host=localhost;dbname=blog_etienne', 'root', 'root',
                 array(\PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'));
+            $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $this->db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
 
             return $this->db;
         } catch (\Exception $e) {

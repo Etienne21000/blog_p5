@@ -9,7 +9,14 @@
                 <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#about">A propos</a></li>
                 <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#portfolio">Portfolio</a></li>
                 <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#contact">Contact</a></li>
-                <li class="nav-item"><a class="nav-link js-scroll-trigger" href="/create_user"><i class="fas fa-user-circle"></i></a></li>
+                <li class="nav-item"><a class="nav-link js-scroll-trigger" href="/create_user">
+                        {% if app.session.get('user_id')  %}
+                        {{ app.session('pseudo') }}
+                            <i class="fas fa-power-off"></i>
+                        {% else %}
+                        <i class="fas fa-user-circle"></i>
+                        {% endif %}
+                    </a></li>
             </ul>
         </div>
     </div>

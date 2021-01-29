@@ -30,9 +30,13 @@ class UserManager extends AbstractManager
         $req->execute();
     }
 
+    /**
+     * @param $pseudo
+     * @return mixed
+     */
     public function check_pseudo($pseudo)
     {
-        $sql = 'SELECT pseudo, pass, user_role FROM User
+        $sql = 'SELECT user_id, pseudo, pass, role FROM User
         WHERE LOWER(pseudo) = :pseudo';
         $req = $this->db->prepare($sql);
 
@@ -43,6 +47,10 @@ class UserManager extends AbstractManager
         return $req->fetch(\PDO::FETCH_ASSOC);
     }
 
+    /**
+     * @param $mail
+     * @return mixed
+     */
     public function check_mail($mail)
     {
         $req = $this->db->prepare('SELECT mail FROM User

@@ -7,6 +7,7 @@ use App\Model\Form_validation;
 use App\Model\UserManager;
 use App\Model\User;
 use App\Core\User_role;
+use App\Controller\MasterController;
 
 class UserController extends AbstractController
 {
@@ -38,6 +39,11 @@ class UserController extends AbstractController
     private $errors = [];
 
     /**
+     * @var MasterController
+     */
+    private $master;
+
+    /**
      * UserController constructor.
      */
     public function __construct()
@@ -47,6 +53,7 @@ class UserController extends AbstractController
         $this->form = new Form(array());
         $this->form_valid = new Form_validation();
         $this->user_role = new User_role();
+        $this->master = new MasterController();
     }
 
     /**
@@ -124,7 +131,7 @@ class UserController extends AbstractController
 
             }
         }
-        $this->get_errors($error);
+        //$this->get_errors($error);
     }
 
     /**
@@ -150,7 +157,7 @@ class UserController extends AbstractController
      */
     public function connect_user() {
 
-//        $error = null;
+        //$error = null;
 
         if (!empty($_POST)){
 
@@ -158,7 +165,7 @@ class UserController extends AbstractController
 
             if (empty($_POST['pseudo']) || empty($_POST['pass']))
             {
-                $this->errors['error'] = 7;
+                $errors = 7;
                 $validate = false;
             }
 
@@ -167,7 +174,7 @@ class UserController extends AbstractController
                 $user = $this->valid_pseudo($_POST['pseudo']);
 
                 if(!$user){
-                    $this->errors['error'] = 8;
+                    $errors = 8;
                 }
                 else {
                     $check_pass = password_verify($_POST['pass'], $user['pass']);
@@ -178,18 +185,20 @@ class UserController extends AbstractController
 
                         if($user['role'] === 1){
                             header('Location: /dashboard');
+                            exit();
                         }
                         elseif($user['role'] === 0){
                             header('Location: /dashboard');
+                            exit();
                         }
                     }
                     else{
-                        $this->errors['error'] = 9;
+                        $errors = 9;
                     }
                 }
             }
         }
-        $this->get_errors($this->errors);
+        //$this->get_errors($this->errors);
     }
 
     /**
@@ -337,7 +346,7 @@ class UserController extends AbstractController
 
         $pass = $this->form->inputs([
             'label' => 'Saissisez un mot de passe',
-            'name' => 'password',
+            'name' => 'pass',
             'placeholder' => 'Votre mot de passe',
             'type' => 'password'
         ]);
