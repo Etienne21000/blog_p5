@@ -13,134 +13,102 @@ use App\Core\User_role;
 
 $router = new Router($_GET['url']);
 
-//$_SESSION['id'] = 3;
-//$_SESSION['role'] = 0;
+$router->get('/dashboard', function(){
 
+    $controller = new MasterController();
 
-//if(isset($_SESSION) && $_SESSION['role'] === 1){
-    //$role->dispatche();
+    $controller->dashbord();
+});
 
-    $router->get('/dashboard', function(){
+$router->get('/create_user', function () {
 
-        $role = new User_role();
-        $controller = new MasterController();
+    $controller = new UserController();
 
-        $role->dispatch();
+    $controller->create_user_view();
+});
 
-//        if ($role === TRUE){
+$router->post('/add_user', function() {
 
-            $controller->dashbord();
-        /*}
-        elseif ($role === FALSE){
-            echo "interdit";
+    $controller = new UserController();
 
-            $controller->index();
+    $controller->create_user();
+});
 
-//            exit();
-        }
-        elseif (!$role)
-        {
-            echo "Vous devez vous connecter pour accéder à cette page";
-            exit();
-        }*/
+$router->get('/connect_user_view', function () {
 
+    $controller = new UserController();
 
+    $controller->connect_user_view();
+});
 
-    });
-//}
-//elseif(!isset($_SESSION) || $_SESSION['role'] === 0) {
-//    $role->dispatche();
+$router->post('/connect_user', function() {
 
-//if(!isset($role) || $role = 0) {
-    $router->get('/create_user', function () {
+    $controller = new UserController();
 
-        $controller = new UserController();
+    $controller->connect_user();
 
-        $controller->create_user_view();
-    });
+});
 
-    $router->post('/add_user', function() {
+$router->get('/', function () {
 
-        $controller = new UserController();
+    $controller = new MasterController();
 
-        $controller->create_user();
-    });
+    $controller->index();
+});
 
-    $router->get('/connect_user_view', function () {
+$router->get('/posts', function () {
 
-        $controller = new UserController();
+    $postController = new PostController();
 
-        $controller->connect_user_view();
-    });
+    $postController->read_all_posts();
 
-    $router->post('/connect_user', function() {
+});
 
-        $controller = new UserController();
+$router->get('/singlePost/{id}', function ($param) {
 
-        $controller->connect_user();
+    $postController = new PostController();
 
-    });
+    (int)$id = $param[0];
 
-    $router->get('/', function () {
+    $postController->get_single($id);
 
-        $controller = new MasterController();
+});
 
-        $controller->index();
-    });
+$router->get('/addPostForm', function () {
 
-    $router->get('/posts', function () {
+    $postController = new PostController();
 
-        $postController = new PostController();
+    $postController->create_post_view();
 
-        $postController->read_all_posts();
+});
 
-    });
+$router->post('/addPost', function () {
 
-    $router->get('/singlePost/{id}', function ($param) {
+    $postController = new PostController();
 
-        $postController = new PostController();
+    $postController->create_signle_post();
 
-        (int)$id = $param[0];
+});
 
-        $postController->get_single($id);
+$router->get('/downloadCV', function () {
 
-    });
+    $controller = new MasterController();
 
-    $router->get('/addPostForm', function () {
+    $controller->download_cv();
+});
 
-        $postController = new PostController();
+$router->get('/disconnect_user', function() {
 
-        $postController->create_post_view();
+    $controller = new UserController();
 
-    });
+    $controller->disconnect_user();
+});
 
-    $router->post('/addPost', function () {
+/*if (http_response_code() != '200') {
+    $router->get()
+    $controller = new MasterController();
 
-        $postController = new PostController();
+    $controller->error();
+}*/
 
-        $postController->create_signle_post();
-
-    });
-
-    $router->get('/downloadCV', function () {
-
-        $controller = new MasterController();
-
-        $controller->download_cv();
-    });
-
-    $router->get('/disconnect_user', function() {
-
-        $controller = new UserController();
-
-        $controller->disconnect_user();
-    });
-
-    $router->run();
-//}
-
-//$request = new ServerRequest('GET', '/posts');
-//
-//$response = $router->run(ServerRequest::fromGlobals());
-//
-//$response = $router->run($request);
+$router->run();

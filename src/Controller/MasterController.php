@@ -7,7 +7,7 @@ use App\Model\ImageManager;
 use App\Model\CommentManager;
 use App\Model\UserManager;
 use App\Model\Form;
-//use App\Core\User_role;
+use App\Core\User_role;
 
 class MasterController extends AbstractController
 {
@@ -27,7 +27,7 @@ class MasterController extends AbstractController
         $this->UserManager = new UserManager();
         $this->CommentManager = new CommentManager();
         $this->form = new Form();
-        //$this->user_role = new User_role();
+        $this->user_role = new User_role();
 
     }
 
@@ -82,58 +82,29 @@ class MasterController extends AbstractController
 
     Public function dashbord()
     {
-        //$this->user_role->dispatche();
+        $role = $this->user_role->dispatch();
         $msg = 'Hello';
-
-//        if(!empty($_SESSION))
-//        {
-//            $user_name = $_SESSION['pseudo'];
-//            $title = "bonjour $user_name";
-//        }
-//        else{
-//            $title = "Bonjour";
-//        }
-
         $title = "Bonjour ";
         $subTitle = 'Bienvenu sur mon blog';
         $count = $this->PostManager->testCount();
-
 //        var_dump($count);
 
-        $data = array(
-            'name' => $title,
-            'sub' => $subTitle
-        );
-
-        $this->render('back/index.html.twig', ['msg' => $msg, 'title' => $title, 'sub' => $subTitle, 'count' => $count]);
-
-    }
-
-    public function get_msg()
-    {
-        $msg = 'Hello';
-        $title = "Site web d'Etienne Juffard";
-        $subTitle = 'Bienvenu sur mon blog';
-        $count = $this->PostManager->testCount();
-
-        var_dump($count);
-
-//        $data = array(
-//            'msg' => $msg,
-//            'name' => $title,
-//                 'sub' => $subTitle
-//        );
-//
-//        $this->render('back/msg.html.twig', ['msg' => $msg, 'title' => $title, 'sub' => $subTitle, 'count' => $count]);
+        if($role === 1){
+            $this->render('back/index.html.twig', ['msg' => $msg, 'title' => $title, 'sub' => $subTitle, 'count' => $count]);
+        }
+        elseif ($role === 0){
+            $this->index();
+        }
+        elseif ($role === 2)
+        {
+            $this->acces_denied();
+        }
 
     }
 
-    /*public function count_all_posts()
-    {
-        $countPosts = $this->PostManager->count();
-
-        return $countPosts;
-    }*/
+    /**
+     * Method to download cv from home page
+     */
     public function download_cv() {
 
         $file = "cv.pdf";
@@ -153,20 +124,13 @@ class MasterController extends AbstractController
 
     }
 
-    public function error_view($error){
-//        $this->user_role->dispatche();
-        $title = "";
-        $error = "";
-        $msg = "";
+    /**
+     * Method to get error view
+     */
+    public function error(){
         if (http_response_code() != '200'){
-            $error = http_response_code();
-            $title = "Oups ! erreur $error";
-            $msg = "Une erreur $error s'est produite, vous ne pouvez pas accéder à cette page";
+            $this->error_view();
         }
-        else {
-
-        }
-
     }
 }
 

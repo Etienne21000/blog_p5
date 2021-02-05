@@ -198,14 +198,9 @@ class UserController extends AbstractController
      */
     public function disconnect_user()
     {
-        //$_SESSION = array();
         session_destroy();
 
-//        setcookie('pass', '');
-//        setcookie('hash_pass', '');
-
         header('Location: /');
-//        echo "coucou";
         exit();
     }
 

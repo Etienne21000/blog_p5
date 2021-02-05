@@ -6,6 +6,7 @@ use App\Model\PostManager;
 use App\Model\Form;
 use App\Model\Form_validation;
 use App\Model\Post;
+use App\Core\User_role;
 
 class PostController extends AbstractController
 {
@@ -14,6 +15,7 @@ class PostController extends AbstractController
     private $form_valid;
     private $post;
     private $count;
+    private $user_role;
 
     /**
      * PostController constructor.
@@ -23,10 +25,11 @@ class PostController extends AbstractController
         $this->manager = new PostManager();
         $this->form = new Form(array());
         $this->form_valid = new Form_validation();
+        $this->user_role = new User_role();
     }
 
     /**
-     *
+     * Method to get all posts
      */
     public function read_all_posts()
     {
@@ -42,22 +45,28 @@ class PostController extends AbstractController
     }
 
     /**
+     * Method to get single post by id
      * @param $id
      */
     public function get_single($id)
     {
+
         $post = $this->manager->get_single_post($id);
         $count = $this->manager->testCount();
         $subTitle = 'Retrouvez tous les posts du blog';
 
+
         $this->render('back/single_element.html.twig', ['post' => $post, 'sub' => $subTitle, 'count' => $count]);
+
     }
 
     /**
-     *
+     * Method to call the form to create a post
      */
     public function create_post_view()
     {
+        $role = $this->user_role->dispatch();
+
         $title = 'Ajouter un billet';
         $subTitle = 'Ce formulaire vous permet d\'ajouter un nouveau billet';
         $input = $this->form->inputs([
@@ -93,8 +102,13 @@ class PostController extends AbstractController
         ]);
 
 //        $count = $this->manager->count();
-
-        $this->render('back/add_form.html.twig', ['title' => $title, 'sub' => $subTitle, 'count' => $this->count, 'input' => $input, 'textarea' => $textarea, 'author' => $author, 'integer' => $integer, 'submit' => $submit]);
+        if($role === 1) {
+            $this->render('back/add_form.html.twig', ['title' => $title, 'sub' => $subTitle, 'count' => $this->count, 'input' => $input, 'textarea' => $textarea, 'author' => $author, 'integer' => $integer, 'submit' => $submit]);
+        }
+        elseif ($role === 0 || $role === 2)
+        {
+            $this->acces_denied();
+        }
     }
 
     public function create_signle_post($title, $content)
