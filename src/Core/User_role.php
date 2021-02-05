@@ -7,56 +7,53 @@ class User_role
 {
 
     private $user_id;
-    private $user_role;
+    private $role;
 
     /**
-     * User_role constructor.
-     */
-    public function __construct()
-    {
-        $this->user_id = $_SESSION['id'];
-        $this->user_role = $_SESSION['role'];
-    }
-
-    /**
+     * get user_role from session
      */
     public function get_role()
     {
-//        $this->user_id = $_SERVER['user_role'];
-//        $this->user_role = $_SERVER['user_role'];
-        return $user = [
-            'user_id' =>  $this->user_id,
-            'user_role' => $this->user_role,
-        ];
+        if(isset($_SESSION['user_id'])){
+            $this->user_id = $_SESSION['user_id'];
+            $this->user_role = $_SESSION['role'];
+            return $user = [
+                'user_id' =>  $this->user_id,
+                'user_role' => $this->role,
+            ];
+        }
+        else{
+            $this->user_id = NULL;
+            $this->user_role = NULL;
+            return $user = [
+                'user_id' =>  $this->user_id,
+                'user_role' => $this->role,
+            ];
+        }
+
     }
 
     /**
      *
      */
-    public function dispatche()
+    public function dispatch()
     {
-        $user = $this->get_role();
-        if($user['user_role'] != 1){
-            return $right = "Vous n'avez pas les droits pour accéder à cette page";
+        if(isset($_SESSION['user_id'])) {
+//            $user = $this->get_role();
+            if ($_SESSION['role'] === 0) {
+                echo "Vous n'avez pas les droits pour accéder à cette page";
+//                return FALSE;
+                exit();
+            } elseif($_SESSION['role'] === 1) {
+                echo "ok";
+//                return TRUE;
+                exit();
+            }
         }
         else{
-            echo "ok";
+            echo "Vous devez vous connecter pour accéder à cette page";
+//            return FALSE;
+            exit();
         }
-        /*if($user['user_role'] === 1){
-
-        }
-        elseif($user['user_role'] === 0)
-        {
-
-        }
-        else {
-
-        }*/
-
     }
-
-    public function need_admin_access(){
-
-    }
-
 }

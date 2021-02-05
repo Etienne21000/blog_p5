@@ -10,12 +10,11 @@ use \App\Controller\PostController;
 use App\Controller\UserController;
 use App\Core\User_role;
 
-$role = new User_role();
 
 $router = new Router($_GET['url']);
 
-$_SESSION['id'] = 3;
-$_SESSION['role'] = 0;
+//$_SESSION['id'] = 3;
+//$_SESSION['role'] = 0;
 
 
 //if(isset($_SESSION) && $_SESSION['role'] === 1){
@@ -23,9 +22,29 @@ $_SESSION['role'] = 0;
 
     $router->get('/dashboard', function(){
 
+        $role = new User_role();
         $controller = new MasterController();
 
-        $controller->dashbord();
+        $role->dispatch();
+
+//        if ($role === TRUE){
+
+            $controller->dashbord();
+        /*}
+        elseif ($role === FALSE){
+            echo "interdit";
+
+            $controller->index();
+
+//            exit();
+        }
+        elseif (!$role)
+        {
+            echo "Vous devez vous connecter pour accéder à cette page";
+            exit();
+        }*/
+
+
 
     });
 //}
@@ -69,18 +88,8 @@ $_SESSION['role'] = 0;
         $controller->index();
     });
 
-//    $router->get('/msg', function () {
-//
-//        $controller = new MasterController();
-//
-//        $controller->get_msg();
-//
-//    });
-
     $router->get('/posts', function () {
 
-//    $file = 'front/posts.html.twig';
-//
         $postController = new PostController();
 
         $postController->read_all_posts();
@@ -114,8 +123,17 @@ $_SESSION['role'] = 0;
     });
 
     $router->get('/downloadCV', function () {
+
         $controller = new MasterController();
+
         $controller->download_cv();
+    });
+
+    $router->get('/disconnect_user', function() {
+
+        $controller = new UserController();
+
+        $controller->disconnect_user();
     });
 
     $router->run();

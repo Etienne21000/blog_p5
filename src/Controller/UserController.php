@@ -81,14 +81,6 @@ class UserController extends AbstractController
 
             $validate = true;
 
-//            $user_val = [
-//              'pseudo' => $_POST['pseudo'],
-//              'mail' => $_POST['mail'],
-//              'confirm_mail' => $_POST['confirm_mail'],
-//              'pass' => $_POST['pass'],
-//              'confirm_pass' => $_POST['confirm_pass']
-//            ];
-
             if (empty($_POST['pseudo']) || strlen($_POST['pseudo']) > 20 || !preg_match("#^[a-zà-ùA-Z0-9-\s_-]+$#", $_POST['pseudo'])) {
                 $validate = false;
                 $error = 1;
@@ -179,7 +171,7 @@ class UserController extends AbstractController
                 else {
                     $check_pass = password_verify($_POST['pass'], $user['pass']);
                     if($check_pass){
-                        $_SESSION['id'] = $user['user_id'];
+                        $_SESSION['user_id'] = $user['user_id'];
                         $_SESSION['pseudo'] = $user['pseudo'];
                         $_SESSION['role'] = $user['role'];
 
@@ -199,6 +191,22 @@ class UserController extends AbstractController
             }
         }
         //$this->get_errors($this->errors);
+    }
+
+    /**
+     * method to disconnect user
+     */
+    public function disconnect_user()
+    {
+        //$_SESSION = array();
+        session_destroy();
+
+//        setcookie('pass', '');
+//        setcookie('hash_pass', '');
+
+        header('Location: /');
+//        echo "coucou";
+        exit();
     }
 
     /**

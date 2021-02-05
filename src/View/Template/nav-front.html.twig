@@ -9,14 +9,21 @@
                 <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#about">A propos</a></li>
                 <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#portfolio">Portfolio</a></li>
                 <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#contact">Contact</a></li>
-                <li class="nav-item"><a class="nav-link js-scroll-trigger" href="/create_user">
-                        {% if app.session.get('user_id')  %}
-                        {{ app.session('pseudo') }}
-                            <i class="fas fa-power-off"></i>
-                        {% else %}
+                <li class="nav-item user">
+                    {% if session.user_id  %}
+                    <a class="nav-link js-scroll-trigger" href="/dashboard">
+                    {{ session.pseudo }}
+                    </a>
+                    <a class="nav-link js-scroll-trigger" href="/disconnect_user">
+                        <i class="fas fa-power-off"></i>
+                    </a>
+                    {% else %}
+                    <a class="nav-link js-scroll-trigger" href="/create_user">
                         <i class="fas fa-user-circle"></i>
+                    </a>
                         {% endif %}
-                    </a></li>
+                </li>
+
             </ul>
         </div>
     </div>

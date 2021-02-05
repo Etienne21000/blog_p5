@@ -5,13 +5,27 @@
 {% block content %}
 
     <section class="home">
-        <h1 class="title-h1">{{ title }}</h1>
+        {#{% if session.user_id %}
+        <h1 class="title-h1">{{ title }} {{ session.pseudo }}</h1>
+        {% else %}
+            <h1 class="title-h1">{{ title }}</h1>
+        {% endif %}#}
+{#        {{ dump(session) }}#}
+        {{ session.pseudo }}
         <p>
-            {{ msg }}
+{#            {{ msg }}#}
+{#            {% if session.user.user_id  %}#}
+{#                {{ session.user.pseudo }}#}
+{#            {% else %}#}
+{#                Bonjour, <br>#}
+{#            {% endif %}#}
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque sit amet tortor sed lacus lacinia dictum nec eu arcu. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer eget eleifend libero. Cras cursus ultricies pellentesque. Vestibulum suscipit nisl augue, vel tempor orci accumsan nec. Curabitur vitae aliquam turpis. Quisque rutrum nisi sed neque convallis, id maximus enim ullamcorper. Aliquam eu orci finibus, volutpat nunc ut, volutpat dolor. Nam viverra viverra vestibulum.
         <br>
             Nunc nunc dui, vulputate non tempus et, pretium nec lectus. Vestibulum semper, augue vel pulvinar accumsan, ipsum neque faucibus leo, in aliquam sapien mauris at neque. Mauris eget nulla cursus, ultricies ipsum quis, sodales neque. Vivamus faucibus iaculis quam, ut lacinia mi porttitor sed. Aenean libero lacus, efficitur nec ullamcorper et, sagittis in orci. Etiam vel blandit nulla. Fusce pretium ex ac metus suscipit facilisis.
         </p>
+        <form action="/disconnect_user" method="get">
+            <button type="submit" id="submit_btn" class="btn btn-outline-primary">Deconnexion</button>
+        </form>
     </section>
 
 {% endblock %}

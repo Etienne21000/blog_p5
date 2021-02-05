@@ -85,7 +85,16 @@ class MasterController extends AbstractController
         //$this->user_role->dispatche();
         $msg = 'Hello';
 
-        $title = "Site web d'Etienne Juffard";
+//        if(!empty($_SESSION))
+//        {
+//            $user_name = $_SESSION['pseudo'];
+//            $title = "bonjour $user_name";
+//        }
+//        else{
+//            $title = "Bonjour";
+//        }
+
+        $title = "Bonjour ";
         $subTitle = 'Bienvenu sur mon blog';
         $count = $this->PostManager->testCount();
 
@@ -143,7 +152,7 @@ class MasterController extends AbstractController
         }
 
     }
-    
+
     public function error_view($error){
 //        $this->user_role->dispatche();
         $title = "";
