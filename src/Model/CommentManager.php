@@ -63,4 +63,53 @@ class CommentManager extends AbstractManager
         return $Comments;
     }
 
+    /**
+     * Method to get all comments listed bny post_id
+     */
+    public function get_all_commennts(){
+        $Comments = [];
+
+        $sql = 'SELECT c.*, u.*
+                FROM Comment AS c
+                LEFT JOIN User AS u
+                ON u.user_id = c.user_id
+                ORDER BY c.post_id 
+                DESC';
+
+        $req = $this->db->prepare($sql);
+
+        $req->execute();
+
+        while ($data = $req->fetch(\PDO::FETCH_ASSOC)){
+
+            $Comment = new Comment($data);
+
+            $Comments[] = $Comment;
+        }
+        return $Comments;
+    }
+
+    public function validate_comment(Comment $comment){
+        $sql = 'UPDATE Comment
+                SET status = 1
+                WHERE id = :id';
+
+        $req = $this->db->prepare($sql);
+
+        $req->bindValue(':id', $comment->id(), \PDO::PARAM_INT);
+
+        $req->execute();
+    }
+
+    public function delete_comment($id){
+        $sql = 'DELETE FROM Comment
+                WHERE id = :id';
+
+        $req = $this->db->prepare($sql);
+
+        $req->bindValue(':id', $id, \PDO::PARAM_INT);
+
+        $req->execute();
+    }
+
 }

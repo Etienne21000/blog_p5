@@ -74,10 +74,10 @@
                                             <a href="/addPostForm">Ajouter un billet</a>
                                         </li>
                                         <li>
-                                            <a href="/list-posts">Liste des billets <strong>({{ count }})</strong></a>
+                                            <a href="/list-posts">Billets publiés <strong>({{ count.published }})</strong></a>
                                         </li>
                                         <li>
-                                            <a href="/list-draft">Liste des brouillons</a>
+                                            <a href="/list-draft">Billets en brouillons <strong>({{ count.drafted }})</strong></a>
                                         </li>
                                     </ul>
                                 </div>
@@ -91,13 +91,11 @@
                                 <div class="sidebar-submenu">
                                     <ul>
                                         <li>
-                                            <a href="#">Liste des commentaires</a>
+                                            <a href="/all_comments">Tous les commentaires <strong>()</strong></a>
                                         </li>
+
                                         <li>
-                                            <a href="#">Signalés</a>
-                                        </li>
-                                        <li>
-                                            <a href="#">A valider</a>
+                                            <a href="#">Commentaires à valider <strong>()</strong></a>
                                         </li>
                                     </ul>
                                 </div>

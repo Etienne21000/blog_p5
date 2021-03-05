@@ -23,12 +23,15 @@
                 <div class="form-group">
                     {{ textarea|raw }}
                 </div>
-{#                <div class="form-group">#}
-{#                    {{ status|raw }}#}
-{#                </div>#}
+                <div class="form-group">
+                    {{ status|raw }}
+                </div>
 
                 <div class="form-group">
                     {{ submit|raw }}
+                </div>
+                <div class="form-group">
+                    {{ draft|raw }}
                 </div>
             </form>
 
@@ -39,7 +42,8 @@
             <h5>{{ sub }}</h5>
 
             <p class="title-form-update">
-                Cet article est modifié par {{ pseudo }}
+                Cet article est modifié par {{ pseudo }}<br>
+                Status actuel : {{ status_text }}
             </p>
 
             <form action="/updatePost/{{ id }}" method="POST">
@@ -52,14 +56,19 @@
                     {{ textarea|raw }}
                 </div>
 
-                {#<div class="form-group">
+                <div class="form-group">
                     {{ status|raw }}
-                </div>#}
+                </div>
 
                 <div class="form-group">
                     {{ submit|raw }}
                 </div>
+
+                <div class="form-group">
+                    {{ draft|raw }}
+                </div>
             </form>
+
         {% endif %}
     </section>
 

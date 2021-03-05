@@ -16,6 +16,12 @@
 
         <div class="update">
             <a href="/updatePostForm/{{ post.post_id }}" type="button" class="btn btn-success">Modifier</a>
+            <form method="POST" action="/draftPost/{{ post.post_id }}">
+                <button type="submit" class="btn btn-primary">Brouillon</button>
+            </form>
+            <form action="/deletePost/{{ post.post_id }}">
+                <button type="submit" class="btn btn-danger">Supprimer</button>
+            </form>
         </div>
 
     </section>

@@ -74,16 +74,26 @@ class MasterController extends AbstractController
         $this->render('front/home.html.twig', ['nom' => $nom, 'mail' => $mail, 'content' => $content, 'submit' => $submit, 'posts' => $posts, 'post_title' => $post_title, 'msg' => $msg, 'title' => $title, 'sub' => $subTitle]);
     }
 
+    private function count_posts(){
+        $count = [
+            'published' => $this->PostManager->count_posts('status = 1'),
+            'drafted' => $this->PostManager->count_posts('status = 0'),
+        ];
+
+        return $count;
+    }
+
     Public function dashbord()
     {
+        $count_post = $this->count_posts();
+
         $role = $this->user_role->dispatch();
         $msg = 'Hello';
         $title = "Bonjour ";
         $subTitle = 'Bienvenu sur mon blog';
-        $count = $this->PostManager->testCount();
 
         if($role === 1){
-            $this->render('back/index.html.twig', ['msg' => $msg, 'title' => $title, 'sub' => $subTitle, 'count' => $count]);
+            $this->render('back/index.html.twig', ['count' => $count_post, 'msg' => $msg, 'title' => $title, 'sub' => $subTitle]);
         }
         elseif ($role === 0){
             $this->index();

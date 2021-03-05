@@ -143,6 +143,23 @@ $router->post('/updatePost/{id}', function($param){
     $postController->update_post($post_id);
 });
 
+$router->post('/draftPost/{id}', function($param){
+
+    (int)$post_id = $param[0];
+
+    $postController = new PostController();
+
+    $postController->draft_post($post_id);
+});
+
+$router->get('/deletePost/{id}', function($param){
+    (int)$post_id = $param[0];
+
+    $postController = new PostController();
+
+    $postController->delete_post($post_id);
+});
+
 $router->post('/addComment/{id}', function($param){
 
     (int)$post_id = $param[0];
@@ -151,6 +168,32 @@ $router->post('/addComment/{id}', function($param){
 
     $comController->add_comment($post_id);
 
+});
+
+$router->get('/all_comments', function(){
+
+    $comController = new CommentController();
+
+    $comController->get_all();
+});
+
+$router->get('/validateComment/{id}', function($param){
+
+    (int)$id = $param[0];
+
+    $comController = new CommentController();
+
+    $comController->validate_com($id);
+
+});
+
+$router->get('/deleteComment/{id}', function($param){
+
+    (int)$id = $param[0];
+
+    $comController = new CommentController();
+
+    $comController->delete_com($id);
 });
 
 $router->get('/downloadCV', function () {

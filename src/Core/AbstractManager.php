@@ -228,11 +228,12 @@ abstract class AbstractManager
     }
 
     /**
+     * @param $param
      * @return int
      */
-    public function count(): int
+    public function count($param): int
     {
-        $this->select("COUNT(*)");
+        $this->select("COUNT(*)")->where($param);
         return $this->execute_query()->fetchColumn();
     }
 

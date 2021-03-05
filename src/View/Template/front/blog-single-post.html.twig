@@ -29,7 +29,6 @@
                 </div>
             </div>
 
-            {% if session.user_id %}
             <div class="comments">
                 <div class="container">
 
@@ -42,6 +41,7 @@
                     </a>
 
                     <div class="form-comment">
+                        {% if session.user_id %}
                         <form action="/addComment/{{ post.post_id }}" method="post" class="form-com-container">
                             <div class="form-group">
                                 {{ author | raw }}
@@ -55,13 +55,16 @@
                             <div class="form-group">
                                 {{ content | raw }}
                             </div>
-{#                            <div class="form-group">#}
-{#                                {{ content | raw }}#}
-{#                            </div>#}
+
                             <div class="form-group">
                                 {{ submit | raw }}
                             </div>
                         </form>
+                        {% else %}
+                            <p>
+                                {{ comment_text }}
+                            </p>
+                        {% endif %}
                     </div>
 
                     {% for comment in comments %}
@@ -84,8 +87,6 @@
 
                 </div>
             </div>
-
-            {% endif %}
 
         </article>
     </section>

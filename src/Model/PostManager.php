@@ -54,10 +54,14 @@ class PostManager extends AbstractManager
 
     }
 
-    public function testCount()
+    public function count_posts($param)
     {
-        return $this->from('Post', 'p')->count();
+        return $this->from('Post', 'p')->count($param);
     }
+
+    /*public function count_posts(){
+        $this->count();
+    }*/
 
     /**
      * @param $id
@@ -88,29 +92,51 @@ class PostManager extends AbstractManager
     public function create_post(Post $post)
     {
         $sql = 'INSERT INTO Post(title, content, creation_date, status, user_id)
-        VALUES(:title, :content, NOW(), 0, :user_id)';
+        VALUES(:title, :content, NOW(), :status, :user_id)';
 
         $req = $this->db->prepare($sql);
 
         $req->bindValue(':title', $post->title());
         $req->bindValue(':content', $post->content());
-        //$req->bindValue(':status', $post->status());
+        $req->bindValue(':status', $post->status());
         $req->bindValue(':user_id', $post->user_id(), \PDO::PARAM_INT);
 
         $req->execute();
     }
 
     public function update_post(Post $post){
-        $sql = 'UPDATE Post SET title = :title, content = :content, edition_date = NOW()
+        $sql = 'UPDATE Post SET title = :title, content = :content, edition_date = NOW(), status = :status
                 WHERE post_id = :post_id';
 
         $req = $this->db->prepare($sql);
 
         $req->bindValue(':title', $post->title());
         $req->bindValue(':content', $post->content());
-//        $req->bindValue(':status', $post->status());
+        $req->bindValue(':status', $post->status());
         $req->bindValue(':post_id', $post->post_id(), \PDO::PARAM_INT);
-//        $req->bindValue(':user_id', $post->user_id(), \PDO::PARAM_INT);
+
+        $req->execute();
+    }
+
+    public function drafting(Post $post){
+        $sql = 'UPDATE Post SET status = 0
+                WHERE post_id = :post_id';
+
+        $req = $this->db->prepare($sql);
+
+//        $req->bindValue(':status', $post->status(), \PDO::PARAM_INT);
+        $req->bindValue('post_id', $post->post_id(), \PDO::PARAM_INT);
+
+        $req->execute();
+    }
+
+    public function delete($post_id){
+        $sql = 'DELETE FROM Post
+                WHERE post_id = :post_id';
+
+        $req = $this->db->prepare($sql);
+
+        $req->bindValue(':post_id', $post_id, \PDO::PARAM_INT);
 
         $req->execute();
     }

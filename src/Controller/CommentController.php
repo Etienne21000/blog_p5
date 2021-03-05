@@ -69,7 +69,7 @@ class CommentController extends AbstractController
                 $error = 2;
             }*/
 
-            if (empty($_POST['content'])) {
+            if (empty($_POST['content']) || strlen($_POST['content']) > 500) {
                 $validate = false;
                 $error = 3;
             }
@@ -78,9 +78,39 @@ class CommentController extends AbstractController
 
                 $this->create_comment($_POST['user_id'], $_POST['title'], $_POST['content'], $_POST['post_id']);
 
-                header('Location: /list-posts');
+                header('Location: /singlePost/'.$_POST['post_id']);
             }
         }
+    }
+
+    public function get_all(){
+
+        $role = $this->user_role->dispatch();
+
+        $Comments = $this->manager->get_all_commennts();
+        $title = "Liste de tous les commentaires postés";
+        $sub = "Vous pouvez valider ou supprimer les commentaires avant leur publication sur le site";
+
+        if($role == 1){
+            $this->render('back/all_comments_view.html.twig',['comments' => $Comments, 'title' => $title, 'sub' => $sub]);
+
+        }elseif ($role == 2 || $role == 0){
+            $this->acces_denied();
+        }
+
+    }
+
+    public function validate_com($id){
+        $this->comment->setId($id);
+        $this->manager->validate_comment($this->comment);
+
+        header('Location: /all_comments');
+    }
+
+    public function delete_com($id){
+        $this->manager->delete_comment($id);
+
+        header('Location: /all_comments');
     }
 
 }

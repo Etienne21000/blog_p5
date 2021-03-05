@@ -11,7 +11,7 @@
             <h5>{{ sub }}</h5>
 
              <p class="title-form-update">
-                 Cet article est modifié par {{ pseudo }}
+                 Cet article est modifié par {{ pseudo }} <br>
              </p>
 {#        {% for data in post %}#}
 
@@ -31,6 +31,9 @@
 
                 <div class="form-group">
                     {{ submit|raw }}
+                </div>
+                <div class="form-group">
+                    {{ draft || raw }}
                 </div>
             </form>
 {#        {% endfor %}#}

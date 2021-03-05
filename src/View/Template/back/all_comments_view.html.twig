@@ -1,0 +1,56 @@
+{% extends 'baseBO.html.twig' %}
+
+{% block title %} {{ title }} {% endblock %}
+
+{% block content %}
+    <section class="home">
+        <h1 class="title-h1">{{ title }}</h1>
+
+        <h5>{{ sub }}</h5>
+
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">Titre</th>
+                <th scope="col">Contenu</th>
+                <th scope="col">Status</th>
+                <th scope="col">Auteur</th>
+                <th scope="col">Action</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            {% for comment in comments %}
+                <tr>
+                    <td>{{ comment.title }}</td>
+                    <td>{{ comment.content }}</td>
+
+                    <td class="status-icon">
+                        {% if comment.status == 1 %}
+                            <i class="fas fa-check-circle"></i>
+
+                        {% elseif comment.status == 0 %}
+                            <i class="fas fa-edit"></i>
+
+                        {% endif %}
+                    </td>
+
+                    <td>{{ comment.pseudo }}</td>
+
+                    <th>
+                        {% if comment.status == 0 %}
+                        <a href="/validateComment/{{ comment.id }}" title="valider le commentaire">
+                            <i class="fas fa-check"></i>
+                        </a>
+                        {% endif %}
+                        <a href="/deleteComment/{{ comment.id }}" title="supprimer le commentaire">
+                            <i class="fas fa-trash-alt"></i>
+                        </a>
+
+                    </th>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </section>
+{% endblock %}

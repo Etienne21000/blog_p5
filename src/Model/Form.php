@@ -110,8 +110,12 @@ class Form
                     <option value="'.$this->value.'">'. $this->text .'</option>
                     </'.$this->field.'>');
                 break;
+            case 'checkbox':
+                return $this->surround('<label for="' .$this->name. '">'.$this->label.'</label><br>
+                <'.$this->field.' type="'.$this->type.'" id="'.$this->name.'" name="'.$this->name.'"' .$this->name. '">');
+                break;
             case 'button':
-                return $this->surround('<'.$this->field.' type="'.$this->type.'" class="btn '.$this->class.'">'.$this->placeholder.'</'.$this->field.'>');
+                return $this->surround('<'.$this->field.' type="'.$this->type.'" name="'.$this->name.'" value="'.$this->value.'" class="btn '.$this->class.'">'.$this->placeholder.'</'.$this->field.'>');
                 break;
         }
     }
