@@ -16,7 +16,6 @@ class CommentController extends AbstractController
     private $form;
     private $form_valid;
     private $comment;
-    private $count;
     private $user_role;
     private $postManager;
 
@@ -54,31 +53,30 @@ class CommentController extends AbstractController
      */
     public function add_comment($post_id){
 
-        $post_id = $this->postManager->get_single_post($post_id);
+        $post = $_POST;
+        $title = $_POST['title'];
+        $content = $_POST['content'];
+        $user_id = $_POST['user_id'];
+        $post_id = $_POST['post_id'];
 
-        if(!empty($_POST)){
+        if(!empty($post)){
             $validate = true;
 
-            if (empty($_POST['title']) || strlen($_POST['title']) > 80) {
+            if (empty($title) || strlen($title) > 80) {
                 $validate = false;
                 $error = 1;
             }
 
-            /*if (empty($_GET['post_id'])) {
-                $validate = false;
-                $error = 2;
-            }*/
-
-            if (empty($_POST['content']) || strlen($_POST['content']) > 500) {
+            if (empty($content) || strlen($content) > 500) {
                 $validate = false;
                 $error = 3;
             }
 
             if($validate){
 
-                $this->create_comment($_POST['user_id'], $_POST['title'], $_POST['content'], $_POST['post_id']);
+                $this->create_comment($user_id, $title, $content, $post_id);
 
-                header('Location: /singlePost/'.$_POST['post_id']);
+                header('Location: /singlePost/'.$post_id);
             }
         }
     }

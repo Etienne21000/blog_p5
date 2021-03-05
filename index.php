@@ -153,6 +153,7 @@ $router->post('/draftPost/{id}', function($param){
 });
 
 $router->get('/deletePost/{id}', function($param){
+
     (int)$post_id = $param[0];
 
     $postController = new PostController();
