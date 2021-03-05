@@ -59,23 +59,30 @@ class CommentController extends AbstractController
         $user_id = $_POST['user_id'];
         $post_id = $_POST['post_id'];
 
+        unset($_SESSION['error']);
+
         if(!empty($post)){
             $validate = true;
 
-            if (empty($title) || strlen($title) > 80) {
+            if (empty($title) || strlen($title) > 40) {
                 $validate = false;
-                $error = 1;
+                $error = 'Attention le contenu de votre titre est trop long';
             }
 
             if (empty($content) || strlen($content) > 500) {
                 $validate = false;
-                $error = 3;
+                $error = 'Attention le contenu de votre commentaire est trop long';
             }
+
+            $_SESSION['error'] = $error;
 
             if($validate){
 
                 $this->create_comment($user_id, $title, $content, $post_id);
 
+                header('Location: /singlePost/'.$post_id);
+            }
+            else{
                 header('Location: /singlePost/'.$post_id);
             }
         }

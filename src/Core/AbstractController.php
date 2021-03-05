@@ -30,6 +30,7 @@ abstract class AbstractController
         $this->twig->addGlobal('get', $_GET);
         $this->twig->addExtension(new DebugExtension());
         $this->twig->addGlobal('session', $_SESSION);
+//        $this->twig->addGlobal('error', $error);
 
         try{
             echo $this->twig->render($view, $params);

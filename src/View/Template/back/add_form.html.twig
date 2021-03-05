@@ -11,6 +11,12 @@
 
             <h5>{{ sub }}</h5>
 
+            {% if session.error != '' %}
+                <div class="alert alert-danger" role="alert">
+                    {{ session.error }}
+                </div>
+            {% endif %}
+
             <form action="/addPost" method="POST">
                 <div class="form-group">
                     {{ author|raw }}
@@ -40,6 +46,12 @@
             <h1 class="title-h1">{{ title }}</h1>
 
             <h5>{{ sub }}</h5>
+
+            {% if session.error != '' %}
+                <div class="alert alert-danger" role="alert">
+                    {{ session.error }}
+                </div>
+            {% endif %}
 
             <p class="title-form-update">
                 Cet article est modifié par {{ pseudo }}<br>

@@ -36,12 +36,21 @@
                         Les derniers commentaires
                     </h4>
 
+{#                    {% for error in session.error %}#}
+                        {% if session.error != '' %}
+                            <div class="alert alert-danger" role="alert">
+                                {{ session.error }}
+                            </div>
+                        {% endif %}
+{#                    {% endfor %}#}
+
                     <a href="" class="add-com">
                         Ajouter un commentaire <i class="fas fa-edit"></i>
                     </a>
 
                     <div class="form-comment">
                         {% if session.user_id %}
+
                         <form action="/addComment/{{ post.post_id }}" method="post" class="form-com-container">
                             <div class="form-group">
                                 {{ author | raw }}

@@ -5,100 +5,49 @@ use App\Model\Form;
 
 class Form_validation
 {
-    private $errors = [];
-    private $valid;
-    private $string;
-    private $post_values = [];
-    private $int;
-    private $title;
-    private $pseudo;
+//    private $title_length;
+//    private $title_empty;
+//    private $content_length;
+//    private $content_empty;
 
-    public function get_error($field)
-    {
-        return isset($this->errors[$field]) ? $this->errors['field'] : '';
-    }
+    /*private function set_errors(){
+        $set_errors = [];
+        $this->title_length = 'Attention le contenu de votre titre est trop long';
+        $this->title_empty = 'Attention vous devez renseigner un titre';
+        $this->content_length = 'Aucun identifiant valide pour cet utilisateur';
+        $this->content_empty = 'Attention le contenu de votre article est vide';
 
-    public function set_errors(array $errors)
-    {
-        $this->errors = $errors;
-        foreach ($_POST as $name => $value) {
-            $this->errors = [
-                'length' => "Le champ est invalide, $name <br> Vous devez saisir au moins deux caractères <br>",
-                'empty' => "Le champ $name ne peut pas être vide <br>",
-            ];
+        $set_errors[] = $this->title_length;
+        $set_errors[] = $this->title_empty;
+        $set_errors[] = $this->content_length;
+
+        return $set_errors;
+    }*/
+
+    public function get_errors($err){
+
+        $errors = [
+            1 => 'Attention le contenu de votre titre est trop long',
+            2 => 'Attention vous devez renseigner un titre',
+            3 => 'Aucun identifiant valide pour cet utilisateur',
+            4 => 'Attention le contenu de votre article est vide',
+        ];
+
+        if($_SESSION['error']){
+            unset($_SESSION['error']);
         }
 
-        return $this->errors;
-    }
+        $_SESSION['error'] = $err;
 
-    public function set_valid($valid)
-    {
-        $this->valid = $valid;
-        foreach ($_POST as $name => $value) {
-            return "Le champ $name est valide : $value <br>";
-        }
+        $error = $err;
 
-        return $this->valid;
-    }
+        foreach ($errors as $key => $value){
+            if($key == $error){
 
-    public function validate()
-    {
-        if(isset($_POST))
-        {
-            $this->check_string($this->string);
-//            $this->check_int($this->param);
-        }
-    }
+                $resp = $value;
+                unset($_SESSION['error']);
 
-//    private function post_values(array $post_values)
-//    {
-//        $this->post_values = $post_values;
-//        $this->post_values = [
-//            'string' => array(
-//                'title' => $_POST['title'],
-//                'pseudo' => $_POST['pseudo'],
-//                'content' => $_POST['content'],
-//            ),
-//
-//            'int' => array(
-//                'integer' => $_POST['integer'],
-//            )
-//        ];
-//        return $post_values;
-//    }
-
-    private function check_string($string)
-    {
-        $this->string = (string)$string;
-        $errors = $this->set_errors($this->errors);
-        $valid = $this->set_valid($this->valid);
-
-        foreach ($_POST as $name => $value)
-        {
-            if (strlen($value) <= 2 && !empty($value)) {
-                echo $errors['length'];
-            } elseif (empty($value)) {
-                echo $errors['empty'];
-            } else {
-                echo $valid;
-            }
-        }
-    }
-
-    private function check_int($param)
-    {
-        $this->param = is_numeric($param);
-
-        foreach ($_POST as $name => $value)
-        {
-            if(ctype_digit($value))
-            {
-                echo "Le champ $name est invalide, <br> Il doit s'agir d'un nombre <br>";
-            }
-
-            if(empty($value))
-            {
-                echo "Le champ $name ne peut pas être vide <br>";
+                $_SESSION['error'] = $resp;
             }
         }
     }

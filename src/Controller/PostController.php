@@ -51,7 +51,6 @@ class PostController extends AbstractController
     {
         $count_post = $this->count_posts();
 
-        $param = 'status = 1';
         $posts = $this->manager->get_all_posts($where);
 
         $title = "Tous les posts";
@@ -211,7 +210,6 @@ class PostController extends AbstractController
 
         $role = $this->user_role->dispatch();
         $param = "update";
-        //$status_text = "";
 
         $title = 'Mettre à jour l\'article';
         $subTitle = 'Ce formulaire vous permet de modifier votre article';
@@ -228,7 +226,6 @@ class PostController extends AbstractController
         $input = $this->form->inputs([
             'label' => 'Mon titre',
             'name' => 'title',
-            //'placeholder' => $this->post_values['title'],
             'type' => 'text',
             'class' => 'input-title',
             'value' => $post->title(),
@@ -298,45 +295,57 @@ class PostController extends AbstractController
 
     public function create_post(){
 
-        if(!empty($_POST)){
+        $status = $_POST['status'];
+        $post = $_POST;
+        $title = $_POST['title'];
+        $content = $_POST['content'];
+        $user_id = $_POST['user_id'];
+        $submit = $_POST['submit'];
 
-            $status = $_POST['status'];
+        if(!empty($post)){
 
             $validate = true;
 
-            if (empty($_POST['title']) || strlen($_POST['title']) > 80) {
+            if (strlen($title) > 80) {
                 $validate = false;
                 $error = 1;
             }
 
-            if (empty($_POST['user_id'])) {
+            if(empty($title)){
                 $validate = false;
                 $error = 2;
             }
 
-            if (empty($_POST['content'])) {
+            if (empty($user_id)) {
                 $validate = false;
                 $error = 3;
             }
 
+            if (empty($content)) {
+                $validate = false;
+                $error = 4;
+            }
+
+            $this->form_valid->get_errors($error);
+
             if($validate){
 
-                if($_POST['submit'] == 'brouillon'){
+                if($submit == 'brouillon'){
                     $status = 0;
                 }
-                elseif ($_POST['submit'] == 'add'){
+                elseif ($submit == 'add'){
                     $status = 1;
                 }
 
-                $this->add_post($_POST['title'], $_POST['content'], $_POST['user_id'], $status);
+                $this->add_post($title, $content, $user_id, $status);
 
                 header('Location: /list-posts');
             }
             else{
-                $error = 5;
+                header('Location: /addPostForm');
+//                return $err;
             }
         }
-
     }
 
     private function post_update($title, $content, $post_id, $status){
