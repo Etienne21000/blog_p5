@@ -36,6 +36,22 @@
       }
     }
   }
+  /*#about{
+    .container{
+      .row{
+        .col-lg-8{
+          max-width: 100%;
+          width: 100%;
+          flex: 100%;
+          .last-post-container{
+            .post-wrapper{
+
+            }
+          }
+        }
+      }
+    }
+  }*/
   #services {
     display: flex;
     flex-direction: column;
@@ -56,10 +72,13 @@
   #about {
     .container {
       .text-center {
+        max-width: 100%;
+        width: 100%;
+        flex: 100%;
         .last-post-container {
           justify-content: space-around;
           .post-wrapper {
-            flex: 0 0 40%;
+            flex: 0 0 30%;
             max-width: 40%;
             background-color: #ffffff;
             margin: 0 10px 0 10px;

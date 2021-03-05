@@ -323,6 +323,7 @@ class UserController extends AbstractController
             'field' => 'button',
             'type' => 'submit',
             'placeholder' => 'Créer',
+            'class' => 'btn-primary',
         ]);
 
         $this->render('front/user_form.html.twig', ['error' => $error, 'param' => $param, 'title' => $title, 'sub' => $subTitle, 'pseudo' => $pseudo, 'mail' => $mail, 'confirm_mail' => $confirm_mail, 'pass' => $pass, 'confirm_pass' => $confirm_pass, 'submit' => $submit]);
@@ -358,6 +359,7 @@ class UserController extends AbstractController
             'field' => 'button',
             'type' => 'submit',
             'placeholder' => 'Créer',
+            'class' => 'btn-primary',
         ]);
 
         $this->render('front/user_form.html.twig', ['error' => $error, 'param' => $param, 'title' => $title, 'sub' => $subTitle, 'pseudo' => $pseudo, 'pass' => $pass, 'submit' => $submit]);

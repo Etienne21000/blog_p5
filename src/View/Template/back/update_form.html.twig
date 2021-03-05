@@ -1,0 +1,39 @@
+{% extends 'baseBO.html.twig' %}
+
+{% block title %} {{ title }} {% endblock %}
+
+{% block content %}
+
+    <section class="home">
+
+            <h1 class="title-h1">{{ title }}</h1>
+
+            <h5>{{ sub }}</h5>
+
+             <p class="title-form-update">
+                 Cet article est modifié par {{ pseudo }}
+             </p>
+{#        {% for data in post %}#}
+
+            <form action="/updatePost/{{ id }}" method="POST">
+
+                <div class="form-group">
+                    {{ input|raw }}
+                </div>
+
+                <div class="form-group">
+                    {{ textarea|raw }}
+                </div>
+
+                <div class="form-group">
+                    {{ status|raw }}
+                </div>
+
+                <div class="form-group">
+                    {{ submit|raw }}
+                </div>
+            </form>
+{#        {% endfor %}#}
+    </section>
+
+{% endblock %}

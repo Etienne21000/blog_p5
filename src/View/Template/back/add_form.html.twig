@@ -5,32 +5,62 @@
 {% block content %}
 
     <section class="home">
-    <h1 class="title-h1">{{ title }}</h1>
+        {% if param == 'create' %}
 
-    <h5>{{ sub }}</h5>
+            <h1 class="title-h1">{{ title }}</h1>
 
-        <form action="/addPost" method="POST">
-            <div class="form-group">
-                {{ input|raw }}
-                <small class="form-text text-muted">Choisissez bien le titre de votre post !</small>
-            </div>
-            <div class="form-group">
-                {{ author|raw }}
-            </div>
-            <div class="form-group">
-                {{ integer|raw }}
-            </div>
-            <div class="form-group">
-                {{ textarea|raw }}
-            </div>
+            <h5>{{ sub }}</h5>
 
-            <div class="form-group">
-{#                <input type="hidden" name="pseudo" value="">#}
-                {{ submit|raw }}
-            </div>
-        </form>
+            <form action="/addPost" method="POST">
+                <div class="form-group">
+                    {{ author|raw }}
+                </div>
+                <div class="form-group">
+                    {{ input|raw }}
+                    <small class="form-text text-muted">Choisissez bien le titre de votre post !</small>
+                </div>
 
+                <div class="form-group">
+                    {{ textarea|raw }}
+                </div>
+{#                <div class="form-group">#}
+{#                    {{ status|raw }}#}
+{#                </div>#}
 
+                <div class="form-group">
+                    {{ submit|raw }}
+                </div>
+            </form>
+
+        {% elseif param == 'update' %}
+
+            <h1 class="title-h1">{{ title }}</h1>
+
+            <h5>{{ sub }}</h5>
+
+            <p class="title-form-update">
+                Cet article est modifié par {{ pseudo }}
+            </p>
+
+            <form action="/updatePost/{{ id }}" method="POST">
+
+                <div class="form-group">
+                    {{ input|raw }}
+                </div>
+
+                <div class="form-group">
+                    {{ textarea|raw }}
+                </div>
+
+                {#<div class="form-group">
+                    {{ status|raw }}
+                </div>#}
+
+                <div class="form-group">
+                    {{ submit|raw }}
+                </div>
+            </form>
+        {% endif %}
     </section>
 
 {% endblock %}

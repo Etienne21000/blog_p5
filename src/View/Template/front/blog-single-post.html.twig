@@ -1,0 +1,93 @@
+{% extends 'base-template.html.twig' %}
+
+{% block title %} {{ name }} {% endblock %}
+
+{% block header %}
+    {% include('header-pages.html.twig') %}
+{% endblock %}
+
+{% block content %}
+
+    <section class="page-section contact-section" id="contact">
+        <article class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 text-center">
+                    <h2 class="mt-0">{{ post.title }}</h2>
+                    <hr class="divider my-4" />
+
+                    {# Ajouter une condition pour la date de modification du post#}
+
+                    <p class="text-muted mb-5">
+                        Publié par {{ post.pseudo }} <br>
+                        Le {{ post.creationDate }}
+                    </p>
+                </div>
+                <div class="content">
+                    <p>
+                        {{ post.content }}
+                    </p>
+                </div>
+            </div>
+
+            {% if session.user_id %}
+            <div class="comments">
+                <div class="container">
+
+                    <h4 class="comment-title">
+                        Les derniers commentaires
+                    </h4>
+
+                    <a href="" class="add-com">
+                        Ajouter un commentaire <i class="fas fa-edit"></i>
+                    </a>
+
+                    <div class="form-comment">
+                        <form action="/addComment/{{ post.post_id }}" method="post" class="form-com-container">
+                            <div class="form-group">
+                                {{ author | raw }}
+                            </div>
+                            <div class="form-group">
+                                {{ title | raw }}
+                            </div>
+                            <div class="form-group">
+                                {{ post_id | raw }}
+                            </div>
+                            <div class="form-group">
+                                {{ content | raw }}
+                            </div>
+{#                            <div class="form-group">#}
+{#                                {{ content | raw }}#}
+{#                            </div>#}
+                            <div class="form-group">
+                                {{ submit | raw }}
+                            </div>
+                        </form>
+                    </div>
+
+                    {% for comment in comments %}
+
+                    <div class="comment-container">
+
+                        <div class="com-title">
+                            {{ comment.title }}
+                        </div>
+                        <div class="com-content">
+                            {{ comment.content }}
+                        </div>
+                        <p class="pseudo">
+                            Ajouté par {{ comment.pseudo }} <br>
+                            Le {{ comment.creationDate }}
+                        </p>
+                    </div>
+
+                    {% endfor %}
+
+                </div>
+            </div>
+
+            {% endif %}
+
+        </article>
+    </section>
+
+{% endblock %}

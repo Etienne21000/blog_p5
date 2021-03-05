@@ -1,4 +1,5 @@
-@import "front_index.scss";
-@import "front-nav.scss";
-@import "front_posts.scss";
-@import "user_form.scss";
+@import "_front_index";
+@import "_front-nav";
+@import "_front_posts";
+@import "_user_form";
+@import "single_post";

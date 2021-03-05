@@ -1,10 +1,10 @@
 <?php
 namespace App\Core;
 
-use GuzzleHttp\Psr7\Response;
-use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Message\ResponseInterface;
-use function Http\Response\send;
+//use GuzzleHttp\Psr7\Response;
+//use Psr\Http\Message\ServerRequestInterface;
+//use Psr\Http\Message\ResponseInterface;
+//use function Http\Response\send;
 
 class App
 {

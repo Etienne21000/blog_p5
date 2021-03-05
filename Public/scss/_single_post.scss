@@ -1,0 +1,34 @@
+.container{
+
+  .comments{
+    .container{
+      h4{
+
+      }
+      .add-com{
+
+      }
+      .form-comment{
+        display: none;
+      }
+
+      .comment-container{
+        margin-top: 20px;
+        border-bottom: 1px solid #999;
+        //padding: 5px 0 2px 10px;
+        width: 500px;
+        .pseudo{
+          margin-top: 5px;
+          font-size: 14px;
+          color: #555;
+        }
+        .com-title{
+          font-weight: 700;
+        }
+        .com-content{
+
+        }
+      }
+    }
+  }
+}

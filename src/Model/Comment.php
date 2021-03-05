@@ -13,6 +13,7 @@ class Comment extends Entity
     private $update_date;
     private $status;
     private $parent_id;
+    private $pseudo;
 
     public function __construct(array $data)
     {
@@ -68,6 +69,14 @@ class Comment extends Entity
         $this->parent_id = (int)$parent_id;
     }
 
+    /**
+     * @param $pseudo
+     */
+    public function setPseudo($pseudo)
+    {
+        $this->pseudo = (string)$pseudo;
+    }
+
     /**************************************
      *************** Getters **************
      **************************************/
@@ -115,5 +124,13 @@ class Comment extends Entity
     public function parent_id()
     {
         return $this->parent_id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function pseudo()
+    {
+        return $this->pseudo;
     }
 }

@@ -3,6 +3,7 @@ namespace App\Model;
 
 use App\Core\AbstractManager;
 use \PDO;
+use Twig\Error\Error;
 
 class PostManager extends AbstractManager
 {
@@ -18,19 +19,39 @@ class PostManager extends AbstractManager
     }
 
     /**
+     * @param int $where
+     * @param int $start
+     * @param int $limit
      * @return array
      */
-    public function get_all_posts()
+    public function get_all_posts($where, $start =-1, $limit=-1)
     {
-        $this->select('p.*', 'u.*')
-            ->from('Post', 'p')
-            ->join('User as u', 'u.id = p.user_id')
-            ->order('p.creation_date DESC')
-            ->limit('0', '3');
+        $posts = [];
 
-        $posts = $this->resp(Post::class);
+        $sql = 'SELECT p.*, u.* 
+                FROM Post AS p
+                LEFT JOIN User AS u 
+                ON u.user_id = p.user_id
+                WHERE p.status = :status
+                ORDER BY p.creation_date';
+
+        if($start !=-1 && $limit !=-1){
+            $sql.= ' LIMIT '. (int)$limit.' OFFSET '.(int)$start;
+        }
+
+            $req = $this->db->prepare($sql);
+
+            $req->bindValue(':status', $where, \PDO::PARAM_INT);
+
+            $req->execute();
+
+            while ($data = $req->fetch(\PDO::FETCH_ASSOC)) {
+                $post = new Post($data);
+                $posts[] = $post;
+            }
 
         return $posts;
+
     }
 
     public function testCount()
@@ -48,7 +69,7 @@ class PostManager extends AbstractManager
         $id = $segment[2];
         $this->select()
             ->from('Post', 'p')
-            ->join('User as u', 'u.id = p.user_id')
+            ->join('User as u', 'u.user_id = p.user_id')
             ->params([':id' => $id])
             ->where('p.post_id = :id');
 
@@ -66,14 +87,31 @@ class PostManager extends AbstractManager
 
     public function create_post(Post $post)
     {
-        $sql = 'INSERT INTO post(title, content, creation_date)
-        VALUES(:title, :content, NOW())';
+        $sql = 'INSERT INTO Post(title, content, creation_date, status, user_id)
+        VALUES(:title, :content, NOW(), 0, :user_id)';
+
         $req = $this->db->prepare($sql);
 
         $req->bindValue(':title', $post->title());
         $req->bindValue(':content', $post->content());
+        //$req->bindValue(':status', $post->status());
+        $req->bindValue(':user_id', $post->user_id(), \PDO::PARAM_INT);
 
         $req->execute();
+    }
 
+    public function update_post(Post $post){
+        $sql = 'UPDATE Post SET title = :title, content = :content, edition_date = NOW()
+                WHERE post_id = :post_id';
+
+        $req = $this->db->prepare($sql);
+
+        $req->bindValue(':title', $post->title());
+        $req->bindValue(':content', $post->content());
+//        $req->bindValue(':status', $post->status());
+        $req->bindValue(':post_id', $post->post_id(), \PDO::PARAM_INT);
+//        $req->bindValue(':user_id', $post->user_id(), \PDO::PARAM_INT);
+
+        $req->execute();
     }
 }

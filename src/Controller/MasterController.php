@@ -21,29 +21,23 @@ class MasterController extends AbstractController
 
     public function __construct()
     {
-
         $this->PostManager = new PostManager();
         $this->ImageManager = new ImageManager();
         $this->UserManager = new UserManager();
         $this->CommentManager = new CommentManager();
         $this->form = new Form();
         $this->user_role = new User_role();
-
     }
 
     public function index()
     {
-        $posts = $this->PostManager->get_all_posts();
+        $posts = $this->PostManager->get_all_posts($where = 1, $start = 0, $limit = 3);
 
         $msg = 'Hello world';
 
         $title = "Etienne Juffard";
         $subTitle = 'Développeur web php / symfony sans oublier le front !';
         $post_title = "Retrouvez les derniers articles";
-        /*$data = array(
-            'name' => $title,
-            'sub' => $subTitle
-        );*/
 
         $nom = $this->form->inputs([
             'label' => 'Votre nom*',
@@ -87,7 +81,6 @@ class MasterController extends AbstractController
         $title = "Bonjour ";
         $subTitle = 'Bienvenu sur mon blog';
         $count = $this->PostManager->testCount();
-//        var_dump($count);
 
         if($role === 1){
             $this->render('back/index.html.twig', ['msg' => $msg, 'title' => $title, 'sub' => $subTitle, 'count' => $count]);
@@ -128,9 +121,9 @@ class MasterController extends AbstractController
      * Method to get error view
      */
     public function error(){
-        if (http_response_code() != '200'){
+        //if (http_response_code() != '200'){
             $this->error_view();
-        }
+//        }
     }
 }
 

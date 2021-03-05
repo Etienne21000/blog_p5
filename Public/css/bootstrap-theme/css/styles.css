@@ -10058,6 +10058,18 @@ hr.light {
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
     background-color: #fff;
   }
+  #secNav{
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    background-color: #fff;
+  }
+  #secNav.navbar-scrolled .navbar-brand{
+    color: #212529;
+    font-weight: 700;
+  }
+  #secNav.navbar-scrolled .navbar-nav .nav-item .nav-link {
+    color: #212529;
+    font-weight: 700;
+  }
   #mainNav.navbar-scrolled .navbar-brand {
     color: #212529;
   }

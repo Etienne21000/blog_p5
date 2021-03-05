@@ -10,10 +10,24 @@ use App\Model\Form_validation;
 class Form
 {
 
+    /**
+     * @var array
+     */
     private $data;
+
+    /**
+     * @var string
+     */
     private $p = 'p';
-    private $fields;
+
+    /**
+     * @var
+     */
     private $label;
+
+    /**
+     * @var
+     */
     private $for;
     private $name;
     private $placeholder;
@@ -24,6 +38,9 @@ class Form
     private $value;
     private $field;
     private $rows;
+    private $option;
+    private $option_fields = [];
+    private $text;
     private $validation;
     private $length;
 
@@ -66,21 +83,35 @@ class Form
         $this->class = $params['class'] ?? '';
         $this->field = $params['field'] ?? 'input';
         $this->rows = $params['rows'] ?? '';
+        $this->value = $params['value'] ?? '';
+        $this->text = $params['text'] ?? '';
+        $this->option = $params['option'] ?? '';
+
+        /*foreach ($this->option_fields as $opt){
+            $opt['option_fields'] ?? '';
+        }*/
 
         switch ($this->field)
         {
             case 'input':
                 return $this->surround('
                 <label for="' .$this->name.'">' . $this->label.'</label><br>
-                <'.$this->field . ' name="' . $this->name.'" type="'.$this->type.'" class="form-control ' . $this->class.'" value="" placeholder="' . $this->placeholder . '">');
+                <'.$this->field . ' name="' . $this->name.'" type="'.$this->type.'" class="form-control ' . $this->class.'" value="'.$this->value.'" placeholder="' . $this->placeholder . '">');
                 break;
             case 'textarea':
                 return $this->surround('
                 <label for="' .$this->name. '">'.$this->label.'</label><br>
-                <'.$this->field.' name="' .$this->name. '" type="'.$this->type.'" class="form-control ' . $this->class . '" rows="'.$this->rows.'" value="">'.$this->placeholder.'</'.$this->field.'>');
+                <'.$this->field.' name="' .$this->name. '" type="'.$this->type.'" class="form-control ' . $this->class . '" rows="'.$this->rows.'" value="">'.$this->value.'</'.$this->field.'>');
+                break;
+            case 'select':
+                return $this->surround('
+                <label for="' .$this->name. '">'.$this->label.'</label><br>
+                <'.$this->field. ' name="' . $this->name . '" class="form-control ' . $this->class . '">
+                    <option value="'.$this->value.'">'. $this->text .'</option>
+                    </'.$this->field.'>');
                 break;
             case 'button':
-                return $this->surround('<'.$this->field.' type="'.$this->type.'" class="btn btn-primary '.$this->class.'">'.$this->placeholder.'</'.$this->field.'>');
+                return $this->surround('<'.$this->field.' type="'.$this->type.'" class="btn '.$this->class.'">'.$this->placeholder.'</'.$this->field.'>');
                 break;
         }
     }
@@ -102,6 +133,9 @@ class Form
             'value' => $this->values($this->value),
             'field' => $this->values($this->field),
             'rows' => $this->values($this->rows),
+            'text' => $this->values($this->text),
+            'option' => $this->values($this->option),
+//            'option_fields' => $this->values($this->option_fields),
         ];
     }
 }

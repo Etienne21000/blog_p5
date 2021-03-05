@@ -81,9 +81,9 @@ abstract class AbstractManager
         {
             $stm = $this->db->prepare($query);
 
-            $stm->bindValue(':id', $parameter, \PDO::PARAM_INT);
+                $stm->bindValue(':id', $parameter, \PDO::PARAM_INT);
 
-            $stm->execute();
+                $stm->execute();
 
             $data = $stm->fetch(\PDO::FETCH_ASSOC);
 
@@ -91,19 +91,19 @@ abstract class AbstractManager
             $params = new $class($data);
 
         }
-//        elseif(!$this->where)
-//        {
-//            $id = NULL;
-//
-//            $query = $this->execute_query();
-//
-//            while ($data = $query->fetch(\PDO::FETCH_ASSOC)) {
-//                $class = $class_name;
-//                $class = new $class($data);
-//
-//                $params[] = $class;
-//            }
-//        }
+        elseif(!$this->where)
+        {
+            $id = NULL;
+
+            $query = $this->execute_query();
+
+            while ($data = $query->fetch(\PDO::FETCH_ASSOC)) {
+                $class = $class_name;
+                $class = new $class($data);
+
+                $params[] = $class;
+            }
+        }
         return $params;
     }
 

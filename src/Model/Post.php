@@ -4,14 +4,40 @@ use App\Core\Entity;
 
 class Post extends Entity
 {
+    /**
+     * @var $post_id
+     */
     private $post_id;
+
+    /**
+     * @var $title
+     */
     private $title;
+    /**
+     * @var $content
+     */
     private $content;
+    /**
+     * @var $creation_date
+     */
     private $creation_date;
+    /**
+     * @var $edition_date
+     */
     private $edition_date;
+    /**
+     * @var $status
+     */
     private $status;
+    /**
+     * @var $user_id
+     */
     private $user_id;
+    /**
+     * @var $img_id
+     */
     private $img_id;
+
     private $status_text;
     private $pseudo;
 
@@ -95,10 +121,10 @@ class Post extends Entity
     /**
      * @param $status_text
      */
-    public function setStatustext($status_text)
+    /*public function setStatustext($status_text)
     {
         $this->status_text = (string)$status_text;
-    }
+    }*/
 
     /**
      * @param $pseudo
@@ -180,7 +206,7 @@ class Post extends Entity
     /**
      * @return string
      */
-    public function status_text()
+    /*public function status_text()
     {
         if($this->status == false)
         {
@@ -190,7 +216,7 @@ class Post extends Entity
 
             return $this->status_text = 'Publié';
         }
-    }
+    }*/
 
     /**
      * @return mixed

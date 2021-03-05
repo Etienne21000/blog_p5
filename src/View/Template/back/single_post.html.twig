@@ -6,9 +6,6 @@
     <section class="home">
         <h1 class="title-h1">{{ post.title }}</h1>
 
-        <h5>{{ sub }}</h5>
-
-
         <p>
             {{ post.content }}
         </p>
@@ -16,6 +13,10 @@
         <p>
             {{ post.pseudo }}
         </p>
+
+        <div class="update">
+            <a href="/updatePostForm/{{ post.post_id }}" type="button" class="btn btn-success">Modifier</a>
+        </div>
 
     </section>
 
