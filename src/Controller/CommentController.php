@@ -64,17 +64,27 @@ class CommentController extends AbstractController
         if(!empty($post)){
             $validate = true;
 
-            if (empty($title) || strlen($title) > 40) {
+            if (strlen($title) > 40) {
                 $validate = false;
-                $error = 'Attention le contenu de votre titre est trop long';
+                $error = 1;
             }
 
-            if (empty($content) || strlen($content) > 500) {
+            if(empty($title)){
                 $validate = false;
-                $error = 'Attention le contenu de votre commentaire est trop long';
+                $error = 2;
             }
 
-            $_SESSION['error'] = $error;
+            if (strlen($content) > 500) {
+                $validate = false;
+                $error = 5;
+            }
+
+            if(empty($content)){
+                $validate = false;
+                $error = 6;
+            }
+
+            $this->form_valid->get_errors($error);
 
             if($validate){
 

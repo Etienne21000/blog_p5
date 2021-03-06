@@ -359,34 +359,45 @@ class PostController extends AbstractController
 
     public function update_post($post_id){
 
+        $status = $_POST['status'];
+        $post = $_POST;
+        $title = $_POST['title'];
+        $content = $_POST['content'];
+        $submit = $_POST['submit'];
+
         $post_id = $this->manager->get_single_post($post_id);
 
-         $status = $_POST['status'];
-
-        if(!empty($_POST)){
+        if(!empty($post)){
 
             $validate = true;
 
-            if (empty($_POST['title']) || strlen($_POST['title']) > 80) {
+            if (strlen($title) > 80) {
                 $validate = false;
                 $error = 1;
             }
 
-            if (empty($_POST['content'])) {
+            if (empty($title)){
                 $validate = false;
-                $error = 3;
+                $error = 2;
             }
+
+            if (empty($content)) {
+                $validate = false;
+                $error = 4;
+            }
+
+            $this->form_valid->get_errors($error);
 
             if($validate){
 
-                if($_POST['submit'] == 'brouillon'){
+                if($submit == 'brouillon'){
                     $status = 0;
                 }
-                elseif ($_POST['submit'] == 'publier'){
+                elseif ($submit == 'publier'){
                     $status = 1;
                 }
 
-                $this->post_update($_POST['title'], $_POST['content'], $post_id, $status);
+                $this->post_update($title, $content, $post_id, $status);
 
                 header('Location: /list-posts');
             }
