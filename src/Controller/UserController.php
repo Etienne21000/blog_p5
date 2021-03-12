@@ -82,7 +82,7 @@ class UserController extends AbstractController
 
             $validate = true;
 
-            if (empty($pseudo)) {
+            if(empty($pseudo)) {
                 $validate = false;
                 $error = 2;
             }
@@ -173,21 +173,20 @@ class UserController extends AbstractController
         $post = $_POST;
         $pseudo = $_POST['pseudo'];
         $pass = $_POST['pass'];
+        $user = $this->valid_pseudo($pseudo);
 
         if (!empty($post)){
             $validate = true;
 
-            if (empty($pseudo))
-            {
+            if (empty($pseudo)) {
                 $error = 2;
                 $validate = false;
             }
-            if(empty($pass)){
+            elseif(empty($pass)){
                 $error = 2;
                 $validate = false;
             }
-            $user = $this->valid_pseudo($pseudo);
-            if($user){
+            elseif($user){
                 $validate = true;
                 $check_pass = password_verify($pass, $user['pass']);
                 if(!$check_pass){
