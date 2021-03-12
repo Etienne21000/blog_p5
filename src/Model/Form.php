@@ -75,7 +75,6 @@ class Form
     public function inputs($params = [])
     {
         $params[] = $this->set_params();
-
         $this->placeholder = $params['placeholder'] ?? '';
         $this->name = $params['name'] ?? 'default';
         $this->label = $params['label'] ?? 'label required';
@@ -86,10 +85,6 @@ class Form
         $this->value = $params['value'] ?? '';
         $this->text = $params['text'] ?? '';
         $this->option = $params['option'] ?? '';
-
-        /*foreach ($this->option_fields as $opt){
-            $opt['option_fields'] ?? '';
-        }*/
 
         switch ($this->field)
         {
@@ -109,10 +104,6 @@ class Form
                 <'.$this->field. ' name="' . $this->name . '" class="form-control ' . $this->class . '">
                     <option value="'.$this->value.'">'. $this->text .'</option>
                     </'.$this->field.'>');
-                break;
-            case 'checkbox':
-                return $this->surround('<label for="' .$this->name. '">'.$this->label.'</label><br>
-                <'.$this->field.' type="'.$this->type.'" id="'.$this->name.'" name="'.$this->name.'"' .$this->name. '">');
                 break;
             case 'button':
                 return $this->surround('<'.$this->field.' type="'.$this->type.'" name="'.$this->name.'" value="'.$this->value.'" class="btn '.$this->class.'">'.$this->placeholder.'</'.$this->field.'>');
@@ -139,7 +130,6 @@ class Form
             'rows' => $this->values($this->rows),
             'text' => $this->values($this->text),
             'option' => $this->values($this->option),
-//            'option_fields' => $this->values($this->option_fields),
         ];
     }
 }

@@ -4,7 +4,6 @@ session_start();
 require_once (__DIR__ .'/vendor/autoload.php');
 
 use App\Core\Router;
-use App\Core\App;
 use App\Controller\MasterController;
 use \App\Controller\PostController;
 use App\Controller\UserController;
