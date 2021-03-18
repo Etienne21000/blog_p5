@@ -125,24 +125,26 @@
                 </div>
             </div>
             <div class="row contact-row">
-                <form class="contact-form">
+                <form class="contact-form" action="/send_mail" method="POST">
+                    {% if session.error != '' %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ session.error }}
+                        </div>
+                    {% elseif session.success != '' %}
+                        <div class="alert alert-success" role="alert">
+                            {{ session.success }}
+                        </div>
+                    {% endif %}
                     <div class="form-group">
-                        {#<label for="name">Votre nom<sup>*</sup></label>
-                        <input type="text" class="form-control" placeholder="Votre nom">#}
                         {{ nom|raw }}
                     </div>
                     <div class="form-group">
-                        {#<label for="exampleInputEmail1">Email<sup>*</sup></label>
-                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Votre email">#}
                         {{ mail|raw }}
                     </div>
                     <div class="form-group">
-                        {#<label for="message">Votre demande</label>
-                        <textarea class="form-control" id="message" rows="6" placeholder="Commencez votre demande..."></textarea>#}
                         {{ content|raw }}
                     </div>
                     {{ submit|raw }}
-{#                    <button type="submit" class="btn btn-primary">Submit</button>#}
                 </form>
             </div>
         </div>

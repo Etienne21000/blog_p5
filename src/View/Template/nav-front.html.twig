@@ -1,35 +1,41 @@
 {% if server.REQUEST_URI  == "/" %}
-<nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" id="mainNav">
-    <div class="container">
-        <a class="navbar-brand js-scroll-trigger" href="/">Home</a>
-        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav ml-auto my-2 my-lg-0">
-                <li class="nav-item"><a class="nav-link js-scroll-trigger" href="/posts">Articles</a></li>
-                <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#Realisations">Réalisations</a></li>
-                <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#about">A propos</a></li>
-                <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#portfolio">Portfolio</a></li>
-                <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#contact">Contact</a></li>
-                <li class="nav-item user">
-                    {% if session.user_id  %}
-                        <a class="nav-link js-scroll-trigger" href="/dashboard">
-                            {{ session.pseudo }}
-                        </a>
-                        <a class="nav-link js-scroll-trigger" href="/disconnect_user">
-                            <i class="fas fa-power-off"></i>
-                        </a>
-                    {% else %}
-                        <a class="nav-link js-scroll-trigger" href="/create_user">
-                            <i class="fas fa-user-circle"></i>
-                        </a>
-                    {% endif %}
-                </li>
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" id="mainNav">
+        <div class="container">
+            <a class="navbar-brand js-scroll-trigger" href="/">Home</a>
+            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto my-2 my-lg-0">
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="/posts">Articles</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#Realisations">Réalisations</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#about">A propos</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#portfolio">Portfolio</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#contact">Contact</a></li>
+                    <li class="nav-item user">
+                        {% if session.user_id  %}
+                            {% if session.role == 1 %}
+                                <a class="nav-link js-scroll-trigger" href="/dashboard">
+                                    {{ session.pseudo }}
+                                </a>
+                            {% elseif session.role == 0 %}
+                                <a class="nav-link js-scroll-trigger" href="/user_infos/{{ session.user_id }}">
+                                    {{ session.pseudo }}
+                                </a>
+                            {% endif %}
+                            <a class="nav-link js-scroll-trigger" href="/disconnect_user">
+                                <i class="fas fa-power-off"></i>
+                            </a>
+                        {% else %}
+                            <a class="nav-link js-scroll-trigger" href="/create_user">
+                                <i class="fas fa-user-circle"></i>
+                            </a>
+                        {% endif %}
+                    </li>
 
-            </ul>
+                </ul>
+            </div>
         </div>
-    </div>
-</nav>
-    {% else %}
+    </nav>
+{% else %}
     <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3 navbar-scrolled" id="secNav">
         <div class="container">
             <a class="navbar-brand js-scroll-trigger" href="/">Home</a>
@@ -43,9 +49,15 @@
                     <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#contact">Contact</a></li>
                     <li class="nav-item user">
                         {% if session.user_id  %}
-                            <a class="nav-link js-scroll-trigger" href="/dashboard">
-                                {{ session.pseudo }}
-                            </a>
+                            {% if session.role == 1 %}
+                                <a class="nav-link js-scroll-trigger" href="/dashboard">
+                                    {{ session.pseudo }}
+                                </a>
+                            {% elseif session.role == 0 %}
+                                <a class="nav-link js-scroll-trigger" href="/user_infos/{{ session.user_id }}">
+                                    {{ session.pseudo }}
+                                </a>
+                            {% endif %}
                             <a class="nav-link js-scroll-trigger" href="/disconnect_user">
                                 <i class="fas fa-power-off"></i>
                             </a>

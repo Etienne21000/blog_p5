@@ -255,16 +255,16 @@ class PostController extends AbstractController
                 $validate = false;
                 $error = 1;
             }
-            if(empty($title)){
+            elseif(empty($title)){
                 $validate = false;
                 $error = 2;
             }
-            if (empty($user_id)) {
+            elseif (empty($user_id)) {
                 $validate = false;
                 $error = 3;
             }
 
-            if (empty($content)) {
+            elseif (empty($content)) {
                 $validate = false;
                 $error = 4;
             }
@@ -307,11 +307,11 @@ class PostController extends AbstractController
                 $validate = false;
                 $error = 1;
             }
-            if (empty($title)){
+            elseif (empty($title)){
                 $validate = false;
                 $error = 2;
             }
-            if (empty($content)) {
+            elseif (empty($content)) {
                 $validate = false;
                 $error = 4;
             }

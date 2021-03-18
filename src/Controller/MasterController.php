@@ -8,6 +8,7 @@ use App\Model\CommentManager;
 use App\Model\UserManager;
 use App\Model\Form;
 use App\Core\User_role;
+use App\Model\Form_validation;
 
 class MasterController extends AbstractController
 {
@@ -16,6 +17,7 @@ class MasterController extends AbstractController
     private $UserManager;
     private $CommentManager;
     private $form;
+    private $form_valid;
 
     private $user_role;
 
@@ -27,6 +29,7 @@ class MasterController extends AbstractController
         $this->CommentManager = new CommentManager();
         $this->form = new Form();
         $this->user_role = new User_role();
+        $this->form_valid = new Form_validation();
     }
 
     public function index()
@@ -58,7 +61,7 @@ class MasterController extends AbstractController
         $content = $this->form->inputs([
             'field' => 'textarea',
             'label' => 'Votre demande*',
-            'name' => 'form-control',
+            'name' => 'content',
             'class' => 'input-name',
             'rows' => 10
         ]);
@@ -87,13 +90,15 @@ class MasterController extends AbstractController
     {
         $count_post = $this->count_posts();
 
+        $posts = $this->PostManager->get_all_posts($where=1);
+
         $role = $this->user_role->dispatch();
         $msg = 'Hello';
         $title = "Bonjour ";
         $subTitle = 'Bienvenu sur mon blog';
 
         if($role === 1){
-            $this->render('back/index.html.twig', ['count' => $count_post, 'msg' => $msg, 'title' => $title, 'sub' => $subTitle]);
+            $this->render('back/index.html.twig', ['posts' => $posts,'count' => $count_post, 'msg' => $msg, 'title' => $title, 'sub' => $subTitle]);
         }
         elseif ($role === 0){
             $this->index();
@@ -123,6 +128,40 @@ class MasterController extends AbstractController
         }
         else {
             echo "Le fichier d'origine n'existe pas";
+        }
+
+    }
+
+    public function send_mail(){
+        $name = $_POST['nom'];
+        $mail = $_POST['mail'];
+        $content = $_POST['content'];
+        $to = 'etiennejuffard@gmail.com';
+        $objet = 'Nouvelle demande de '. $name;
+        $headers = array(
+            'From' => $mail,
+            'Reply-To' => $mail,
+            'X-Mailer' => 'PHP/' . phpversion()
+        );
+
+        unset($_SESSION['error']);
+
+        if(!empty($name) && !empty($content) && !empty($mail)){
+            if(mail($to, $objet, $content, $headers)){
+                $success = 4;
+                $this->form_valid->get_success($success);
+                header('Location: /');
+            }
+            else{
+                $error = 19;
+                $this->form_valid->get_errors($error);
+                header('Location: /');
+            }
+        }
+        else{
+            $error = 2;
+            $this->form_valid->get_errors($error);
+            header('Location: /');
         }
 
     }

@@ -10,30 +10,6 @@ class User_role
     private $role_value;
 
     /**
-     * get user_role from session
-     */
-    public function get_role()
-    {
-//        if(isset($_SESSION['user_id'])){
-            $this->user_id = $_SESSION['user_id'];
-            $this->user_role = $_SESSION['role'];
-            return $user = [
-                'user_id' =>  $this->user_id,
-                'role' => $this->role,
-            ];
-//        }
-//        else{
-//            $this->user_id = NULL;
-//            $this->user_role = NULL;
-//            return $user = [
-//                'user_id' =>  $this->user_id,
-//                'user_role' => $this->role,
-//            ];
-//        }
-
-    }
-
-    /**
      * dispatch method from user_role in session
      * @return bool|int
      */

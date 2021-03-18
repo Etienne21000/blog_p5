@@ -54,6 +54,14 @@ class UserController extends AbstractController
         $this->master = new MasterController();
     }
 
+    public function get_user($user_id){
+        $title = "bienvenu sur votre profil";
+        $sub = "Vous trouverez toutes les informations vous concernant et la possibiliter de modifier votre profil";
+
+        $user = $this->manager->get_single_user($user_id);
+        $this->render('back/user_info.html.twig', ['user' => $user, 'title' => $title, 'sub' => $sub]);
+    }
+
     /**
      * @param $pseudo
      * @param $mail
@@ -78,63 +86,69 @@ class UserController extends AbstractController
         $confirm_mail = $_POST['confirm_mail'];
         $confirm_pass = $_POST['confirm_pass'];
 
-        if(!empty($post)) {
+        $name = $this->form_valid->validate_data($pseudo,2,1);
+        $empty_mail = $this->form_valid->validate_data($mail,2,1);
+        $mail_confirm = $this->form_valid->validate_data($confirm_mail,2,1);
+        $empty_pass = $this->form_valid->validate_data($pass,2,1);
+        $pass_confirm = $this->form_valid->validate_data($confirm_pass,2,1);
 
+        if(!empty($post)) {
             $validate = true;
 
             if(empty($pseudo)) {
                 $validate = false;
                 $error = 2;
             }
-            if(strlen($pseudo) > 20){
+            elseif(strlen($pseudo) > 20){
                 $validate = false;
                 $error = 8;
             }
-            if(!preg_match("#^[a-zà-ùA-Z0-9-\s_-]+$#", $pseudo)){
+            elseif(!preg_match("#^[a-zà-ùA-Z0-9-\s_-]+$#", $pseudo)){
                 $validate = false;
                 $error = 9;
             }
-            if (empty($mail)) {
+            elseif (empty($mail)) {
                 $validate = false;
                 $error = 2;
             }
-            if(!filter_var($mail, FILTER_VALIDATE_EMAIL)){
+            elseif(!filter_var($mail, FILTER_VALIDATE_EMAIL)){
                 $validate = false;
                 $error = 11;
             }
-            if (empty($confirm_mail)) {
+            elseif (empty($confirm_mail)) {
                 $validate = false;
                 $error = 2;
             }
-            if(($mail !== $confirm_mail)){
+            elseif(($mail !== $confirm_mail)){
                 $validate = false;
                 $error = 13;
             }
-            if (empty($pass)) {
+            elseif (empty($pass)) {
                 $validate = false;
                 $error = 2;
             }
-            if(strlen($pass) > 20){
+            elseif(strlen($pass) > 20){
                 $validate = false;
                 $error = 14;
             }
-            if(!preg_match("#^[a-zA-Z0-9_-]+.{8,}$#", $pass)){
+            elseif(!preg_match("#^[a-zA-Z0-9_-]+.{8,}$#", $pass)){
                 $validate = false;
                 $error = 15;
             }
-            if (empty($confirm_pass)) {
+            elseif (empty($confirm_pass)) {
                 $validate = false;
                 $error = 2;
             }
-            if(($pass !== $confirm_pass)){
+            elseif(($pass !== $confirm_pass)){
                 $validate = false;
                 $error = 13;
             }
-            if($this->valid_pseudo($pseudo) && $this->valid_mail($mail)){
+            elseif($this->valid_pseudo($pseudo) && $this->valid_mail($mail)){
                 $validate = false;
                 $error = 18;
             }
             $this->form_valid->get_errors($error);
+
             if($validate === true){
                 $pass = password_hash($pass, PASSWORD_BCRYPT);
                 $this->add_user($pseudo, $mail, $pass);
@@ -166,58 +180,42 @@ class UserController extends AbstractController
     }
 
     /**
+     * @param $validate
+     * @param $user
+     */
+    public function validate_form($validate, $user){
+        if($validate == true){
+            $_SESSION['user_id'] = $user['user_id'];
+            $_SESSION['pseudo'] = $user['pseudo'];
+            $_SESSION['role'] = $user['role'];
+            if($user['role'] === 1){
+                header('Location: /dashboard');
+            } elseif($user['role'] === 0){
+                header('Location: /');
+            }
+        }else{
+            header('Location: /connect_user_view');
+        }
+    }
+
+    /**
      * UserConnect method
      */
     public function connect_user() {
 
-        $post = $_POST;
         $pseudo = $_POST['pseudo'];
         $pass = $_POST['pass'];
         $user = $this->valid_pseudo($pseudo);
+        $check_pass = password_verify($pass, $user['pass']);
 
-        if (!empty($post)){
-            $validate = true;
+        $name = $this->form_valid->validate_data($pseudo,2,1);
+        $pass_check = $this->form_valid->validate_data($pass,2,1);
 
-            if (empty($pseudo)) {
-                $error = 2;
-                $validate = false;
-            }
-            elseif(empty($pass)){
-                $error = 2;
-                $validate = false;
-            }
-            elseif($user){
-                $validate = true;
-                $check_pass = password_verify($pass, $user['pass']);
-                if(!$check_pass){
-                    $error = 17;
-                    $validate = false;
-                }
-                elseif($check_pass){
-                    $validate = true;
-                    session_start();
-                    $_SESSION['user_id'] = $user['user_id'];
-                    $_SESSION['pseudo'] = $user['pseudo'];
-                    $_SESSION['role'] = $user['role'];
-                }
-            }
-            elseif(!$user){
-                $error = 16;
-                $validate = false;
-            }
-            $this->form_valid->get_errors($error);
-            if($validate){
-                if($user['role'] === 1){
-                    header('Location: /dashboard');
-                    exit();
-                } elseif($user['role'] === 0){
-                    header('Location: /');
-                    exit();
-                }
-            } else {
-                header('Location: /connect_user_view');
-            }
-        }
+        ($name == true && $pass_check == true) ? ($validate = true && $check_user = $this->form_valid->validate_data($user, 16, 2)) : ($validate = false);
+        ($check_user == true) ? ($validate = true && $password = $this->form_valid->validate_data($check_pass, 17, 2)) : ($validate = false);
+        ($password == true) ? ($validate = true) : ($validate = false);
+
+        $this->validate_form($validate, $user);
     }
 
     /**
@@ -296,5 +294,12 @@ class UserController extends AbstractController
             'placeholder' => 'Créer',
             'class' => 'btn-primary']);
         $this->render('front/user_form.html.twig', ['param' => $param, 'title' => $title, 'sub' => $subTitle, 'pseudo' => $pseudo, 'pass' => $pass, 'submit' => $submit]);
+    }
+
+    public function delete_u($user_id){
+        $this->manager->delete_user($user_id);
+        session_destroy();
+        header('Location: /');
+        exit();
     }
 }

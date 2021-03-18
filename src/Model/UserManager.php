@@ -63,13 +63,30 @@ class UserManager extends AbstractManager
         return $req->fetch(\PDO::FETCH_ASSOC);
     }
 
-//    public function get_user_id()
+    /**
+     * @param $id
+     * @return array
+     */
+    public function get_single_user($id){
+        //$segment = $this->segmentUri();
+        //$id = $segment[2];
+        $this->select()
+            ->from('User')
+            ->params([':id' => $id])
+            ->where('user_id = :id');
 
-    public function delete_user(){
-
+        $user = $this->resp(User::class, $id);
+        return $user;
     }
 
-    public function get_user(){
-
+    /**
+     * @param $user_id
+     */
+    public function delete_user($user_id){
+        $sql = 'DELETE FROM User
+                WHERE user_id = :user_id';
+        $req = $this->db->prepare($sql);
+        $req->bindValue(':user_id', $user_id, \PDO::PARAM_INT);
+        $req->execute();
     }
 }

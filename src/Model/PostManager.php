@@ -59,10 +59,6 @@ class PostManager extends AbstractManager
         return $this->from('Post', 'p')->count($param);
     }
 
-    /*public function count_posts(){
-        $this->count();
-    }*/
-
     /**
      * @param $id
      * @return array
@@ -78,15 +74,7 @@ class PostManager extends AbstractManager
             ->where('p.post_id = :id');
 
         $post = $this->resp(Post::class, $id);
-
         return $post;
-    }
-
-    public function get_all()
-    {
-        $this->query_string('SELECT * FROM Posts ');
-        $posts = $this->resp(Post::class);
-        return $posts;
     }
 
     public function create_post(Post $post)

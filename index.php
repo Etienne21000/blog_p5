@@ -48,6 +48,23 @@ $router->post('/connect_user', function() {
 
 });
 
+$router->get('/user_infos/{id}', function($param){
+    (int)$user_id = $param[0];
+
+    $Controller = new UserController();
+
+    $Controller->get_user($user_id);
+
+});
+
+$router->get('/delete_user/{id}', function($param){
+    (int)$user_id = $param[0];
+
+    $Controller = new UserController();
+
+    $Controller->delete_u($user_id);
+});
+
 $router->get('/', function () {
 
     $controller = new MasterController();
@@ -201,6 +218,13 @@ $router->get('/downloadCV', function () {
     $controller = new MasterController();
 
     $controller->download_cv();
+});
+
+$router->post('/send_mail', function (){
+
+    $controller = new MasterController();
+
+    $controller->send_mail();
 });
 
 $router->get('/disconnect_user', function() {

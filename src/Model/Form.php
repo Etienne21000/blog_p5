@@ -98,13 +98,6 @@ class Form
                 <label for="' .$this->name. '">'.$this->label.'</label><br>
                 <'.$this->field.' name="' .$this->name. '" type="'.$this->type.'" class="form-control ' . $this->class . '" rows="'.$this->rows.'" value="">'.$this->value.'</'.$this->field.'>');
                 break;
-            case 'select':
-                return $this->surround('
-                <label for="' .$this->name. '">'.$this->label.'</label><br>
-                <'.$this->field. ' name="' . $this->name . '" class="form-control ' . $this->class . '">
-                    <option value="'.$this->value.'">'. $this->text .'</option>
-                    </'.$this->field.'>');
-                break;
             case 'button':
                 return $this->surround('<'.$this->field.' type="'.$this->type.'" name="'.$this->name.'" value="'.$this->value.'" class="btn '.$this->class.'">'.$this->placeholder.'</'.$this->field.'>');
                 break;
