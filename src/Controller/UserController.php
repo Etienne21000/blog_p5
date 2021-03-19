@@ -87,27 +87,24 @@ class UserController extends AbstractController
         $confirm_mail = $_POST['confirm_mail'];
         $confirm_pass = $_POST['confirm_pass'];
         $this->check_params = false;
-
         $match_pseudo = preg_match("#^[a-zà-ùA-Z0-9-\s_-]+$#", $pseudo);
         $match_pass = preg_match("#^[a-zA-Z0-9_-]+.{8,}$#", $pass);
-        $empty = $this->form_valid->validate_data($param = [$pseudo, $mail, $pass, $confirm_mail, $confirm_pass], 2, 1);
-
+        $empty = $this->form_valid->validate($param = [$pseudo, $mail, $pass, $confirm_mail, $confirm_pass], 2, 1);
         $exist_pseudo = $this->valid_pseudo($pseudo);
         $exist_mail = $this->valid_mail($mail);
-
         if($empty === true){
-            $match = $this->form_valid->validate_data($param = [$match_pseudo, $match_pass], 9, 2);
+            $match = $this->form_valid->validate($param = [$match_pseudo, $match_pass], 9, 2);
             if($match === true){
-                    $equals = $this->form_valid->validate_data($param = [[$mail, $confirm_mail], [$pass, $confirm_pass]], 13, 3);
-                    if($equals === true){
-                        $exist = $this->form_valid->validate_data($param = [$exist_pseudo, $exist_mail], 18, 4);
-                        if($exist === true){
-                            $this->check_params = true;
-                        }
+                $equals = $this->form_valid->validate_data($param = [[$mail, $confirm_mail], [$pass, $confirm_pass]], 13, 3);
+                if($equals === true){
+                    $exist = $this->form_valid->validate_data($param = [$exist_pseudo, $exist_mail], 18, 4);
+                    if($exist === true){
+                        $this->check_params = true;
                     }
                 }
+            }
         }
-        
+
         if($this->check_params === true){
             $pass = password_hash($pass, PASSWORD_BCRYPT);
             $this->add_user($pseudo, $mail, $pass);
