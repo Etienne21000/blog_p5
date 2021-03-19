@@ -65,27 +65,46 @@ class Form_validation
      * @param $param
      * @param $e
      * @param $type
-     * @param $s
      * @return bool
      */
     public function validate_data($param, $e, $type){
+        $validate = true;
         if($type = 1){
-            if(empty($param)){
-                $error = $e;
-                $this->get_errors($error);
-                return false;
-            } else {
-                return true;
+            foreach($param as $data){
+                if(empty($data)){
+                    $error = $e;
+                    $this->get_errors($error);
+                    $validate = false;
+                }
             }
         }
         elseif($type = 2) {
-            if (!$param) {
-                $error = $e;
-                $this->get_errors($error);
-                return false;
-            } else {
-                return true;
+            foreach($param as $data) {
+                if (!$data) {
+                    $error = $e;
+                    $this->get_errors($error);
+                    $validate = false;
+                }
             }
         }
+        elseif ($type = 3){
+            foreach($param as $data) {
+                    if ($data[0] !== $data[1]) {
+                        $error = $e;
+                        $this->get_errors($error);
+                        $validate = false;
+                    }
+                }
+        }
+        elseif ($type = 4){
+            foreach($param as $data) {
+                if($data !=='') {
+                    $error = $e;
+                    $this->get_errors($error);
+                    $validate = false;
+                }
+            }
+        }
+        return $validate;
     }
 }

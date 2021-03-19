@@ -32,11 +32,13 @@ class UserController extends AbstractController
      */
     private $user;
 
-    /**
-     * @var array
-     */
-    private $errors = [];
+    private $name;
 
+    private $check_user;
+
+    private $password;
+
+    private $check_params;
     /**
      * @var MasterController
      */
@@ -79,85 +81,41 @@ class UserController extends AbstractController
      */
     public function create_user()
     {
-        $post = $_POST;
         $pseudo = $_POST['pseudo'];
         $mail = $_POST['mail'];
         $pass = $_POST['pass'];
         $confirm_mail = $_POST['confirm_mail'];
         $confirm_pass = $_POST['confirm_pass'];
+        $this->check_params = false;
 
-        $name = $this->form_valid->validate_data($pseudo,2,1);
-        $empty_mail = $this->form_valid->validate_data($mail,2,1);
-        $mail_confirm = $this->form_valid->validate_data($confirm_mail,2,1);
-        $empty_pass = $this->form_valid->validate_data($pass,2,1);
-        $pass_confirm = $this->form_valid->validate_data($confirm_pass,2,1);
+        $match_pseudo = preg_match("#^[a-zà-ùA-Z0-9-\s_-]+$#", $pseudo);
+        $match_pass = preg_match("#^[a-zA-Z0-9_-]+.{8,}$#", $pass);
+        $empty = $this->form_valid->validate_data($param = [$pseudo, $mail, $pass, $confirm_mail, $confirm_pass], 2, 1);
 
-        if(!empty($post)) {
-            $validate = true;
+        $exist_pseudo = $this->valid_pseudo($pseudo);
+        $exist_mail = $this->valid_mail($mail);
 
-            if(empty($pseudo)) {
-                $validate = false;
-                $error = 2;
-            }
-            elseif(strlen($pseudo) > 20){
-                $validate = false;
-                $error = 8;
-            }
-            elseif(!preg_match("#^[a-zà-ùA-Z0-9-\s_-]+$#", $pseudo)){
-                $validate = false;
-                $error = 9;
-            }
-            elseif (empty($mail)) {
-                $validate = false;
-                $error = 2;
-            }
-            elseif(!filter_var($mail, FILTER_VALIDATE_EMAIL)){
-                $validate = false;
-                $error = 11;
-            }
-            elseif (empty($confirm_mail)) {
-                $validate = false;
-                $error = 2;
-            }
-            elseif(($mail !== $confirm_mail)){
-                $validate = false;
-                $error = 13;
-            }
-            elseif (empty($pass)) {
-                $validate = false;
-                $error = 2;
-            }
-            elseif(strlen($pass) > 20){
-                $validate = false;
-                $error = 14;
-            }
-            elseif(!preg_match("#^[a-zA-Z0-9_-]+.{8,}$#", $pass)){
-                $validate = false;
-                $error = 15;
-            }
-            elseif (empty($confirm_pass)) {
-                $validate = false;
-                $error = 2;
-            }
-            elseif(($pass !== $confirm_pass)){
-                $validate = false;
-                $error = 13;
-            }
-            elseif($this->valid_pseudo($pseudo) && $this->valid_mail($mail)){
-                $validate = false;
-                $error = 18;
-            }
-            $this->form_valid->get_errors($error);
-
-            if($validate === true){
-                $pass = password_hash($pass, PASSWORD_BCRYPT);
-                $this->add_user($pseudo, $mail, $pass);
-                $success = 1;
-                $this->form_valid->get_success($success);
-                header('Location: /connect_user_view');
-            } else {
-                header('Location: /create_user');
-            }
+        if($empty === true){
+            $match = $this->form_valid->validate_data($param = [$match_pseudo, $match_pass], 9, 2);
+            if($match === true){
+                    $equals = $this->form_valid->validate_data($param = [[$mail, $confirm_mail], [$pass, $confirm_pass]], 13, 3);
+                    if($equals === true){
+                        $exist = $this->form_valid->validate_data($param = [$exist_pseudo, $exist_mail], 18, 4);
+                        if($exist === true){
+                            $this->check_params = true;
+                        }
+                    }
+                }
+        }
+        
+        if($this->check_params === true){
+            $pass = password_hash($pass, PASSWORD_BCRYPT);
+            $this->add_user($pseudo, $mail, $pass);
+            $success = 1;
+            $this->form_valid->get_success($success);
+            header('Location: /connect_user_view');
+        } else {
+            header('Location: /create_user');
         }
     }
 
@@ -183,8 +141,8 @@ class UserController extends AbstractController
      * @param $validate
      * @param $user
      */
-    public function validate_form($validate, $user){
-        if($validate == true){
+    public function validate_form($check_params, $user){
+        if($check_params === true){
             $_SESSION['user_id'] = $user['user_id'];
             $_SESSION['pseudo'] = $user['pseudo'];
             $_SESSION['role'] = $user['role'];
@@ -193,7 +151,7 @@ class UserController extends AbstractController
             } elseif($user['role'] === 0){
                 header('Location: /');
             }
-        }else{
+        }elseif($check_params === false){
             header('Location: /connect_user_view');
         }
     }
@@ -207,15 +165,19 @@ class UserController extends AbstractController
         $pass = $_POST['pass'];
         $user = $this->valid_pseudo($pseudo);
         $check_pass = password_verify($pass, $user['pass']);
+        $this->name = $this->form_valid->validate_data($param = [$pseudo, $pass],2,1);
 
-        $name = $this->form_valid->validate_data($pseudo,2,1);
-        $pass_check = $this->form_valid->validate_data($pass,2,1);
-
-        ($name == true && $pass_check == true) ? ($validate = true && $check_user = $this->form_valid->validate_data($user, 16, 2)) : ($validate = false);
-        ($check_user == true) ? ($validate = true && $password = $this->form_valid->validate_data($check_pass, 17, 2)) : ($validate = false);
-        ($password == true) ? ($validate = true) : ($validate = false);
-
-        $this->validate_form($validate, $user);
+        $this->check_params = false;
+        if($this->name === true){
+            $this->check_user = $this->form_valid->validate_data($param = [$user], 16, 2);
+            if($this->check_user === true){
+                $this->password = $this->form_valid->validate_data($param = [$check_pass], 17, 2);
+                if($this->password === true){
+                    $this->check_params = true;
+                }
+            }
+        }
+        $this->validate_form($this->check_params, $user);
     }
 
     /**

@@ -24,7 +24,7 @@
                                 <div class="mt-5">
                                     <h3 class="h4 mb-2 post-title"> {{ post.title }}</h3>
                                     <p class="text-muted mb-0">
-                                        {{ post.content | slice(0,100) }}
+                                        {{ post.content | slice(0,60) }}...
                                     </p>
                                     <p>
 {#                                        <span class="date-post">{{ post.creation_date }}</span>#}
@@ -85,6 +85,9 @@
 
     <!-- Call to action-->
     <section class="page-section bg-dark text-white" id="social-networks">
+        <div class="container">
+            <h2 class="text-center mt-0" id="white">Mes réalisations</h2>
+            <hr class="divider my-4" />
         <div class="row row-socialmedia">
 
             <div class="col-lg-3 col-md-6 text-center">
@@ -111,6 +114,7 @@
                     <a href="https://github.com/Etienne21000" target="_blank" class="text-muted mb-0">Linkedin</a>
                 </div>
             </div>
+        </div>
         </div>
     </section>
 
