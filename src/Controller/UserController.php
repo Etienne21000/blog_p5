@@ -56,6 +56,9 @@ class UserController extends AbstractController
         $this->master = new MasterController();
     }
 
+    /**
+     * @param $user_id
+     */
     public function get_user($user_id){
         $title = "bienvenu sur votre profil";
         $sub = "Vous trouverez toutes les informations vous concernant et la possibiliter de modifier votre profil";
@@ -77,25 +80,52 @@ class UserController extends AbstractController
     }
 
     /**
+     * @return array
+     * Method to return array of $_POST values
+     */
+    private function user_params(){
+        $user_params = [
+            'pseudo' => $_POST['pseudo'],
+            'mail' => $_POST['mail'],
+            'pass' => $_POST['pass'],
+            'confirm_mail' => $_POST['confirm_mail'],
+            'confirm_pass' => $_POST['confirm_pass'],
+        ];
+        return $user_params;
+    }
+
+    /**
+     * @param $check_params
+     */
+    public function validate_create_user($check_params){
+        $user_pa = $this->user_params();
+        if($check_params === true){
+            $user_pa['pass'] = password_hash($user_pa['pass'], PASSWORD_BCRYPT);
+            $this->add_user($user_pa['pseudo'], $user_pa['mail'], $user_pa['pass']);
+            $success = 1;
+            $this->form_valid->get_success($success);
+            header('Location: /connect_user_view');
+        } else {
+            header('Location: /create_user');
+        }
+    }
+
+    /**
      * checking and add user
      */
     public function create_user()
     {
-        $pseudo = $_POST['pseudo'];
-        $mail = $_POST['mail'];
-        $pass = $_POST['pass'];
-        $confirm_mail = $_POST['confirm_mail'];
-        $confirm_pass = $_POST['confirm_pass'];
+        $user_pa = $this->user_params();
         $this->check_params = false;
-        $match_pseudo = preg_match("#^[a-zà-ùA-Z0-9-\s_-]+$#", $pseudo);
-        $match_pass = preg_match("#^[a-zA-Z0-9_-]+.{8,}$#", $pass);
-        $empty = $this->form_valid->validate($param = [$pseudo, $mail, $pass, $confirm_mail, $confirm_pass], 2, 1);
-        $exist_pseudo = $this->valid_pseudo($pseudo);
-        $exist_mail = $this->valid_mail($mail);
+
+        $empty = $this->form_valid->validate($param = [$user_pa['pseudo'], $user_pa['mail'], $user_pa['pass'], $user_pa['confirm_mail'], $user_pa['confirm_pass']], 2, 1);
+        $exist_pseudo = $this->valid_pseudo($user_pa['pseudo']);
+        $exist_mail = $this->valid_mail($user_pa['mail']);
+
         if($empty === true){
-            $match = $this->form_valid->validate($param = [$match_pseudo, $match_pass], 9, 2);
+            $match = $this->form_valid->validate($param = [$match_pseudo = preg_match("#^[a-zà-ùA-Z0-9-\s_-]+$#", $user_pa['pseudo']), $match_pass = preg_match("#^[a-zA-Z0-9_-]+.{8,}$#", $user_pa['pass'])], 9, 2);
             if($match === true){
-                $equals = $this->form_valid->validate_data($param = [[$mail, $confirm_mail], [$pass, $confirm_pass]], 13, 3);
+                $equals = $this->form_valid->validate_data($param = [[$user_pa['mail'], $user_pa['confirm_mail']], [$user_pa['pass'], $user_pa['confirm_pass']]], 13, 3);
                 if($equals === true){
                     $exist = $this->form_valid->validate_data($param = [$exist_pseudo, $exist_mail], 18, 4);
                     if($exist === true){
@@ -104,16 +134,7 @@ class UserController extends AbstractController
                 }
             }
         }
-
-        if($this->check_params === true){
-            $pass = password_hash($pass, PASSWORD_BCRYPT);
-            $this->add_user($pseudo, $mail, $pass);
-            $success = 1;
-            $this->form_valid->get_success($success);
-            header('Location: /connect_user_view');
-        } else {
-            header('Location: /create_user');
-        }
+        $this->validate_create_user($this->check_params);
     }
 
     /**
@@ -135,7 +156,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @param $validate
+     * @param $check_params
      * @param $user
      */
     public function validate_form($check_params, $user){
@@ -195,37 +216,19 @@ class UserController extends AbstractController
         $title = 'Créer un compte';
         $subTitle = 'Ce formulaire vous permet de créer votre compte utilisateur';
         $param = 'create';
-        $pseudo = $this->form->inputs([
-            'label' => 'Pseudo',
-            'name' => 'pseudo',
-            'placeholder' => 'Votre pseudo',
-            'type' => 'text',
-            'class' => 'input-pseudo']);
-        $mail = $this->form->inputs([
-            'label' => 'Mail',
-            'name' => 'mail',
-            'placeholder' => 'Votre mail',
-            'type' => 'email']);
-        $confirm_mail = $this->form->inputs([
-            'label' => 'Confirmez votre mail',
-            'name' => 'confirm_mail',
-            'placeholder' => 'Confirmation mail',
-            'type' => 'email']);
-        $pass = $this->form->inputs([
-            'label' => 'Saissisez un mot de passe',
-            'name' => 'pass',
-            'placeholder' => 'Votre mot de passe',
-            'type' => 'password']);
-        $confirm_pass = $this->form->inputs([
-            'label' => 'Confirmez votre mot de passe',
-            'name' => 'confirm_pass',
-            'placeholder' => 'Confirmation du mot de passe',
-            'type' => 'password']);
-        $submit = $this->form->inputs([
-            'field' => 'button',
-            'type' => 'submit',
-            'placeholder' => 'Créer',
-            'class' => 'btn-primary']);
+
+        $pseudo = $this->form->inputs(['label' => 'Pseudo', 'name' => 'pseudo', 'placeholder' => 'Votre pseudo', 'type' => 'text', 'class' => 'input-pseudo']);
+
+        $mail = $this->form->inputs(['label' => 'Mail', 'name' => 'mail', 'placeholder' => 'Votre mail', 'type' => 'email']);
+
+        $confirm_mail = $this->form->inputs(['label' => 'Confirmez votre mail', 'name' => 'confirm_mail', 'placeholder' => 'Confirmation mail', 'type' => 'email']);
+
+        $pass = $this->form->inputs(['label' => 'Saissisez un mot de passe', 'name' => 'pass', 'placeholder' => 'Votre mot de passe', 'type' => 'password']);
+
+        $confirm_pass = $this->form->inputs(['label' => 'Confirmez votre mot de passe', 'name' => 'confirm_pass', 'placeholder' => 'Confirmation du mot de passe', 'type' => 'password']);
+
+        $submit = $this->form->inputs(['field' => 'button', 'type' => 'submit', 'placeholder' => 'Créer', 'class' => 'btn-primary']);
+
         $this->render('front/user_form.html.twig', ['param' => $param, 'title' => $title, 'sub' => $subTitle, 'pseudo' => $pseudo, 'mail' => $mail, 'confirm_mail' => $confirm_mail, 'pass' => $pass, 'confirm_pass' => $confirm_pass, 'submit' => $submit]);
     }
 
@@ -236,22 +239,13 @@ class UserController extends AbstractController
         $title = 'Se connecter';
         $subTitle = 'Connectez-vous à votre compte utilisateur';
         $param = 'connect';
-        $pseudo = $this->form->inputs([
-            'label' => 'Pseudo',
-            'name' => 'pseudo',
-            'placeholder' => 'Votre pseudo',
-            'type' => 'text',
-            'class' => 'input-pseudo']);
-        $pass = $this->form->inputs([
-            'label' => 'Saissisez un mot de passe',
-            'name' => 'pass',
-            'placeholder' => 'Votre mot de passe',
-            'type' => 'password']);
-        $submit = $this->form->inputs([
-            'field' => 'button',
-            'type' => 'submit',
-            'placeholder' => 'Créer',
-            'class' => 'btn-primary']);
+
+        $pseudo = $this->form->inputs(['label' => 'Pseudo', 'name' => 'pseudo', 'placeholder' => 'Votre pseudo', 'type' => 'text', 'class' => 'input-pseudo']);
+
+        $pass = $this->form->inputs(['label' => 'Saissisez un mot de passe', 'name' => 'pass', 'placeholder' => 'Votre mot de passe', 'type' => 'password']);
+
+        $submit = $this->form->inputs(['field' => 'button', 'type' => 'submit', 'placeholder' => 'Créer', 'class' => 'btn-primary']);
+
         $this->render('front/user_form.html.twig', ['param' => $param, 'title' => $title, 'sub' => $subTitle, 'pseudo' => $pseudo, 'pass' => $pass, 'submit' => $submit]);
     }
 
