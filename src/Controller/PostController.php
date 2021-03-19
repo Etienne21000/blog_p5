@@ -17,6 +17,8 @@ class PostController extends AbstractController
     private $post;
     private $count;
     private $user_role;
+    private $check_params;
+    private $method;
 
     /**
      * PostController constructor.
@@ -69,45 +71,21 @@ class PostController extends AbstractController
         $comments = $this->CommentManager->get_comments_by_post($id);
         $post = $this->manager->get_single_post($id);
         $comment_text = "Vous devez être connecté pour poster un commentaire";
-        if(isset($_SESSION['user_id'])) {
 
-            $title = $this->form->inputs([
-                'label' => 'Titre',
-                'name' => 'title',
-                'placeholder' => 'Mon titre',
-                'type' => 'text',
-                'class' => 'input-title']);
-            $content = $this->form->inputs([
-                'label' => 'commentaire',
-                'name' => 'content',
-                'type' => 'text',
-                'field' => 'textarea',
-                'class' => 'input-content',
-                'rows' => 5]);
-            $author = $this->form->inputs([
-                'label' => 'Commenté par ' . $_SESSION['pseudo'],
-                'name' => 'user_id',
-                'type' => 'hidden',
-                'value' => $_SESSION['user_id']]);
-            $post_id = $this->form->inputs([
-                'name' => 'post_id',
-                'type' => 'hidden',
-                'value' => $post->post_id()]);
-            $submit = $this->form->inputs([
-                'field' => 'button',
-                'type' => 'submit',
-                'class' => 'btn-primary',
-                'placeholder' => 'Commenter']);
+        if(isset($_SESSION['user_id'])) {
+            $title = $this->form->inputs(['label' => 'Titre', 'name' => 'title', 'placeholder' => 'Mon titre', 'type' => 'text', 'class' => 'input-title']);
+            $content = $this->form->inputs(['label' => 'commentaire', 'name' => 'content', 'type' => 'text', 'field' => 'textarea', 'class' => 'input-content', 'rows' => 5]);
+            $author = $this->form->inputs(['label' => 'Commenté par ' . $_SESSION['pseudo'], 'name' => 'user_id', 'type' => 'hidden', 'value' => $_SESSION['user_id']]);
+            $post_id = $this->form->inputs(['name' => 'post_id', 'type' => 'hidden', 'value' => $post->post_id()]);
+            $submit = $this->form->inputs(['field' => 'button', 'type' => 'submit', 'class' => 'btn-primary', 'placeholder' => 'Commenter']);
         }
         if($view == "front"){
             if(isset($_SESSION['user_id'])){
                 $this->render('front/blog-single-post.html.twig', ['post' => $post, 'comments' => $comments, 'post_id' => $post_id, 'title' => $title, 'content' => $content, 'submit' => $submit, 'author' => $author]);
-            }
-            else{
+            } else{
                 $this->render('front/blog-single-post.html.twig', ['post' => $post, 'comments' => $comments, 'comment_text' => $comment_text]);
             }
-        }
-        elseif($view == "back"){
+        } elseif($view == "back"){
             if($role == 1){
                 $this->render('back/single_post.html.twig', ['post' => $post]);
             } elseif ($role == 0 || $role == 2) {
@@ -125,40 +103,19 @@ class PostController extends AbstractController
         $param = "create";
         $title = 'Ajouter un article';
         $subTitle = 'Ce formulaire vous permet d\'ajouter un nouvel article';
-        $input = $this->form->inputs([
-            'label' => 'Mon titre',
-            'name' => 'title',
-            'placeholder' => 'Mon titre d\'article',
-            'type' => 'text',
-            'class' => 'input-title']);
-        $author = $this->form->inputs([
-            'label' => 'Cet article sera publié par '.$_SESSION['pseudo'],
-            'name' => 'user_id',
-            'type' => 'hidden',
-            'value' => $_SESSION['user_id']]);
-        $textarea = $this->form->inputs([
-            'field' => 'textarea',
-            'name' => 'content',
-            'label' => 'Contenu',
-            'rows' => 15]);
-        $status_input = $this->form->inputs([
-            'name' => 'status',
-            'type' => 'hidden',
-            'label' => '']);
-        $submit = $this->form->inputs([
-            'field' => 'button',
-            'type' => 'submit',
-            'class' => 'btn-primary',
-            'placeholder' => 'Créer le billet',
-            'name' => 'submit',
-            'value' => 'add']);
-        $draft = $this->form->inputs([
-            'field' => 'button',
-            'type' => 'submit',
-            'class' => 'btn-success',
-            'placeholder' => 'Brouillon',
-            'name' => 'submit',
-            'value' => 'brouillon']);
+
+        $input = $this->form->inputs(['label' => 'Mon titre', 'name' => 'title', 'placeholder' => 'Mon titre d\'article', 'type' => 'text', 'class' => 'input-title']);
+
+        $author = $this->form->inputs(['label' => 'Cet article sera publié par '.$_SESSION['pseudo'], 'name' => 'user_id', 'type' => 'hidden', 'value' => $_SESSION['user_id']]);
+
+        $textarea = $this->form->inputs(['field' => 'textarea', 'name' => 'content', 'label' => 'Contenu', 'rows' => 15]);
+
+        $status_input = $this->form->inputs(['name' => 'status', 'type' => 'hidden', 'label' => '']);
+
+        $submit = $this->form->inputs(['field' => 'button', 'type' => 'submit', 'class' => 'btn-primary', 'placeholder' => 'Créer le billet', 'name' => 'submit', 'value' => 'add']);
+
+        $draft = $this->form->inputs(['field' => 'button', 'type' => 'submit', 'class' => 'btn-success', 'placeholder' => 'Brouillon', 'name' => 'submit', 'value' => 'brouillon']);
+
         if($role === 1) {
             $this->render('back/add_form.html.twig', ['title' => $title, 'sub' => $subTitle, 'count' => $this->count, 'input' => $input, 'textarea' => $textarea, 'author' => $author, 'submit' => $submit, 'draft' => $draft, 'param' => $param, 'status' => $status_input]);
         } elseif ($role === 0 || $role === 2) {
@@ -181,50 +138,22 @@ class PostController extends AbstractController
 
         if($post->status() == 1){
             $status_text = 'Publié';
-        }
-        elseif ($post->status() == 0){
+        } elseif ($post->status() == 0){
             $status_text = 'Brouillon';
         }
-        $input = $this->form->inputs([
-            'label' => 'Mon titre',
-            'name' => 'title',
-            'type' => 'text',
-            'class' => 'input-title',
-            'value' => $post->title()]);
-        $id_post = $this->form->inputs([
-            'name' => 'post_id',
-            'type' => 'hidden',
-            'value' => $post->post_id()]);
-        $textarea = $this->form->inputs([
-            'field' => 'textarea',
-            'name' => 'content',
-            'label' => 'Contenu',
-            'rows' => 15,
-            'value' => $post->content()]);
-        $status_input = $this->form->inputs([
-            'name' => 'status',
-            'type' => 'hidden',
-            'label' => '']);
-        $submit = $this->form->inputs([
-            'field' => 'button',
-            'type' => 'submit',
-            'class' => 'btn-primary',
-            'placeholder' => 'Mettre à jour',
-            'name' => 'submit',
-            'value' => 'publier']);
-        $draft = $this->form->inputs([
-            'field' => 'button',
-            'type' => 'submit',
-            'class' => 'btn-success',
-            'placeholder' => 'Brouillon',
-            'name' => 'submit',
-            'value' => 'brouillon']);
+
+        $input = $this->form->inputs(['label' => 'Mon titre', 'name' => 'title', 'type' => 'text', 'class' => 'input-title', 'value' => $post->title()]);
+        $id_post = $this->form->inputs(['name' => 'post_id', 'type' => 'hidden', 'value' => $post->post_id()]);
+        $textarea = $this->form->inputs(['field' => 'textarea', 'name' => 'content', 'label' => 'Contenu', 'rows' => 15, 'value' => $post->content()]);
+        $status_input = $this->form->inputs(['name' => 'status', 'type' => 'hidden', 'label' => '']);
+        $submit = $this->form->inputs(['field' => 'button', 'type' => 'submit', 'class' => 'btn-primary', 'placeholder' => 'Mettre à jour', 'name' => 'submit', 'value' => 'publier']);
+        $draft = $this->form->inputs(['field' => 'button', 'type' => 'submit', 'class' => 'btn-success', 'placeholder' => 'Brouillon', 'name' => 'submit', 'value' => 'brouillon']);
+
         if($role === 1) {
             $this->render('back/add_form.html.twig', ['status_text' => $status_text,'id' => $post_id, 'pseudo' => $pseudo, 'title' => $title, 'sub' => $subTitle, 'count' => $this->count, 'input' => $input, 'textarea' => $textarea, 'submit' => $submit, 'param' => $param, 'post_id' => $id_post, 'status' => $status_input, 'draft' => $draft]);
         } elseif ($role === 0 || $role === 2) {
             $this->acces_denied();
         }
-
     }
 
     /**
@@ -241,47 +170,48 @@ class PostController extends AbstractController
         $this->manager->create_post($this->post);
     }
 
-    public function create_post(){
-        $status = $_POST['status'];
-        $post = $_POST;
-        $title = $_POST['title'];
-        $content = $_POST['content'];
-        $user_id = $_POST['user_id'];
-        $submit = $_POST['submit'];
+    private function post_params(){
+        $post_params = [
+            'status' => $_POST['status'],
+            'title' => $_POST['title'],
+            'content' => $_POST['content'],
+            'user_id' => $_POST['user_id'],
+            'submit' => $_POST['submit'],
+            'post_id' => $_POST['post_id']
+        ];
+        return $post_params;
+    }
 
-        if(!empty($post)){
-            $validate = true;
-            if (strlen($title) > 80) {
-                $validate = false;
-                $error = 1;
-            }
-            elseif(empty($title)){
-                $validate = false;
-                $error = 2;
-            }
-            elseif (empty($user_id)) {
-                $validate = false;
-                $error = 3;
+    private function validate_post_creation($check_params, $method)
+    {
+        $post = $this->post_params();
+        if ($check_params === true) {
+            if ($post['submit'] == 'brouillon') {
+                $post['status'] = 0;
+            } elseif ($post['submit'] == 'add') {
+                $post['status'] = 1;
             }
 
-            elseif (empty($content)) {
-                $validate = false;
-                $error = 4;
-            }
-            $this->form_valid->get_errors($error);
-            if($validate){
-                if($submit == 'brouillon'){
-                    $status = 0;
-                }
-                elseif ($submit == 'add'){
-                    $status = 1;
-                }
-                $this->add_post($title, $content, $user_id, $status);
-                header('Location: /list-posts');
-            } else{
+            $this->add_post($post['title'], $post['content'], $post['user_id'], $post['status']);
+
+            header('Location: /list-posts');
+        } elseif($check_params === false) {
+            if($method === 'add') {
                 header('Location: /addPostForm');
             }
         }
+    }
+
+    public function create_post(){
+        $post = $this->post_params();
+        $this->check_params = false;
+
+        $empty = $this->form_valid->validate($param = [$post['title'], $post['user_id'], $post['content']], 2, 1);
+
+        if($empty === true){
+            $this->check_params = true;
+        }
+        $this->validate_post_creation($this->check_params, $this->method);
     }
 
     private function post_update($title, $content, $post_id, $status){
@@ -292,39 +222,27 @@ class PostController extends AbstractController
         $this->manager->update_post($this->post);
     }
 
-
     public function update_post($post_id){
-        $status = $_POST['status'];
-        $post = $_POST;
-        $title = $_POST['title'];
-        $content = $_POST['content'];
-        $submit = $_POST['submit'];
-        $post_id = $this->manager->get_single_post($post_id);
+        $post = $this->post_params();
+        $this->check_params = false;
 
-        if(!empty($post)){
-            $validate = true;
-            if (strlen($title) > 80) {
-                $validate = false;
-                $error = 1;
+        $empty = $this->form_valid->validate($param = [$post['title'], $post['content']], 2, 1);
+
+        if($empty === true){
+            $this->check_params = true;
+        }
+
+        if($this->check_params === true){
+            if($post['submit'] == 'brouillon'){
+                $post['status'] = 0;
+            } elseif ($post['submit'] == 'publier'){
+                $post['status'] = 1;
             }
-            elseif (empty($title)){
-                $validate = false;
-                $error = 2;
-            }
-            elseif (empty($content)) {
-                $validate = false;
-                $error = 4;
-            }
-            $this->form_valid->get_errors($error);
-            if($validate){
-                if($submit == 'brouillon'){
-                    $status = 0;
-                } elseif ($submit == 'publier'){
-                    $status = 1;
-                }
-                $this->post_update($title, $content, $post_id, $status);
-                header('Location: /list-posts');
-            }
+            $this->post_update($post['title'], $post['content'], $post_id, $post['status']);
+            header('Location: /list-posts');
+        }
+        elseif($this->check_params === false){
+            header('Location: /updatePostForm/'.$post_id);
         }
     }
 
