@@ -22,7 +22,9 @@ class Form_validation
             16 => 'Attention, cet utilisateur est inconnu',
             17 => 'Attention, mauvais mot de passe',
             18 => 'Attention ce pseudo ou ce mail est déjà rattaché à un compte',
-            19 => 'Attention, impossible d\'envoyer votre email'
+            19 => 'Attention, impossible d\'envoyer votre email',
+            20 => 'Attention le titre ne doit pas dépasser 40 caractères',
+            21 => 'Attention, Le contenu de votre commentaire ne doit pas dépasser 500 caractères',
         ];
 
         $_SESSION['error'] = $err;
@@ -97,6 +99,20 @@ class Form_validation
         elseif ($type === 4){
             foreach($param as $data) {
                 if($data) {
+                    $error = $e;
+                    $this->get_errors($error);
+                    $validate = false;
+                }
+            }
+        }
+        return $validate;
+    }
+
+    public function validate_str_length($param, $length, $e, $type){
+        $validate = true;
+        if($type === 5){
+            foreach($param as $data) {
+                if (strlen($data) > $length) {
                     $error = $e;
                     $this->get_errors($error);
                     $validate = false;

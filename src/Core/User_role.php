@@ -5,8 +5,6 @@ use App\Model\UserManager;
 
 class User_role
 {
-    private $user_id;
-    private $role;
     private $role_value;
 
     /**

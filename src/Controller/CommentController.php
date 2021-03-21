@@ -18,6 +18,7 @@ class CommentController extends AbstractController
     private $comment;
     private $user_role;
     private $postManager;
+    private $check_params;
 
     /**
      * CommentController constructor.
@@ -48,54 +49,49 @@ class CommentController extends AbstractController
         $this->manager->add_comment($this->comment);
     }
 
+    private function comment_params(){
+        $post_params = [
+            'title' => $_POST['title'],
+            'content' => $_POST['content'],
+            'user_id' => $_POST['user_id'],
+            'post_id' => $_POST['post_id']
+        ];
+        return $post_params;
+    }
+
+    private function validate_comment($check_params, $post_id){
+        $post = $this->comment_params();
+        if($check_params === true){
+            $this->create_comment($post['user_id'], $post['title'], $post['content'], $post['post_id']);
+            $success = 3;
+            $this->form_valid->get_success($success);
+            header('Location: /singlePost/'.$post_id);
+        }
+        else{
+            header('Location: /singlePost/'.$post_id);
+        }
+    }
+
     /**
-     * @param $post_id
+     * Method to check all posted parameters
      */
-    public function add_comment($post_id){
+    public function add_comment(){
 
-        $post = $_POST;
-        $title = $_POST['title'];
-        $content = $_POST['content'];
-        $user_id = $_POST['user_id'];
-        $post_id = $_POST['post_id'];
+        $post = $this->comment_params();
+        $this->check_params = false;
+        $empty = $this->form_valid->validate($param = [$post['title'], $post['content']], 2, 1);
 
-        unset($_SESSION['error']);
-
-        if(!empty($post)){
-            $validate = true;
-
-            if (strlen($title) > 40) {
-                $validate = false;
-                $error = 1;
-            }
-
-            if(empty($title)){
-                $validate = false;
-                $error = 2;
-            }
-
-            if (strlen($content) > 500) {
-                $validate = false;
-                $error = 5;
-            }
-
-            if(empty($content)){
-                $validate = false;
-                $error = 6;
-            }
-
-            $this->form_valid->get_errors($error);
-
-            if($validate){
-
-                $this->create_comment($user_id, $title, $content, $post_id);
-
-                header('Location: /singlePost/'.$post_id);
-            }
-            else{
-                header('Location: /singlePost/'.$post_id);
+        if($empty === true){
+            $this->check_params = true;
+            $title_length = $this->form_valid->validate_str_length($param = [$post['title']], 40, 20, 5);
+            if($title_length === true){
+                $content_length = $this->form_valid->validate_str_length($param = [$post['content']], 500, 21, 5);
+                if($content_length === true){
+                    $this->check_params = true;
+                }
             }
         }
+        $this->validate_comment($this->check_params, $post['post_id']);
     }
 
     public function get_all(){

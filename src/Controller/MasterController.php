@@ -170,7 +170,6 @@ class MasterController extends AbstractController
      * Method to get error view
      */
     public function error(){
-        //if (http_response_code() != '200'){
             $this->error_view();
 //        }
     }

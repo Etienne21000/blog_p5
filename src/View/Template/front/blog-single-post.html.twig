@@ -35,14 +35,15 @@
                     <h4 class="comment-title">
                         Les derniers commentaires
                     </h4>
-
-{#                    {% for error in session.error %}#}
-                        {% if session.error != '' %}
-                            <div class="alert alert-danger" role="alert">
-                                {{ session.error }}
-                            </div>
-                        {% endif %}
-{#                    {% endfor %}#}
+                    {% if session.error != '' %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ session.error }}
+                        </div>
+                    {% elseif session.success != '' %}
+                        <div class="alert alert-success" role="alert">
+                            {{ session.success }}
+                        </div>
+                    {% endif %}
 
                     <a href="" class="add-com">
                         Ajouter un commentaire <i class="fas fa-edit"></i>

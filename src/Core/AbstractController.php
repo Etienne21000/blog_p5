@@ -30,7 +30,6 @@ abstract class AbstractController
         $this->twig->addGlobal('get', $_GET);
         $this->twig->addExtension(new DebugExtension());
         $this->twig->addGlobal('session', $_SESSION);
-//        $this->twig->addGlobal('error', $error);
 
         try{
             echo $this->twig->render($view, $params);
@@ -41,6 +40,9 @@ abstract class AbstractController
         }
     }
 
+    /**
+     * Method for dispatching view on user role
+     */
     public function acces_denied(){
         $error_msg = "Il semblerait que vous n'ayez pas accès à cette section";
         $error_title= "Accès refusé";
