@@ -27,7 +27,15 @@
                                         {{ post.content | slice(0,60) }}...
                                     </p>
                                     <p>
-{#                                        <span class="date-post">{{ post.creation_date }}</span>#}
+                                        {{ dump(post.editionDate) }}
+
+                                        {% if post.editionDate %}
+                                            <span class="date-post">Mis à jour le {{ dump(post.editionDdate) }}</span>
+                                        {% else %}
+                                            <span class="date-post">Publié le {{ post.creationDate | date("d/m/Y") }}</span>
+                                        {% endif %}
+                                    </p>
+                                    <p>
                                         {{ post.pseudo }}
                                     </p>
                                     <a href="/singlePost/{{ post.post_id }}">Lire l'article</a>
@@ -88,33 +96,33 @@
         <div class="container">
             <h2 class="text-center mt-0" id="white">Mes réalisations</h2>
             <hr class="divider my-4" />
-        <div class="row row-socialmedia">
+            <div class="row row-socialmedia">
 
-            <div class="col-lg-3 col-md-6 text-center">
-                <div class="mt-5">
-                    <i class="fab fa-4x fa-linkedin text-primary text-primary mb-4"></i>
-                    <h3 class="h4 mb-2">Mon profile Linkedin</h3>
-                    <a href="https://www.linkedin.com/in/etienne-juffard-b231b4130/" target="_blank" class="text-muted mb-0">Linkedin</a>
+                <div class="col-lg-3 col-md-6 text-center">
+                    <div class="mt-5">
+                        <i class="fab fa-4x fa-linkedin text-primary text-primary mb-4"></i>
+                        <h3 class="h4 mb-2">Mon profile Linkedin</h3>
+                        <a href="https://www.linkedin.com/in/etienne-juffard-b231b4130/" target="_blank" class="text-muted mb-0">Linkedin</a>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6 text-center">
+                    <div class="mt-5">
+                        <i class="fab fa-4x fa-gitlab text-primary text-primary mb-4"></i>
+                        <h3 class="h4 mb-2">Mon profile GitLab</h3>
+                        <a href="https://gitlab.com/" target="_blank" class="text-muted mb-0">GitLab</a>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-md-6 text-center">
+                    <div class="mt-5">
+                        <i class="fab fa-4x fa-github text-primary text-primary mb-4"></i>
+                        {#                    <i class="fab fa-github"></i>#}
+                        <h3 class="h4 mb-2">Mon profile GitHub</h3>
+                        <a href="https://github.com/Etienne21000" target="_blank" class="text-muted mb-0">Linkedin</a>
+                    </div>
                 </div>
             </div>
-
-            <div class="col-lg-3 col-md-6 text-center">
-                <div class="mt-5">
-                    <i class="fab fa-4x fa-gitlab text-primary text-primary mb-4"></i>
-                    <h3 class="h4 mb-2">Mon profile GitLab</h3>
-                    <a href="https://gitlab.com/" target="_blank" class="text-muted mb-0">GitLab</a>
-                </div>
-            </div>
-
-            <div class="col-lg-3 col-md-6 text-center">
-                <div class="mt-5">
-                    <i class="fab fa-4x fa-github text-primary text-primary mb-4"></i>
-{#                    <i class="fab fa-github"></i>#}
-                    <h3 class="h4 mb-2">Mon profile GitHub</h3>
-                    <a href="https://github.com/Etienne21000" target="_blank" class="text-muted mb-0">Linkedin</a>
-                </div>
-            </div>
-        </div>
         </div>
     </section>
 

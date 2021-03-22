@@ -3,7 +3,6 @@ namespace App\Controller;
 
 use App\Core\AbstractController;
 use App\Model\PostManager;
-use App\Model\ImageManager;
 use App\Model\CommentManager;
 use App\Model\UserManager;
 use App\Model\Form;
@@ -13,7 +12,6 @@ use App\Model\Form_validation;
 class MasterController extends AbstractController
 {
     private $PostManager;
-    private $ImageManager;
     private $UserManager;
     private $CommentManager;
     private $form;
@@ -24,7 +22,6 @@ class MasterController extends AbstractController
     public function __construct()
     {
         $this->PostManager = new PostManager();
-        $this->ImageManager = new ImageManager();
         $this->UserManager = new UserManager();
         $this->CommentManager = new CommentManager();
         $this->form = new Form();
@@ -36,45 +33,16 @@ class MasterController extends AbstractController
     {
         $posts = $this->PostManager->get_all_posts($where = 1, $start = 0, $limit = 3);
 
-        $msg = 'Hello world';
-
         $title = "Etienne Juffard";
         $subTitle = 'Développeur web php / symfony sans oublier le front !';
         $post_title = "Retrouvez les derniers articles";
 
-        $nom = $this->form->inputs([
-            'label' => 'Votre nom*',
-            'name' => 'nom',
-            'placeholder' => 'Votre nom',
-            'type' => 'text',
-            'class' => 'form-control'
-        ]);
+        $nom = $this->form->inputs(['label' => 'Votre nom*', 'name' => 'nom', 'placeholder' => 'Votre nom', 'type' => 'text', 'class' => 'form-control']);
+        $mail = $this->form->inputs(['label' => 'Email*', 'name' => 'mail', 'placeholder' => 'Votre email', 'type' => 'email', 'class' => 'form-control']);
+        $content = $this->form->inputs(['field' => 'textarea', 'label' => 'Votre demande*', 'name' => 'content', 'class' => 'input-name', 'rows' => 10]);
+        $submit = $this->form->inputs(['field' => 'button', 'type' => 'submit', 'class' => 'btn btn-primary', 'placeholder' => 'Envoyer',]);
 
-        $mail = $this->form->inputs([
-            'label' => 'Email*',
-            'name' => 'mail',
-            'placeholder' => 'Votre email',
-            'type' => 'email',
-            'class' => 'form-control'
-        ]);
-
-        $content = $this->form->inputs([
-            'field' => 'textarea',
-            'label' => 'Votre demande*',
-            'name' => 'content',
-            'class' => 'input-name',
-            'rows' => 10
-        ]);
-
-        $submit = $this->form->inputs([
-            'field' => 'button',
-            'type' => 'submit',
-            'class' => 'btn btn-primary',
-            'placeholder' => 'Envoyer',
-        ]);
-
-
-        $this->render('front/home.html.twig', ['nom' => $nom, 'mail' => $mail, 'content' => $content, 'submit' => $submit, 'posts' => $posts, 'post_title' => $post_title, 'msg' => $msg, 'title' => $title, 'sub' => $subTitle]);
+        $this->render('front/home.html.twig', ['nom' => $nom, 'mail' => $mail, 'content' => $content, 'submit' => $submit, 'posts' => $posts, 'post_title' => $post_title, 'title' => $title, 'sub' => $subTitle]);
     }
 
     private function count_posts(){

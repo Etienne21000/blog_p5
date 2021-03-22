@@ -33,12 +33,7 @@ class Post extends Entity
      * @var $user_id
      */
     private $user_id;
-    /**
-     * @var $img_id
-     */
-    private $img_id;
 
-    private $status_text;
     private $pseudo;
 
     /**
@@ -111,22 +106,6 @@ class Post extends Entity
     }
 
     /**
-     * @param $img_id
-     */
-    public function setImgId($img_id)
-    {
-        $this->img_id = (int)$img_id;
-    }
-
-    /**
-     * @param $status_text
-     */
-    /*public function setStatustext($status_text)
-    {
-        $this->status_text = (string)$status_text;
-    }*/
-
-    /**
      * @param $pseudo
      */
     public function setPseudo($pseudo)
@@ -194,29 +173,6 @@ class Post extends Entity
     {
         return $this->user_id;
     }
-
-    /**
-     * @return mixed
-     */
-    public function img_id()
-    {
-        return $this->img_id;
-    }
-
-    /**
-     * @return string
-     */
-    /*public function status_text()
-    {
-        if($this->status == false)
-        {
-            return $this->status_text = 'Brouillon';
-        }
-        else{
-
-            return $this->status_text = 'Publié';
-        }
-    }*/
 
     /**
      * @return mixed

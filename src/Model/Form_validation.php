@@ -6,17 +6,10 @@ class Form_validation
     public function get_errors($err){
 
         $errors = [
-            1 => 'Attention, le contenu de votre titre est trop long',
             2 => 'Attention, vous devez renseigner tous les champs',
-            3 => 'Aucun identifiant valide pour cet utilisateur',
-            4 => 'Attention le contenu de votre article est vide',
-            5 => 'Attention le contenu de votre commentaire est trop long',
-            6 => 'Attention le contenu de votre commentaire est vide',
             8 => 'Attention, votre pseudo ne doit pas dépasser 20 caractères',
             9 => 'Attention, votre pseudo ou votre mot de passe ne respectent pas le format standard',
-            11 => 'Attention, le format de votre email est invalide',
-            12 => 'Attention, vous devez confirmer votre adresse email',
-            13 => 'Attention, la confirmation ne correspond pas',
+            13 => 'Attention, la confirmation de votre mail ou de votre mot de passe ne correspond pas',
             14 => 'Attention, votre mot de passe doit contenir 20 caractères maximum',
             15 => 'Attention, votre mot de passe doit contenir des lettres, chiffres et cractères spéciaux',
             16 => 'Attention, cet utilisateur est inconnu',
@@ -95,8 +88,7 @@ class Form_validation
                     $validate = false;
                 }
             }
-        }
-        elseif ($type === 4){
+        } elseif ($type === 4){
             foreach($param as $data) {
                 if($data) {
                     $error = $e;
