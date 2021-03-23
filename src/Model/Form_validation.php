@@ -88,7 +88,7 @@ class Form_validation
                     $validate = false;
                 }
             }
-        } elseif ($type === 4){
+        }elseif ($type === 4){
             foreach($param as $data) {
                 if($data) {
                     $error = $e;

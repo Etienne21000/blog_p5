@@ -117,7 +117,6 @@ class UserController extends AbstractController
     {
         $user_pa = $this->user_params();
         $this->check_params = false;
-
         $empty = $this->form_valid->validate($param = [$user_pa['pseudo'], $user_pa['mail'], $user_pa['pass'], $user_pa['confirm_mail'], $user_pa['confirm_pass']], 2, 1);
         $exist_pseudo = $this->valid_pseudo($user_pa['pseudo']);
         $exist_mail = $this->valid_mail($user_pa['mail']);
@@ -178,18 +177,16 @@ class UserController extends AbstractController
      * UserConnect method
      */
     public function connect_user() {
-
-        $pseudo = $_POST['pseudo'];
-        $pass = $_POST['pass'];
-        $user = $this->valid_pseudo($pseudo);
-        $check_pass = password_verify($pass, $user['pass']);
-        $this->name = $this->form_valid->validate_data($param = [$pseudo, $pass],2,1);
+        $user_pa = $this->user_params();
+        $user = $this->valid_pseudo($user_pa['pseudo']);
+        $check_pass = password_verify($user_pa['pass'], $user['pass']);
+        $this->name = $this->form_valid->validate($param = [$user_pa['pseudo'], $user_pa['pass']],2,1);
 
         $this->check_params = false;
         if($this->name === true){
-            $this->check_user = $this->form_valid->validate_data($param = [$user], 16, 2);
+            $this->check_user = $this->form_valid->validate($param = [$user], 16, 2);
             if($this->check_user === true){
-                $this->password = $this->form_valid->validate_data($param = [$check_pass], 17, 2);
+                $this->password = $this->form_valid->validate($param = [$check_pass], 17, 2);
                 if($this->password === true){
                     $this->check_params = true;
                 }

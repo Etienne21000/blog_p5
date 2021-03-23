@@ -27,10 +27,8 @@
                                         {{ post.content | slice(0,60) }}...
                                     </p>
                                     <p>
-                                        {{ dump(post.editionDate) }}
-
-                                        {% if post.editionDate %}
-                                            <span class="date-post">Mis à jour le {{ dump(post.editionDdate) }}</span>
+                                        {% if post.editionDate is not empty %}
+                                            <span class="date-post">Mis à jour le {{ post.editionDdate }}</span>
                                         {% else %}
                                             <span class="date-post">Publié le {{ post.creationDate | date("d/m/Y") }}</span>
                                         {% endif %}

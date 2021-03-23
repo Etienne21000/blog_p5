@@ -50,8 +50,8 @@ class PostController extends AbstractController
     {
         $count_post = $this->count_posts();
         $posts = $this->manager->get_all_posts($where);
-        $title = "Tous les posts";
-        $subTitle = 'Retrouvez tous les posts du blog';
+        $title = "Tous les articles du blog";
+        $subTitle = 'Retrouvez tous les articles du blog';
         if($view == "front"){
             $this->render('front/posts.html.twig', ['posts' => $posts, 'title' => $title, 'sub' => $subTitle]);
         }
