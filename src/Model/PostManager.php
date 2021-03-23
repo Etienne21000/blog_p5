@@ -27,16 +27,7 @@ class PostManager extends AbstractManager
     public function get_all_posts($where, $start =-1, $limit=-1)
     {
         $posts = [];
-        /*$sql = 'SELECT p.title, p.status, p.content, p.user_id,
-                DATE_FORMAT(p.edition_date, \'%d/%m/%Y à %Hh%i\') AS edition_date,
-                DATE_FORMAT(p.creation_date, \'%d/%m/%Y à %Hh%i\') AS creation_date, u.*
-                FROM Post AS p
-                LEFT JOIN User AS u
-                ON u.user_id = p.user_id
-                WHERE p.status = :status
-                ORDER BY creation_date';*/
-
-        $sql = 'SELECT p.*, u.*
+        $sql = 'SELECT p.*, u.user_id, u.pseudo
                 FROM Post AS p
                 LEFT JOIN User AS u 
                 ON u.user_id = p.user_id

@@ -18,8 +18,14 @@
                     {# Ajouter une condition pour la date de modification du post#}
 
                     <p class="text-muted mb-5">
-                        Publié par {{ post.pseudo }} <br>
-                        Le {{ post.creationDate }}
+                        {% if post.editionDate is not null %}
+                            Mis à jour par {{ post.pseudo }} <br>
+                            Le {{ post.editionDate|date("d/m/Y") }}
+
+                        {% elseif post.editionDate is null %}
+                            Publié par {{ post.pseudo }} <br>
+                            Le {{ post.creationDate|date("d/m/Y") }}
+                        {% endif %}
                     </p>
                 </div>
                 <div class="content">
