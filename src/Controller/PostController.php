@@ -182,7 +182,7 @@ class PostController extends AbstractController
         return $post_params;
     }
 
-    private function validate_post_creation($check_params, $method)
+    private function validate_post_creation($check_params)
     {
         $post = $this->post_params();
         if ($check_params === true) {
@@ -196,9 +196,7 @@ class PostController extends AbstractController
 
             header('Location: /list-posts');
         } elseif($check_params === false) {
-            if($method === 'add') {
-                header('Location: /addPostForm');
-            }
+            header('Location: /addPostForm');
         }
     }
 
